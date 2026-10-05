@@ -19,6 +19,7 @@ function copyDir(src, dest) {
 }
 
 export default defineConfig({
+  base: '/Vishal-Portfolio/',
   publicDir: 'public',
   server: {
     port: 3000,
@@ -31,10 +32,13 @@ export default defineConfig({
     {
       name: 'serve-and-copy-assets',
       configureServer(server) {
-        // Serve /assets from ./assets
+        // Serve /assets from ./assets, handling both root and base-prefixed paths
         server.middlewares.use((req, res, next) => {
-          if (req.url && req.url.startsWith('/assets/')) {
-            const relativePath = decodeURIComponent(req.url.replace(/^\//, ''));
+          if (!req.url) return next();
+          const cleanUrl = req.url.replace(/^\/Vishal-Portfolio/, '');
+
+          if (cleanUrl.startsWith('/assets/')) {
+            const relativePath = decodeURIComponent(cleanUrl.replace(/^\//, ''));
             const filePath = path.resolve(import.meta.dirname, relativePath);
             if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
               const ext = path.extname(filePath).toLowerCase();
@@ -52,7 +56,7 @@ export default defineConfig({
               return fs.createReadStream(filePath).pipe(res);
             }
           }
-          if (req.url && (req.url === '/Vishal%20Resume.pdf' || req.url === '/Vishal Resume.pdf')) {
+          if (cleanUrl === '/Vishal%20Resume.pdf' || cleanUrl === '/Vishal Resume.pdf') {
             const filePath = path.resolve(import.meta.dirname, 'Vishal Resume.pdf');
             if (fs.existsSync(filePath)) {
               res.setHeader('Content-Type', 'application/pdf');

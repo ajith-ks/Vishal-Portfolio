@@ -14,6 +14,7 @@ import {
 } from './data/portfolioData.js';
 import testimonials from './data/testimonials.json';
 import { MotionEngine } from './motion/motionEngine.js';
+import { getAssetUrl } from './utils/paths.js';
 
 // SVG Icons Generator
 const Icons = {
@@ -174,7 +175,7 @@ function renderHero() {
                 Explore My Journey
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
-              <a href="${siteProfile.resumePdf}" download="Dr_Vishal_Kattery_CV.pdf" class="btn-hero-secondary">
+              <a href="${getAssetUrl(siteProfile.resumePdf)}" download="Dr_Vishal_Kattery_CV.pdf" class="btn-hero-secondary">
                 ${Icons.download}
                 Download Resume
               </a>
@@ -193,7 +194,7 @@ function renderHero() {
             <div class="hero-portrait-stage">
               <div class="hero-cutout-img-wrap" id="hero-cutout-wrap">
                 <img 
-                  src="/assets/images/hero/hero.png" 
+                  src="${getAssetUrl('/assets/images/hero/hero.png')}" 
                   alt="Dr. Vishal Kattery Transparent Cutout Portrait" 
                   class="hero-cutout-img" 
                   id="hero-cutout-img" 
@@ -313,7 +314,7 @@ function renderAbout() {
         <div class="about-grid">
           <div class="about-media-stack">
             <div class="about-main-img-wrap">
-              <img src="/assets/images/portraits/random.jpeg" alt="Dr. Vishal Kattery" class="about-main-img" loading="lazy" />
+              <img src="${getAssetUrl('/assets/images/portraits/random.jpeg')}" alt="Dr. Vishal Kattery" class="about-main-img" loading="lazy" />
             </div>
             <div class="about-overlay-quote">
               <p class="about-quote-text">${aboutData.quote}</p>
@@ -491,8 +492,8 @@ function renderTeaching() {
 
         <!-- Video Player Section -->
         <div class="classroom-video-container" id="video-section">
-          <video id="classroom-video" class="classroom-video" muted playsinline loop poster="/assets/images/teaching/classroom training.jpg">
-            <source src="/assets/video/classroom video.mp4" type="video/mp4" />
+          <video id="classroom-video" class="classroom-video" muted playsinline loop poster="${getAssetUrl('/assets/images/teaching/classroom training.jpg')}">
+            <source src="${getAssetUrl('/assets/video/classroom video.mp4')}" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <div class="video-controls-bar">
@@ -536,27 +537,27 @@ function renderTeaching() {
 
         <div class="photo-mosaic">
           <div class="mosaic-item span-2">
-            <img src="/assets/images/teaching/classroom training.jpg" alt="Classroom Training" class="mosaic-img" loading="lazy" />
+            <img src="${getAssetUrl('/assets/images/teaching/classroom training.jpg')}" alt="Classroom Training" class="mosaic-img" loading="lazy" />
             <div class="mosaic-caption">Interactive Classroom Lecture</div>
           </div>
           <div class="mosaic-item">
-            <img src="/assets/images/students/interactions with student.jpg" alt="Student Interaction" class="mosaic-img" loading="lazy" />
+            <img src="${getAssetUrl('/assets/images/students/interactions with student.jpg')}" alt="Student Interaction" class="mosaic-img" loading="lazy" />
             <div class="mosaic-caption">One-on-One Student Guidance</div>
           </div>
           <div class="mosaic-item">
-            <img src="/assets/images/students/motivational class.jpg" alt="Motivational Class" class="mosaic-img" loading="lazy" />
+            <img src="${getAssetUrl('/assets/images/students/motivational class.jpg')}" alt="Motivational Class" class="mosaic-img" loading="lazy" />
             <div class="mosaic-caption">Youth Motivational Session</div>
           </div>
           <div class="mosaic-item">
-            <img src="/assets/images/teaching/classroom training 0.jpg" alt="Training Session" class="mosaic-img" loading="lazy" />
+            <img src="${getAssetUrl('/assets/images/teaching/classroom training 0.jpg')}" alt="Training Session" class="mosaic-img" loading="lazy" />
             <div class="mosaic-caption">Career Preparedness Workshop</div>
           </div>
           <div class="mosaic-item">
-            <img src="/assets/images/students/celebration with students.jpg" alt="Celebration with Students" class="mosaic-img" loading="lazy" />
+            <img src="${getAssetUrl('/assets/images/students/celebration with students.jpg')}" alt="Celebration with Students" class="mosaic-img" loading="lazy" />
             <div class="mosaic-caption">Celebrating Academic Achievements</div>
           </div>
           <div class="mosaic-item span-2">
-            <img src="/assets/images/teaching/classroom training 3.jpg" alt="Group Discussion" class="mosaic-img" loading="lazy" />
+            <img src="${getAssetUrl('/assets/images/teaching/classroom training 3.jpg')}" alt="Group Discussion" class="mosaic-img" loading="lazy" />
             <div class="mosaic-caption">Group Discussion & Soft Skills Practice</div>
           </div>
         </div>
@@ -580,7 +581,7 @@ function renderSpeaking() {
         <div class="speaking-editorial-grid">
           <div class="speaking-highlight-card">
             <div class="speaking-img-wrap">
-              <img src="/assets/images/speaking/on stage addressing crowd.jpg" alt="Addressing Gathering" class="speaking-img" loading="lazy" />
+              <img src="${getAssetUrl('/assets/images/speaking/on stage addressing crowd.jpg')}" alt="Addressing Gathering" class="speaking-img" loading="lazy" />
             </div>
             <div class="speaking-content">
               <div>
@@ -595,7 +596,7 @@ function renderSpeaking() {
 
           <div class="speaking-highlight-card">
             <div class="speaking-img-wrap">
-              <img src="/assets/images/speaking/speach from co operative bank seminar.jpeg" alt="Co-operative Bank Seminar" class="speaking-img" loading="lazy" />
+              <img src="${getAssetUrl('/assets/images/speaking/speach from co operative bank seminar.jpeg')}" alt="Co-operative Bank Seminar" class="speaking-img" loading="lazy" />
             </div>
             <div class="speaking-content">
               <div>
@@ -641,7 +642,7 @@ function renderCongress() {
             </div>
 
             <div class="congress-media-frame">
-              <img src="${congressEventData.images[0].src}" alt="${congressEventData.images[0].caption}" class="congress-img" loading="lazy" />
+              <img src="${getAssetUrl(congressEventData.images[0].src)}" alt="${congressEventData.images[0].caption}" class="congress-img" loading="lazy" />
             </div>
           </div>
         </div>
@@ -853,7 +854,7 @@ function renderHumanSide() {
           ${humanSideData.moments.map(m => `
             <div class="human-card">
               <div class="human-img-frame">
-                <img src="${m.src}" alt="${m.caption}" class="human-img" loading="lazy" />
+                <img src="${getAssetUrl(m.src)}" alt="${m.caption}" class="human-img" loading="lazy" />
               </div>
               <div class="human-content">
                 <div class="human-tag">${m.tag}</div>
@@ -910,7 +911,7 @@ function renderContact() {
                 </div>
               </div>
 
-              <a href="${siteProfile.resumePdf}" download="Dr_Vishal_Kattery_CV.pdf" class="contact-card" style="text-decoration: none;">
+              <a href="${getAssetUrl(siteProfile.resumePdf)}" download="Dr_Vishal_Kattery_CV.pdf" class="contact-card" style="text-decoration: none;">
                 <div class="contact-card-icon">${Icons.download}</div>
                 <div>
                   <div class="contact-card-label">Curriculum Vitae</div>
@@ -1191,6 +1192,7 @@ function setupVideoControls() {
     playPromise.then(() => {
       playBtn.innerHTML = Icons.pause;
     }).catch(() => {
+      // Auto-play was prevented; leave play button ready
       playBtn.innerHTML = Icons.play;
     });
   }
