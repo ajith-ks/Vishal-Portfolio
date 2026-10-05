@@ -1,0 +1,93 @@
+:root {
+  /* Color Palette - Dark Mode (Default) - Deep Navy / Graphite / Vibrant Royal Blue */
+  --bg-primary: #060911;
+  --bg-secondary: #0b101d;
+  --bg-tertiary: #101729;
+  --bg-surface: rgba(11, 16, 29, 0.75);
+  --bg-surface-elevated: #151e36;
+  --bg-card: rgba(14, 22, 39, 0.65);
+  --bg-card-hover: rgba(20, 31, 56, 0.85);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-prominent: rgba(255, 255, 255, 0.16);
+  --border-accent: rgba(56, 189, 248, 0.35);
+
+  /* Sophisticated Accent: Vibrant Royal Blue & Electric Cyan */
+  --accent: #2563eb;
+  --accent-light: #38bdf8;
+  --accent-dark: #1d4ed8;
+  --accent-rgb: 37, 99, 235;
+  --accent-gradient: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #38bdf8 100%);
+  --accent-glow: rgba(37, 99, 235, 0.35);
+  --accent-subtle: rgba(37, 99, 235, 0.12);
+
+  /* Semantic status */
+  --badge-bg: rgba(37, 99, 235, 0.12);
+  --badge-text: #38bdf8;
+  --badge-border: rgba(56, 189, 248, 0.25);
+
+  /* Typography */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Cinzel', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 35px rgba(37, 99, 235, 0.25);
+
+  /* Layout */
+  --container-max: 1360px;
+  --container-narrow: 1040px;
+  --header-height: 80px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-tertiary: #e2e8f0;
+  --bg-surface: rgba(255, 255, 255, 0.88);
+  --bg-surface-elevated: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: #ffffff;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-prominent: rgba(15, 23, 42, 0.15);
+  --border-accent: rgba(37, 99, 235, 0.35);
+
+  --accent: #2563eb;
+  --accent-light: #0284c7;
+  --accent-dark: #1d4ed8;
+  --accent-rgb: 37, 99, 235;
+  --accent-gradient: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #0284c7 100%);
+  --accent-glow: rgba(37, 99, 235, 0.22);
+  --accent-subtle: rgba(37, 99, 235, 0.08);
+
+  --badge-bg: rgba(37, 99, 235, 0.08);
+  --badge-text: #1d4ed8;
+  --badge-border: rgba(37, 99, 235, 0.2);
+
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.12);
+  --shadow-glow: 0 0 35px rgba(37, 99, 235, 0.18);
+}
