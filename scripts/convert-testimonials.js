@@ -35,7 +35,10 @@ try {
     
     // Support various header casings safely
     const name = String(row['Name'] || row['name'] || '').trim();
-    const testimony = String(row['Testimony'] || row['testimony'] || row['Quote'] || row['quote'] || '').trim();
+    let testimony = String(row['Testimony'] || row['testimony'] || row['Quote'] || row['quote'] || '').trim();
+    if (testimony.startsWith('>')) {
+      testimony = testimony.replace(/^>\s*/, '').trim();
+    }
     const roleRaw = String(row['Student / Faculty'] || row['Student/Faculty'] || row['Role'] || row['role'] || '').trim();
     const institution = String(row['Institution Name'] || row['Institution'] || row['institution'] || '').trim();
 

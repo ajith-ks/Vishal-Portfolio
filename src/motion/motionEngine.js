@@ -86,7 +86,7 @@ export class MotionEngine {
       this.mouseY = e.clientY;
     });
 
-    const interactiveElements = document.querySelectorAll('a, button, input, textarea, .btn, .card, .expertise-card, .timeline-card, .hero-capability-card');
+    const interactiveElements = document.querySelectorAll('a, button, input, textarea, .btn, .shiny-btn, .bento-card, .flow-step-card, .floating-review-card, .hero-float-badge, .speaking-card, .recognition-card');
     interactiveElements.forEach((el) => {
       el.addEventListener('mouseenter', () => {
         this.cursor?.classList.add('hovering');
@@ -104,9 +104,9 @@ export class MotionEngine {
       return;
     }
 
-    this.heroCutout = document.getElementById('hero-cutout-wrap');
+    this.heroCutout = document.querySelector('.hero-portrait-frame') || document.getElementById('hero-cutout-wrap');
     this.heroGlow = document.querySelector('.hero-backdrop-glow');
-    this.heroCards = Array.from(document.querySelectorAll('.hero-capability-card'));
+    this.heroCards = Array.from(document.querySelectorAll('.hero-float-badge'));
 
     const heroSection = document.getElementById('hero');
     if (!heroSection) return;

@@ -1,1 +1,53 @@
-[]
+[
+  {
+    "id": 1,
+    "name": "Ajay B Nair",
+    "role": "Student",
+    "testimony": "The session was very informative and valuable. Dr. Vishal guided me on how to approach interviews, prepare effectively, and present myself with confidence. Beyond the session, he has also been a great personal mentor, providing valuable counselling and guidance whenever I felt stuck or faced challenges in my career or life. I’m truly grateful for his support, guidance, and encouragement."
+  },
+  {
+    "id": 2,
+    "name": "Pranav Adith S",
+    "role": "Student",
+    "testimony": "don’t think calling you just ‘sir’ is enough. For me, you’ve always been more like an elder brother and a friend than a teacher.\r\n\r\nWhen I started, I had very little confidence, especially when it came to English, communication and facing interviews. You literally helped me build everything from zero.\r\n\r\nYou didn’t just prepare me for a placement — you helped me gain confidence in myself. You literally took me from zero to hero. 😂❤️\r\n\r\nGetting placed at Accenture is a big achievement for me, but I know that a big part of that journey was possible because of you.\r\n\r\nThank you for everything, Vishal ettaa ❤️"
+  },
+  {
+    "id": 3,
+    "name": "Ibraheem Shakir H",
+    "role": "Student",
+    "testimony": "You made me realize that I shouldn’t wait for the perfect opportunity in my career and that I should move forward with what I have in front of me right now.\r\n\r\nYour sessions really made me think differently about my career. If I had never attended your classes, I would probably still be doing nothing and wasting my time on something that wouldn’t benefit me in the future.\r\n\r\nThank you, Vishal bro, for guiding me throughout my career journey. I’m truly grateful for your guidance and support."
+  },
+  {
+    "id": 4,
+    "name": "Viswanath M",
+    "role": "Student",
+    "testimony": "The interview training session was really helpful and interesting. I got a better idea about how to face interviews and answer questions. The tips shared in the session were simple and easy to understand. Overall, it was a good session and I feel more confident now."
+  },
+  {
+    "id": 5,
+    "name": "Niranjan A",
+    "role": "Student",
+    "institution": "Dhanalakshmi Srinivasan College of Engineering",
+    "testimony": "The session is so interactive for everyone. Teaching with real-world examples makes it much easier to understand."
+  },
+  {
+    "id": 6,
+    "name": "Abhishek C",
+    "role": "Student",
+    "testimony": "Interview Training & Personal Mentorship Session Helped Me Improve My Communication & Build Confidence."
+  },
+  {
+    "id": 7,
+    "name": "Vishnu P",
+    "role": "Student",
+    "institution": "Gallagher",
+    "testimony": "It was really good and very helpful for my interview preparation and in helping me get a job."
+  },
+  {
+    "id": 8,
+    "name": "Abhin S R",
+    "role": "Student",
+    "institution": "Government Engineering College Thrissur",
+    "testimony": "Very informative session with industry-oriented teaching."
+  }
+]

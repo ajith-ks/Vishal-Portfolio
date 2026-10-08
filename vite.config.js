@@ -28,6 +28,9 @@ export default defineConfig({
       allow: ['..']
     }
   },
+  build: {
+    chunkSizeWarningLimit: 1200
+  },
   plugins: [
     {
       name: 'serve-and-copy-assets',
@@ -39,7 +42,16 @@ export default defineConfig({
 
           if (cleanUrl.startsWith('/assets/')) {
             const relativePath = decodeURIComponent(cleanUrl.replace(/^\//, ''));
-            const filePath = path.resolve(import.meta.dirname, relativePath);
+            let filePath = path.resolve(import.meta.dirname, relativePath);
+            if (!fs.existsSync(filePath)) {
+              if (relativePath.startsWith('assets/review/')) {
+                const alt = path.resolve(import.meta.dirname, relativePath.replace('assets/review/', 'assets/images/review/'));
+                if (fs.existsSync(alt)) filePath = alt;
+              } else if (relativePath.includes('seminar 7.jpg')) {
+                const alt = path.resolve(import.meta.dirname, relativePath.replace('seminar 7.jpg', 'seminar  7.jpg'));
+                if (fs.existsSync(alt)) filePath = alt;
+              }
+            }
             if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
               const ext = path.extname(filePath).toLowerCase();
               const mimeTypes = {

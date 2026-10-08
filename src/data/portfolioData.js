@@ -1,12 +1,12 @@
 /**
  * Dr. Vishal Kattery — Authoritative Portfolio Data
- * Primary Source of Truth: Vishal Resume.pdf & PRD.pdf
+ * Primary Source of Truth: Vishal Resume.pdf, PRD.pdf & Master Rebuild Prompt
  * Strict constraint: No fabricated information or metrics.
  */
 
 export const siteProfile = {
   name: "Dr. Vishal Kattery",
-  title: "Professor / Mentor / Placement Trainer / Counselor / Banker",
+  title: "Professor | Mentor | Placement Trainer | Counselor | Banker",
   tagline: "Academic Depth. Corporate Insight. Human Mentorship.",
   location: "Palakkad, Kerala, India",
   phone: "+91 75598 54349",
@@ -30,12 +30,48 @@ export const siteProfile = {
     }
   ],
   bioBrief:
-    "An academic professional with extensive teaching, research, and industry experience across management, commerce, banking, and computer applications. Ph.D. holder with multiple SCOPUS-indexed publications, motivational speaker, and placement trainer committed to student empowerment and research excellence."
+    "An academic professional combining teaching, research, and industry experience in banking, HR, and IT to deliver industry-relevant learning and student empowerment."
+};
+
+export const heroData = {
+  name: "Dr. Vishal Kattery",
+  positioning: [
+    "Professor",
+    "Mentor",
+    "Placement Trainer",
+    "Counselor",
+    "Banker"
+  ],
+  intro:
+    "An academic professional combining teaching, research, and industry experience in banking, HR, and IT to deliver industry-relevant learning and student empowerment.",
+  cards: [
+    {
+      id: "academic",
+      title: "Academic Professional",
+      topics: "Teaching | Research | Guidance"
+    },
+    {
+      id: "career",
+      title: "Career Counselling",
+      topics: "Student Mentoring | Career Guidance"
+    },
+    {
+      id: "placement",
+      title: "Placement Training",
+      topics: "Skill Development | Industry Readiness"
+    },
+    {
+      id: "speaker",
+      title: "Motivational Speaker",
+      topics: "Workshops | Seminars | Empowerment"
+    }
+  ]
 };
 
 export const aboutData = {
   title: "Who Is Dr. Vishal?",
-  subtitle: "Blending scholarly rigor with grounded industry experience.",
+  subtitle: "Scholarly Rigor & Grounded Industry Experience",
+  image: "/assets/review/random 9.jpg",
   lead: "Education is more than credentialing; it is the deliberate cultivation of intellect, confidence, and human resilience.",
   paragraphs: [
     "Dr. Vishal Kattery embodies a multifaceted career traversing higher academia, cooperative banking, human resource consulting, and technological systems. Holding a Ph.D. in Management along with advanced degrees in Commerce, Computer Applications, and Business Administration, he brings rare interdisciplinary dexterity to modern education.",
@@ -54,131 +90,181 @@ export const aboutData = {
 
 export const expertiseData = [
   {
+    num: "01",
     id: "management-commerce",
     title: "Management & Commerce",
-    icon: "briefcase",
-    desc: "Strategic organizational management, human resources, and business fundamentals rooted in academic theory and practical governance.",
+    desc: "Rigorous foundation in organizational behavior, human capital dynamics, and managerial economics tailored to institutional leadership.",
     topics: [
       "Organizational Behavior",
       "Human Resource Management",
-      "Banking Operations",
       "Business Management",
       "Managerial Economics"
     ]
   },
   {
+    num: "02",
     id: "banking-finance",
     title: "Banking & Finance",
-    icon: "landmark",
-    desc: "Deep domain familiarity with cooperative banking frameworks, operational compliance, financial stewardship, and institutional stress factors.",
+    desc: "Deep operational insight into cooperative banking structures, statutory compliance, financial management, and workforce stress factors.",
     topics: [
-      "Cooperative Banking Systems",
-      "Banking Operations & Compliance",
+      "Cooperative Banking",
+      "Banking Operations",
       "Financial Management",
-      "Employee Stress in Banking",
-      "Organizational Commitment"
+      "Employee Stress & Commitment in Banking Sector"
     ]
   },
   {
+    num: "03",
     id: "computer-it",
     title: "Computer Applications & IT",
-    icon: "cpu",
-    desc: "Technical foundation in programming, software systems, and data-driven computational applications supporting commerce and enterprise.",
+    desc: "Solid technological footing integrating programming logic, modern application software, and computational solutions in commerce.",
     topics: [
-      "Computer Applications in Commerce",
-      "Programming Fundamentals",
-      "IT-Enabled Business Solutions",
-      "AI Applications in Business",
-      "IT for Business Strategy"
+      "Programming",
+      "IT-enabled business solutions",
+      "AI in business",
+      "Computer Applications"
     ]
   },
   {
+    num: "04",
     id: "training-mentoring",
     title: "Training & Mentoring",
-    icon: "users",
-    desc: "Empowering students and job-seekers through specialized placement bootcamps, career mapping, communication mastery, and emotional intelligence.",
+    desc: "Comprehensive coaching curricula preparing graduates for corporate recruitment, professional interpersonal dynamics, and life competencies.",
     topics: [
-      "Placement Training & GD Prep",
-      "Career Mapping & Counseling",
-      "Communication & Soft Skills",
-      "Life Skills & Stress Management",
-      "Interview Preparedness"
+      "Career Counseling",
+      "Placement Training",
+      "Communication",
+      "Soft Skills",
+      "Life Skills"
     ]
   },
   {
+    num: "05",
     id: "research-publications",
     title: "Research & Publications",
-    icon: "book-open",
-    desc: "Scholarly investigation into organizational dynamics, employee commitment, sustainability dilemmas, and emerging AI technologies.",
+    desc: "Scholarly inquiry spanning banking sector employee performance, SME sustainability practices, and artificial intelligence in commerce.",
     topics: [
-      "Employee Stress & Wellbeing",
-      "Job Performance in Private Banks",
-      "SME Sustainability & Engagement",
-      "Social Media in Modern Commerce",
-      "AI Impact in E-Commerce"
+      "Employee Stress",
+      "Organizational Commitment",
+      "Job Performance",
+      "Employee Engagement",
+      "Sustainability",
+      "Social Media Impact",
+      "AI in E-Commerce"
     ]
   },
   {
+    num: "06",
     id: "industry-exposure",
     title: "Industry Exposure",
-    icon: "trending-up",
-    desc: "Direct corporate and cooperative sector experience spanning software programming, talent recruitment, cooperative banking, and company directorship.",
+    desc: "Multifaceted corporate and institutional experience spanning software development, professional recruitment, banking, and governance.",
     topics: [
-      "Commercial Banking Exposure",
-      "End-to-End HR Recruitment",
-      "Software Development (TCS)",
-      "Corporate Board Directorship",
-      "Cooperative Society Operations"
+      "Banking",
+      "HR Recruitment",
+      "IT Programming",
+      "Corporate/organizational exposure"
+    ]
+  }
+];
+
+export const trainingCategories = [
+  {
+    category: "Career & Placement Readiness",
+    themes: [
+      { name: "Placement Training", desc: "Holistic corporate hiring readiness and campus interview preparation." },
+      { name: "Interview Skills", desc: "Technical, HR, and behavioral interview responses and strategy." },
+      { name: "Group Discussions", desc: "Critical thinking, articulation, moderation, and structured argumentation." },
+      { name: "Resume Building", desc: "High-impact, industry-targeted resume mapping and portfolio framing." },
+      { name: "Career Mapping", desc: "Long-term professional path alignment and milestone planning." },
+      { name: "Corporate Readiness", desc: "Workplace etiquette, transition ethics, and professional conduct." }
+    ]
+  },
+  {
+    category: "Communication & Personal Mastery",
+    themes: [
+      { name: "Communication & Soft Skills", desc: "Clear verbal articulation, active listening, and written clarity." },
+      { name: "Public Speaking", desc: "Stage confidence, presentation mastery, and audience connection." },
+      { name: "Interpersonal Skills", desc: "Empathy, relational dynamics, and cross-functional collaboration." },
+      { name: "Teamwork", desc: "Group synergy, peer support, and collective milestone execution." },
+      { name: "Leadership", desc: "Influence, decisive guidance, and moral responsibility." },
+      { name: "Emotional Intelligence", desc: "Self-awareness, stress management, and emotional regulation." }
+    ]
+  },
+  {
+    category: "Life Skills & Wellbeing",
+    themes: [
+      { name: "Life Skills", desc: "Pragmatic competencies for real-world personal and professional navigation." },
+      { name: "Decision Making", desc: "Analytical evaluation, weighted choices, and strategic judgment." },
+      { name: "Problem Solving", desc: "Root-cause diagnostics and practical solution implementation." },
+      { name: "Time Management", desc: "Task prioritization, focus discipline, and deadline adherence." },
+      { name: "Work-Life Balance", desc: "Sustainable productivity and personal wellbeing integration." },
+      { name: "Resilience", desc: "Bouncing back from adversity, setbacks, and career friction." }
+    ]
+  },
+  {
+    category: "Specialized Guidance & Domain Literacy",
+    themes: [
+      { name: "Banking / Financial Literacy", desc: "Pragmatic financial systems understanding and institutional banking." },
+      { name: "Entrepreneurship / Innovation", desc: "Venture ideology, creative solution development, and modern enterprise." },
+      { name: "Personality Development", desc: "Self-image cultivation, confidence reinforcement, and mindset growth." },
+      { name: "Grooming / Etiquette", desc: "Professional dress, executive presence, and conversational grace." },
+      { name: "Counseling / Mentoring", desc: "One-on-one psychological grounding, empathetic counsel, and clarity." },
+      { name: "Academic Planning & Career Guidance", desc: "Curricular path selection, higher education strategy, and mentoring." }
     ]
   }
 ];
 
 export const journeyData = [
   {
+    period: "2019 – Present",
+    role: "Visiting Professor / Guest Lecture",
+    organization: "Academics, Training",
+    category: "Higher Academia & Specialized Training",
+    description:
+      "Delivering specialized academic lectures, guest sessions, curriculum guidance, and professional development programs across management, banking, and professional training institutes.",
+    badge: "Academia"
+  },
+  {
     period: "2023 – Present",
     role: "Director",
-    organization: "Telious Technologies Pvt. Ltd., Kochi",
-    category: "Executive Leadership & Technology",
-    description: "Serving on the Board of Directors, guiding strategic technology initiatives, enterprise product strategy, and corporate partnerships.",
-    badge: "Leadership"
+    organization: "Chittur Service Co-Operative Bank, Chittur",
+    category: "Institutional Governance & Banking",
+    description:
+      "Serving on the Board of Directors, providing leadership in cooperative banking governance, policy adherence, operational oversight, and regional economic community initiatives.",
+    badge: "Directorship"
   },
   {
     period: "2022 – Present",
     role: "HR Recruiter",
-    organization: "Co-Operative Society, Chittur",
-    category: "Talent Acquisition & People Ops",
-    description: "Managing talent recruitment, applicant evaluation, workplace alignment, and human capital structuring within the cooperative network.",
-    badge: "Human Resources"
-  },
-  {
-    period: "2019 – Present",
-    role: "Visiting Professor / Guest Lecture",
-    organization: "Chittur Service Co-Operative Bank, Chittur",
-    category: "Academics & Specialized Training",
-    description: "Delivering specialized lectures, academic modules, and professional development programs on cooperative banking operations and commerce.",
-    badge: "Academia"
+    organization: "Telious Technologies Pvt. Ltd., Kochi",
+    category: "Corporate Talent Acquisition",
+    description:
+      "Managing full-cycle recruitment, talent sourcing, interview evaluations, candidate alignment, and organizational hiring strategy in enterprise technology domains.",
+    badge: "Talent Acquisition"
   },
   {
     period: "2018 – Present",
     role: "Senior Clerk",
-    organization: "Chittur Co-Operative Society",
+    organization: "Co-Operative Society, Chittur",
     category: "Banking Operations & Administration",
-    description: "Overseeing day-to-day administrative procedures, member accounts, cooperative banking records, and regulatory compliance.",
+    description:
+      "Supervising day-to-day administrative and financial procedures, member accounts, statutory audits, regulatory compliance, and cooperative banking service delivery.",
     badge: "Operations"
   },
   {
     period: "2017 – 2018",
     role: "Programmer",
     organization: "Tata Consultancy Services (TCS), Chennai",
-    category: "Information Technology & Software",
-    description: "Developed and maintained software solutions within enterprise development environments, establishing foundational IT rigor.",
+    category: "Software Engineering & Enterprise IT",
+    description:
+      "Engineered and maintained software solutions within enterprise application ecosystems, establishing strong foundational acumen in software architecture and computation.",
     badge: "Technology"
   }
 ];
 
 export const educationData = [
   {
-    degree: "PhD in Management",
+    degree: "Doctor of Philosophy (Ph.D.) in Management",
     institution: "Karpagam Academy of Higher Education, Coimbatore",
     period: "2021 – 2025",
     focus: "Doctoral research in organizational behavior, employee stress, and commitment in banking.",
@@ -221,51 +307,48 @@ export const educationData = [
   }
 ];
 
-export const trainingTopics = [
+export const speakingCardsData = [
   {
-    title: "Placement Training & Career Mapping",
-    desc: "Specialized coaching in interview preparedness, group discussions, high-impact resume crafting, career orientation, and corporate workplace readiness.",
-    icon: "compass"
+    id: "spk-1",
+    image: "/assets/images/speaking/seminar 7.jpg",
+    category: "Keynote Address",
+    title: "Empowering Youth Through Career Clarity",
+    desc: "Keynote sessions addressing emerging collegiate graduates on navigating market disruptions, maintaining psychological resilience, and building intentional career trajectories."
   },
   {
-    title: "Motivational & Youth Empowerment",
-    desc: "Over 100 interactive keynote sessions delivered across schools and collegiate campuses in South India, instilling confidence, adaptability, and positive vision.",
-    icon: "sparkles"
+    id: "spk-2",
+    image: "/assets/images/speaking/speach from co operative bank seminar.jpeg",
+    category: "Institutional Seminar",
+    title: "Cooperative Banking & Financial Resilience",
+    desc: "Facilitating institutional workshops on cooperative banking governance, employee stress mitigation, and operational excellence for banking personnel and administrators."
   },
   {
-    title: "Communication & Soft Skills",
-    desc: "Mastery in public speaking, active listening, interpersonal dynamics, constructive teamwork, assertive leadership, and emotional intelligence.",
-    icon: "message-square"
+    id: "spk-3",
+    image: "/assets/images/speaking/on stage addressing crowd.jpg",
+    category: "Public Engagement",
+    title: "State & District Educational Forums",
+    desc: "Addressing massive student congregations on skill acquisition, competitive interview strategy, and self-belief across collegiate campuses."
   },
   {
-    title: "Induction & Orientation Programs",
-    desc: "Designed to transition incoming students smoothly into academic culture, emphasizing self-reliance, academic discipline, and peer collaboration.",
-    icon: "target"
+    id: "spk-4",
+    image: "/assets/images/speaking/speach 3.jpg",
+    category: "Placement Bootcamp",
+    title: "Corporate Readiness & Interview Dynamics",
+    desc: "Practical workshops covering group discussion leadership, interview behavioral psychology, and high-impact interpersonal presence."
   },
   {
-    title: "Life Skills & Wellbeing",
-    desc: "Practical workshops covering pragmatic decision-making, analytical problem-solving, time prioritization, work-life equilibrium, and psychological resilience.",
-    icon: "heart-handshake"
+    id: "spk-5",
+    image: "/assets/images/speaking/speach 6.jpg",
+    category: "Academic Colloquium",
+    title: "Human Resource Development & Management",
+    desc: "Interdisciplinary faculty seminars linking modern management research with grounded classroom mentorship practices."
   },
   {
-    title: "Banking & Financial Literacy",
-    desc: "Pragmatic insights into cooperative banking mechanics, prudent personal money management, financial literacy, and contemporary digital banking platforms.",
-    icon: "coins"
-  },
-  {
-    title: "Entrepreneurship & Innovation",
-    desc: "Fostering entrepreneurial mindsets, early venture planning, creative thinking, business model viability, and sustainable enterprise practices.",
-    icon: "lightbulb"
-  },
-  {
-    title: "Awareness & Social Initiatives",
-    desc: "Active facilitation of youth anti-drug awareness campaigns, stress mitigation seminars, mental wellness workshops, and community health forums.",
-    icon: "shield-alert"
-  },
-  {
-    title: "Individual & Group Mentoring",
-    desc: "Tailored 1-to-1 and group counseling sessions focused on personalized academic roadmaps, career dilemmas, and overcoming personal obstacles.",
-    icon: "user-check"
+    id: "spk-6",
+    image: "/assets/images/speaking/seminar 2.jpeg",
+    category: "Youth Empowerment",
+    title: "Mindset, Motivation & Lifelong Learning",
+    desc: "Inspiring youth across South India to cultivate inner strength, discipline, and purpose in their higher educational journeys."
   }
 ];
 
@@ -300,35 +383,35 @@ export const organizationsData = {
     },
     {
       name: "Zeal Academy, Palakkad",
-      role: "Faculty of Career Counseling & Placement Trainings",
+      role: "Faculty of Career Counseling, Placement Trainings, Career mapping, Communication and Soft skill development, Life skills Training, Pre & Post Interview preparedness",
       period: "2019 – Present",
       desc: "Leading career mapping, interview preparedness, communication & soft skills development, and life skills coaching."
     },
     {
       name: "Commerce Academy, Palakkad",
-      role: "Faculty of Computer Application, Management & Economics",
+      role: "Faculty of Computer Application, Management and Economics",
       period: "2022 – Present",
       desc: "Teaching interdisciplinary modules in business computing, economics principles, and managerial practices."
     }
   ],
   volunteer: [
     {
-      name: "Civil Defence – Kerala Fire Rescue Services",
-      affiliation: "NDMA & KSDMA",
+      name: "Civil Defence – Kerala Fire Rescue Services, NDMA, KSDMA",
+      affiliation: "Civil Defence",
       role: "Member",
       period: "2022 – Present",
       desc: "Active volunteer supporting disaster management, civil defence operations, and emergency crisis relief."
     },
     {
-      name: "Covid-19 Rapid Response Team",
-      affiliation: "Chittur-Thathamangalam Municipality",
+      name: "Covid-19 Rapid Response Team, Chittur Thathamangalam Municipality",
+      affiliation: "Emergency Services",
       role: "Member",
       period: "2020 – 2021",
       desc: "Served on frontline municipal emergency response teams coordinating essential aid, safety, and health support."
     },
     {
       name: "Kerala Emergency Team (KET), Palakkad",
-      affiliation: "Emergency Services",
+      affiliation: "Disaster Relief",
       role: "Member",
       period: "2022 – Present",
       desc: "Volunteering with district rapid relief networks for local emergencies and community safety."
@@ -344,8 +427,9 @@ export const organizationsData = {
 
 export const publicationsData = [
   {
-    id: "scopus-rrmae-2024",
-    title: "Stress of Employees Toward Private Sector Banks with Reference to Palakkad District",
+    id: "pub-1",
+    num: "01",
+    title: "STRESS OF EMPLOYEES TOWARD PRIVATE SECTOR BANKS WITH REFERENCE TO PALAKKAD DISTRICT",
     venue: "International Conference on Recent Research in Management, Accounting and Economics (RRMAE-2024)",
     indexing: "SCOPUS",
     pages: "pp. 431 – 438",
@@ -353,8 +437,9 @@ export const publicationsData = [
     focus: "Organizational Stress & Private Banking"
   },
   {
-    id: "scopus-frontiers-health",
-    title: "Employee Commitment and Job Performance with Reference to Private Sector Banks in Palakkad District",
+    id: "pub-2",
+    num: "02",
+    title: "EMPLOYEE COMMITMENT AND JOB PERFORMANCE WITH REFERENCE TO PRIVATE SECTOR BANKS IN PALAKKAD DISTRICT",
     venue: "Frontiers in Health Informatics",
     indexing: "SCOPUS",
     details: "Vol. 13, Issue 6",
@@ -363,25 +448,31 @@ export const publicationsData = [
     focus: "Job Performance & Institutional Commitment"
   },
   {
-    id: "sme-sustainability",
-    title: "Employee Engagement in Terms of Sustainability Issues for SMEs Engaged in Manufacturing Sectors",
+    id: "pub-3",
+    num: "03",
+    title: "EMPLOYEE ENGAGEMENT IN TERMS OF SUSTAINABILITY ISSUES FOR SMES ENGAGED IN MANUFACTURING SECTORS",
     venue: "National Level Seminar on Contemporary Development in Entrepreneurship Context",
+    indexing: "Published",
     details: "Business and Management Digitized Era – Towards Industry 5.0, KAHE, Coimbatore",
     badge: "National Seminar",
     focus: "SME Sustainability & Engagement"
   },
   {
-    id: "social-media-business",
-    title: "Impact of Social Media in Business",
+    id: "pub-4",
+    num: "04",
+    title: "IMPACT OF SOCIAL MEDIA IN BUSINESS",
     venue: "International Conference on Influence of Social Media on Business, Education and Society",
+    indexing: "Published",
     details: "AJK College of Arts and Science (AJKCAS), Coimbatore",
     badge: "International Conference",
     focus: "Digital Business Transformation"
   },
   {
-    id: "ai-ecommerce",
-    title: "Significance of AI in E-Commerce",
+    id: "pub-5",
+    num: "05",
+    title: "SIGNIFICANCE OF AI IN E-COMMERCE",
     venue: "International Conference on Impact of AI in E-Commerce",
+    indexing: "Published",
     details: "AJK College of Arts and Science (AJKCAS), Coimbatore",
     badge: "International Conference",
     focus: "Artificial Intelligence in Commerce"
@@ -390,51 +481,55 @@ export const publicationsData = [
 
 export const achievementsData = [
   {
+    num: "01",
     title: "Doctor of Philosophy (Ph.D.) in Management",
     issuer: "Karpagam Academy of Higher Education, Coimbatore",
     detail: "Awarded for comprehensive doctoral research on banking sector employee commitment and performance dynamics.",
     icon: "award"
   },
   {
+    num: "02",
     title: "SCOPUS-Indexed Scholarly Publications",
     issuer: "International Academic Research",
     detail: "Published research contributions in internationally recognized, SCOPUS-indexed conference proceedings and academic journals.",
     icon: "file-text"
   },
   {
+    num: "03",
     title: "100+ Motivational & Career Development Sessions",
     issuer: "Schools, Colleges & Training Institutes across South India",
     detail: "Recognized as a prominent motivational speaker and placement coach guiding thousands of emerging student minds.",
     icon: "mic"
   },
   {
+    num: "04",
     title: "Life Membership — ISTD",
     issuer: "Indian Society for Training & Development, Regd. Govt. of India",
     detail: "Conferred life membership honoring sustained dedication to human resource training, career guidance, and academic mentoring.",
-    icon: "badge-check"
+    icon: "badgeCheck"
   }
 ];
 
-export const humanSideData = {
-  title: "The Human Dimension",
-  subtitle: "Values, Milestones & Moments Beyond the Podium",
-  intro:
-    "Behind the research papers, boardrooms, and lecture halls lies a grounded commitment to family, community, and personal growth. These moments capture the milestones and values that guide Dr. Vishal's journey.",
-  moments: [
-    {
-      src: "/assets/images/phd/with family on phd award ceremony .jpg",
-      caption: "With family celebrating the Ph.D. convocation milestone",
-      tag: "Academic Convocation"
-    },
-    {
-      src: "/assets/images/phd/with phd certificate.jpg",
-      caption: "Receiving the Doctor of Philosophy degree parchment",
-      tag: "Doctoral Milestone"
-    },
-    {
-      src: "/assets/images/portraits/radom 2.jpeg",
-      caption: "Reflective personal portrait",
-      tag: "Perspective"
-    }
-  ]
-};
+export const humanSideData = [
+  {
+    id: "human-1",
+    src: "/assets/images/phd/phd certificate receving.jpg",
+    category: "Doctoral Milestone",
+    title: "Ph.D. Degree Conferral Parchment",
+    caption: "Receiving the Doctor of Philosophy degree parchment from academic dignitaries."
+  },
+  {
+    id: "human-2",
+    src: "/assets/images/portraits/random.jpeg",
+    category: "Personal Perspective",
+    title: "Purpose, Mentorship & Dedication",
+    caption: "A steadfast commitment to lifelong learning, youth empowerment, and compassionate counsel."
+  },
+  {
+    id: "human-3",
+    src: "/assets/images/phd/with family on phd award ceremony .jpg",
+    category: "Family Milestone",
+    title: "Celebrating with Family",
+    caption: "With family celebrating the Ph.D. convocation milestone."
+  }
+];
