@@ -202,8 +202,8 @@ export class MotionEngine {
         this.cursorFollower.style.transform = `translate(${this.followerX}px, ${this.followerY}px)`;
       }
 
-      // 3. Hero Subtle Parallax
-      if (this.heroCutout && !this.reducedMotion) {
+      // 3. Hero Subtle Parallax (Desktop Only)
+      if (this.heroCutout && !this.reducedMotion && window.innerWidth > 1024) {
         this.currentHeroX += (this.targetHeroX - this.currentHeroX) * 0.08;
         this.currentHeroY += (this.targetHeroY - this.currentHeroY) * 0.08;
 
@@ -216,6 +216,8 @@ export class MotionEngine {
           const gy = -this.currentHeroY * 14;
           this.heroGlow.style.transform = `translate(calc(-50% + ${gx}px), calc(-50% + ${gy}px))`;
         }
+      } else if (this.heroCutout && window.innerWidth <= 1024) {
+        this.heroCutout.style.transform = '';
       }
 
       this.rafId = requestAnimationFrame(ticker);

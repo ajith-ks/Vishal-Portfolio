@@ -85,7 +85,7 @@ function renderHeader() {
         <div class="header-container">
           <a href="#hero" class="brand-logo" aria-label="Dr. Vishal Kattery Home">
             <span class="brand-monogram-tiny">VK</span>
-            <span>Dr. Vishal</span> <span class="brand-accent">Kattery</span>
+            <span class="brand-name-full"><span>Dr. Vishal</span> <span class="brand-accent">Kattery</span></span>
           </a>
 
           <nav class="desktop-nav" aria-label="Main Navigation">
@@ -99,12 +99,14 @@ function renderHeader() {
           </nav>
 
           <div class="header-actions">
-            ${renderShinyButton({
-              text: "Let's Connect",
-              href: "#contact",
-              id: "header-btn-connect",
-              icon: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`
-            })}
+            <div class="desktop-cta-wrap">
+              ${renderShinyButton({
+                text: "Let's Connect",
+                href: "#contact",
+                id: "header-btn-connect",
+                icon: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`
+              })}
+            </div>
             <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle Dark/Light Theme">
               <span class="theme-icon-container">${Icons.sun}</span>
             </button>
@@ -116,13 +118,17 @@ function renderHeader() {
       </div>
     </header>
 
-    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
-      <div style="display: flex; justify-content: flex-end; margin-bottom: 2rem;">
-        <button class="mobile-menu-btn" id="mobile-drawer-close" aria-label="Close Menu">
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+      <div class="mobile-drawer-header">
+        <a href="#hero" class="brand-logo" aria-label="Dr. Vishal Kattery Home">
+          <span class="brand-monogram-tiny">VK</span>
+          <span>Dr. Vishal <span class="brand-accent">Kattery</span></span>
+        </a>
+        <button class="mobile-drawer-close" id="mobile-drawer-close" aria-label="Close Navigation Menu">
           ${Icons.x}
         </button>
       </div>
-      <div class="mobile-nav-links">
+      <nav class="mobile-nav-links">
         <a href="#hero" class="mobile-nav-link active">Home</a>
         <a href="#about" class="mobile-nav-link">About</a>
         <a href="#expertise" class="mobile-nav-link">Expertise</a>
@@ -132,7 +138,17 @@ function renderHeader() {
         <a href="#research" class="mobile-nav-link">Publications</a>
         <a href="#testimonials" class="mobile-nav-link">Testimonials</a>
         <a href="#contact" class="mobile-nav-link">Contact</a>
+      </nav>
+
+      <div class="mobile-drawer-cta">
+        ${renderShinyButton({
+          text: "Let's Connect",
+          href: "#contact",
+          id: "drawer-btn-connect",
+          icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`
+        })}
       </div>
+
       <div class="mobile-nav-socials">
         ${siteProfile.socials.map(s => `
           <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="${s.name}">
@@ -141,6 +157,7 @@ function renderHeader() {
         `).join('')}
       </div>
     </div>
+    <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop"></div>
   `;
 }
 
@@ -154,34 +171,39 @@ function renderHero() {
         <div class="hero-layout-asymmetric">
           <!-- LEFT: Editorial Identity & Staggered Typography -->
           <div class="hero-identity-col">
+            <!-- 2. Small uppercase professional descriptor -->
             <div class="hero-eyebrow">
               <span class="hero-eyebrow-dot"></span>
               <span>ACADEMIC LEADER &bull; MENTOR &bull; RESEARCHER</span>
             </div>
 
+            <!-- 3. Large “DR. VISHAL KATTERY” heading -->
             <h1 class="hero-name-editorial">
               <span class="hero-name-first">DR. VISHAL</span>
               <span class="hero-name-last">KATTERY</span>
             </h1>
 
+            <!-- 4. Professional roles -->
             <div class="hero-roles-editorial">
-              <span>Professor</span><span class="role-sep">&bull;</span>
-              <span>Mentor</span><span class="role-sep">&bull;</span>
-              <span>Placement Trainer</span><span class="role-sep">&bull;</span>
-              <span>Career Counsellor</span><span class="role-sep">&bull;</span>
-              <span>Banker</span>
+              <span class="hero-role-pill">Professor</span><span class="role-sep">&bull;</span>
+              <span class="hero-role-pill">Mentor</span><span class="role-sep">&bull;</span>
+              <span class="hero-role-pill">Placement Trainer</span><span class="role-sep">&bull;</span>
+              <span class="hero-role-pill">Career Counsellor</span><span class="role-sep">&bull;</span>
+              <span class="hero-role-pill">Banker</span>
             </div>
 
+            <!-- 5. Short introduction -->
             <p class="hero-lead-text">
               ${heroData.intro}
             </p>
 
+            <!-- 6. “Explore My Journey” and “Let's Connect” buttons -->
             <div class="hero-cta-group">
               ${renderShinyButton({
-                text: "Explore My Journey →",
+                text: "Explore My Journey",
                 href: "#journey",
                 id: "hero-cta-journey",
-                icon: ''
+                icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`
               })}
               ${renderShinyButton({
                 text: "Let's Connect",
@@ -191,8 +213,9 @@ function renderHero() {
               })}
             </div>
 
+            <!-- 7. Resume download and social links -->
             <div class="hero-quick-meta">
-              <a href="${getAssetUrl(siteProfile.resumePdf)}" download="Dr_Vishal_Kattery_CV.pdf" class="hero-cv-link">
+              <a href="${getAssetUrl(siteProfile.resumePdf)}" download="Dr_Vishal_Kattery_CV.pdf" class="hero-cv-link" aria-label="Download Resume (PDF)">
                 ${Icons.download} <span>Download Resume (PDF)</span>
               </a>
               <div class="hero-socials-inline">
@@ -207,42 +230,46 @@ function renderHero() {
 
           <!-- RIGHT: Interactive 3D Knowledge Sculpture + Portrait Anchor + Floating Meta Badges -->
           <div class="hero-visual-col">
-            <!-- Three.js 3D Knowledge Sculpture Canvas Stage -->
-            <div id="hero-3d-stage" class="hero-3d-stage"></div>
+            <div class="hero-visual-stage">
+              <!-- Three.js 3D Knowledge Sculpture Canvas Stage -->
+              <div id="hero-3d-stage" class="hero-3d-stage" aria-hidden="true"></div>
 
-            <!-- Existing Portrait Visual Anchor -->
-            <div class="hero-portrait-frame" id="hero-cutout-wrap">
-              <img 
-                src="${getAssetUrl('/assets/images/hero/hero.png')}" 
-                alt="Dr. Vishal Kattery" 
-                class="hero-portrait-img" 
-                id="hero-cutout-img"
-                loading="eager"
-              />
-            </div>
-
-            <!-- Dimensional Floating Badges (Reference 01 Inspired) -->
-            <div class="hero-float-badge float-badge-1">
-              <div class="float-badge-icon">${Icons.mic}</div>
-              <div>
-                <div class="float-badge-title">100+ Sessions</div>
-                <div class="float-badge-subtitle">Youth &amp; Keynotes</div>
+              <!-- Existing Portrait Visual Anchor -->
+              <div class="hero-portrait-frame" id="hero-cutout-wrap">
+                <img 
+                  src="${getAssetUrl('/assets/images/hero/hero.png')}" 
+                  alt="Dr. Vishal Kattery" 
+                  class="hero-portrait-img" 
+                  id="hero-cutout-img"
+                  loading="eager"
+                />
               </div>
             </div>
 
-            <div class="hero-float-badge float-badge-2">
-              <div class="float-badge-icon">${Icons.award}</div>
-              <div>
-                <div class="float-badge-title">Ph.D. Management</div>
-                <div class="float-badge-subtitle">Doctoral Research</div>
+            <!-- Dimensional Floating Badges -->
+            <div class="hero-badges-wrapper">
+              <div class="hero-float-badge float-badge-1">
+                <div class="float-badge-icon">${Icons.mic}</div>
+                <div class="float-badge-content">
+                  <div class="float-badge-title">100+ Sessions</div>
+                  <div class="float-badge-subtitle">Youth &amp; Keynotes</div>
+                </div>
               </div>
-            </div>
 
-            <div class="hero-float-badge float-badge-3">
-              <div class="float-badge-icon">${Icons.fileText}</div>
-              <div>
-                <div class="float-badge-title">SCOPUS Author</div>
-                <div class="float-badge-subtitle">Indexed Papers</div>
+              <div class="hero-float-badge float-badge-2">
+                <div class="float-badge-icon">${Icons.award}</div>
+                <div class="float-badge-content">
+                  <div class="float-badge-title">Ph.D. Management</div>
+                  <div class="float-badge-subtitle">Doctoral Research</div>
+                </div>
+              </div>
+
+              <div class="hero-float-badge float-badge-3">
+                <div class="float-badge-icon">${Icons.fileText}</div>
+                <div class="float-badge-content">
+                  <div class="float-badge-title">SCOPUS Author</div>
+                  <div class="float-badge-subtitle">Indexed Papers</div>
+                </div>
               </div>
             </div>
           </div>
@@ -896,27 +923,34 @@ function renderContact() {
           </div>
 
           <div class="contact-form-card">
-            <form id="contact-form" onsubmit="event.preventDefault(); window.location.href='mailto:${siteProfile.email}?subject=' + encodeURIComponent(document.getElementById('c-subject').value) + '&body=' + encodeURIComponent('From: ' + document.getElementById('c-name').value + ' (' + document.getElementById('c-email').value + ')\n\n' + document.getElementById('c-message').value);">
+            <form id="contact-form" novalidate>
               <div class="form-group">
                 <label for="c-name" class="form-label">Your Name</label>
                 <input type="text" id="c-name" class="form-control" placeholder="Prof. / Dr. / Mr. / Ms." required />
+                <div class="form-feedback" id="c-name-feedback"></div>
               </div>
               <div class="form-group">
                 <label for="c-email" class="form-label">Email Address</label>
                 <input type="email" id="c-email" class="form-control" placeholder="name@institution.edu" required />
+                <div class="form-feedback" id="c-email-feedback"></div>
               </div>
               <div class="form-group">
                 <label for="c-subject" class="form-label">Purpose of Contact</label>
                 <input type="text" id="c-subject" class="form-control" placeholder="e.g. Placement Training / Keynote / Academic Collaboration" required />
+                <div class="form-feedback" id="c-subject-feedback"></div>
               </div>
               <div class="form-group">
                 <label for="c-message" class="form-label">Message</label>
                 <textarea id="c-message" class="form-control" placeholder="Share details regarding your institution, proposed dates, or engagement scope..." required></textarea>
+                <div class="form-feedback" id="c-message-feedback"></div>
               </div>
+
+              <!-- Status alert box -->
+              <div class="form-status-alert" id="form-status-alert" role="status" aria-live="polite" style="display: none;"></div>
 
               <div style="margin-top: 1.75rem;">
                 ${renderShinyButton({
-                  text: "Send Inquiry Directly",
+                  text: "Send Enquiry",
                   id: "contact-submit-btn",
                   icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`
                 })}
@@ -1032,8 +1066,9 @@ function initApp() {
   `;
 
   // Initialize Interactive 3D Knowledge Sculpture
+  let sculpture = null;
   try {
-    const sculpture = new ThreeSculpture('hero-3d-stage');
+    sculpture = new ThreeSculpture('hero-3d-stage');
     sculpture.init();
   } catch (err) {
     console.warn('3D Sculpture initialization notice:', err);
@@ -1044,13 +1079,16 @@ function initApp() {
   motion.init();
 
   // Setup Theme Switcher
-  setupTheme();
+  setupTheme(sculpture);
 
   // Setup Header Scroll Effect
   setupHeaderScroll();
 
   // Setup Mobile Menu
   setupMobileMenu();
+
+  // Setup Contact Form Validation & Mailto Action
+  setupContactForm();
 
   // Setup Video Player Controls
   setupVideoControls();
@@ -1076,10 +1114,11 @@ function initApp() {
   }, 1000);
 }
 
-function setupTheme() {
+function setupTheme(sculpture) {
   const savedTheme = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeIcon(savedTheme);
+  sculpture?.updateTheme(savedTheme);
 
   const toggleBtn = document.getElementById('theme-toggle-btn');
   toggleBtn?.addEventListener('click', () => {
@@ -1088,6 +1127,7 @@ function setupTheme() {
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
     updateThemeIcon(next);
+    sculpture?.updateTheme(next);
   });
 }
 
@@ -1113,20 +1153,198 @@ function setupMobileMenu() {
   const openBtn = document.getElementById('mobile-menu-btn');
   const closeBtn = document.getElementById('mobile-drawer-close');
   const drawer = document.getElementById('mobile-nav-drawer');
+  const backdrop = document.getElementById('mobile-drawer-backdrop');
 
-  openBtn?.addEventListener('click', () => {
+  const openMenu = () => {
     drawer?.classList.add('open');
+    backdrop?.classList.add('open');
+    drawer?.setAttribute('aria-hidden', 'false');
+    openBtn?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
-  });
+  };
 
   const closeMenu = () => {
     drawer?.classList.remove('open');
+    backdrop?.classList.remove('open');
+    drawer?.setAttribute('aria-hidden', 'true');
+    openBtn?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   };
 
+  openBtn?.addEventListener('click', openMenu);
   closeBtn?.addEventListener('click', closeMenu);
+  backdrop?.addEventListener('click', closeMenu);
+
   document.querySelectorAll('.mobile-nav-link').forEach(link => {
     link.addEventListener('click', closeMenu);
+  });
+
+  document.getElementById('drawer-btn-connect')?.addEventListener('click', closeMenu);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer?.classList.contains('open')) {
+      closeMenu();
+    }
+  });
+}
+
+function setupContactForm() {
+  const form = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('contact-submit-btn');
+  const statusAlert = document.getElementById('form-status-alert');
+  if (!form || !submitBtn) return;
+
+  const nameInput = document.getElementById('c-name');
+  const emailInput = document.getElementById('c-email');
+  const subjectInput = document.getElementById('c-subject');
+  const messageInput = document.getElementById('c-message');
+
+  function clearErrors() {
+    [nameInput, emailInput, subjectInput, messageInput].forEach(inp => {
+      inp?.classList.remove('is-invalid');
+    });
+    document.querySelectorAll('.form-feedback').forEach(f => {
+      f.textContent = '';
+      f.style.display = 'none';
+    });
+    if (statusAlert) {
+      statusAlert.style.display = 'none';
+      statusAlert.className = 'form-status-alert';
+      statusAlert.innerHTML = '';
+    }
+  }
+
+  function setError(input, feedbackId, message) {
+    input.classList.add('is-invalid');
+    const fb = document.getElementById(feedbackId);
+    if (fb) {
+      fb.textContent = message;
+      fb.style.display = 'block';
+    }
+  }
+
+  [nameInput, emailInput, subjectInput, messageInput].forEach(inp => {
+    inp?.addEventListener('input', () => {
+      inp.classList.remove('is-invalid');
+      const fb = document.getElementById(`${inp.id}-feedback`);
+      if (fb) {
+        fb.textContent = '';
+        fb.style.display = 'none';
+      }
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const subject = subjectInput.value.trim();
+    const message = messageInput.value.trim();
+
+    let hasError = false;
+
+    if (!name) {
+      setError(nameInput, 'c-name-feedback', 'Please enter your name.');
+      hasError = true;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      setError(emailInput, 'c-email-feedback', 'Please provide a valid email address.');
+      hasError = true;
+    }
+    if (!subject) {
+      setError(subjectInput, 'c-subject-feedback', 'Please specify the purpose of contact.');
+      hasError = true;
+    }
+    if (!message || message.length < 10) {
+      setError(messageInput, 'c-message-feedback', 'Please enter a message (at least 10 characters).');
+      hasError = true;
+    }
+
+    if (hasError) {
+      const firstInvalid = form.querySelector('.is-invalid');
+      firstInvalid?.focus();
+      return;
+    }
+
+    // Prevent duplicate clicks while submitting
+    submitBtn.disabled = true;
+    const originalBtnHtml = submitBtn.innerHTML;
+    submitBtn.innerHTML = `
+      <span class="shiny-btn-content">
+        <span class="btn-spinner"></span>
+        <span>Preparing Email...</span>
+      </span>
+    `;
+
+    const recipient = 'k.vishalnair@gmail.com';
+    const emailSubject = `[Enquiry via Portfolio] ${subject}`;
+    const emailBody = `Dear Dr. Vishal Kattery,\n\n${message}\n\n---\nFrom: ${name}\nEmail: ${email}\nPurpose: ${subject}\nSent via Portfolio: ${window.location.href}`;
+
+    const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    if (statusAlert) {
+      statusAlert.className = 'form-status-alert info';
+      statusAlert.style.display = 'block';
+      statusAlert.innerHTML = `
+        <div class="status-alert-header">
+          <strong>Opening Your Email Application</strong>
+        </div>
+        <p class="status-alert-text">
+          Your enquiry addressed to <strong>${recipient}</strong> has been prepared. Your email application (e.g. Outlook, Apple Mail, or Gmail) is opening to complete the sending process.
+        </p>
+        <div class="status-alert-actions">
+          <a href="${mailtoUrl}" class="status-action-link">Open Email App Again &rarr;</a>
+          <button type="button" class="status-action-btn" id="copy-email-btn">Copy Email Address</button>
+        </div>
+      `;
+
+      document.getElementById('copy-email-btn')?.addEventListener('click', () => {
+        const btn = document.getElementById('copy-email-btn');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(recipient).then(() => {
+            if (btn) btn.textContent = 'Copied to clipboard!';
+          }).catch(() => {
+            // Fallback for unfocused or permission-blocked documents
+            fallbackCopy(recipient, btn);
+          });
+        } else {
+          fallbackCopy(recipient, btn);
+        }
+      });
+    }
+
+    function fallbackCopy(text, btn) {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        if (btn) btn.textContent = 'Copied to clipboard!';
+      } catch (err) {
+        if (btn) btn.textContent = recipient;
+      }
+    }
+
+    // Trigger mailto link via safe anchor click
+    const mailLink = document.createElement('a');
+    mailLink.href = mailtoUrl;
+    mailLink.target = '_blank';
+    mailLink.rel = 'noopener noreferrer';
+    document.body.appendChild(mailLink);
+    mailLink.click();
+
+    setTimeout(() => {
+      mailLink.remove();
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHtml;
+    }, 2000);
   });
 }
 
