@@ -14,6 +14,7 @@ import {
   achievementsData,
   humanSideData
 } from './data/portfolioData.js';
+import { galleryPhotos, galleryVideos } from './data/galleryData.js';
 import testimonials from './data/testimonials.json';
 import { MotionEngine } from './motion/motionEngine.js';
 import { ThreeSculpture } from './components/ThreeSculpture.js';
@@ -41,6 +42,11 @@ const Icons = {
   download: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>`,
   arrowUp: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>`,
   arrowRight: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+  chevronLeft: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`,
+  chevronRight: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`,
+  copy: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`,
+  image: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>`,
+  video: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>`,
   play: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
   pause: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`,
   volume2: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`,
@@ -93,8 +99,10 @@ function renderHeader() {
             <a href="#expertise" class="nav-link">Expertise</a>
             <a href="#journey" class="nav-link">Experience</a>
             <a href="#training" class="nav-link">Training</a>
+            <a href="#gallery" class="nav-link">Gallery</a>
             <a href="#speaking" class="nav-link">Speaking</a>
             <a href="#research" class="nav-link">Publications</a>
+            <a href="#testimonials" class="nav-link">Testimonials</a>
             <a href="#contact" class="nav-link">Contact</a>
           </nav>
 
@@ -134,6 +142,7 @@ function renderHeader() {
         <a href="#expertise" class="mobile-nav-link">Expertise</a>
         <a href="#journey" class="mobile-nav-link">Experience</a>
         <a href="#training" class="mobile-nav-link">Training &amp; Impact</a>
+        <a href="#gallery" class="mobile-nav-link">Media Gallery</a>
         <a href="#speaking" class="mobile-nav-link">Speaking</a>
         <a href="#research" class="mobile-nav-link">Publications</a>
         <a href="#testimonials" class="mobile-nav-link">Testimonials</a>
@@ -576,35 +585,6 @@ function renderTraining() {
           </p>
         </div>
 
-        <!-- Video Player Frame -->
-        <div class="classroom-video-frame" id="video-section">
-          <video 
-            id="classroom-video" 
-            class="classroom-video" 
-            muted 
-            playsinline 
-            loop 
-            poster="${getAssetUrl('/assets/images/teaching/classroom training.jpg')}"
-          >
-            <source src="${getAssetUrl('/assets/video/classroom video.mp4')}" type="video/mp4" />
-            Your browser does not support HTML5 video.
-          </video>
-          <div class="video-bar">
-            <div class="video-label">
-              <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent-highlight); box-shadow: 0 0 8px var(--accent-highlight);"></span>
-              Classroom Mentorship &amp; Placement Training in Action
-            </div>
-            <div style="display: flex; gap: 0.75rem;">
-              <button class="video-btn" id="video-play-btn" aria-label="Play or Pause Video">
-                ${Icons.play}
-              </button>
-              <button class="video-btn" id="video-mute-btn" aria-label="Mute or Unmute Video">
-                ${Icons.volumeX}
-              </button>
-            </div>
-          </div>
-        </div>
-
         <div style="margin-bottom: 2rem;">
           <span class="section-tag">CURATED THEMES</span>
           <h3 style="font-size: 1.6rem; font-weight: 700; margin-bottom: 1.5rem;">Training &amp; Mentoring Dimensions</h3>
@@ -630,6 +610,202 @@ function renderTraining() {
         </div>
       </div>
     </section>
+  `;
+}
+
+// Dedicated Media Gallery Section (Art-directed preview on main page)
+function renderGallery() {
+  const previewPhotos = galleryPhotos.slice(0, 3);
+  return `
+    <section class="section gallery-section" id="gallery">
+      <div class="container">
+        <div class="section-header centered">
+          <span class="section-tag">ARCHIVAL MEDIA</span>
+          <h2 class="section-title">Curated Media Gallery</h2>
+          <p class="section-subtitle">
+            A verified photographic and videographic record spanning classroom lectures, student bootcamps, doctoral milestones, and collegiate keynotes.
+          </p>
+        </div>
+
+        <div class="gallery-preview-stage">
+          <div class="gallery-preview-cards-stack">
+            ${previewPhotos.map((p, idx) => `
+              <div class="gallery-preview-card" onclick="openMediaGallery(${idx})" tabindex="0" role="button" aria-label="Open gallery image: ${p.title}">
+                <img 
+                  src="${getAssetUrl(p.src)}" 
+                  alt="${p.title}" 
+                  loading="lazy" 
+                  onerror="this.onerror=null; this.src='${getAssetUrl('/assets/images/academic/teaching.jpeg')}';"
+                />
+                <div class="gallery-preview-badge">
+                  <span>${p.category}</span>
+                  <span>${p.title.length > 28 ? p.title.slice(0, 28) + '...' : p.title}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="gallery-preview-cta">
+            <button type="button" class="shiny-btn" id="open-media-gallery-btn" onclick="openMediaGallery(0, 'photos')" aria-haspopup="dialog" aria-expanded="false">
+              <span class="shiny-btn-content">
+                <span>View Photo Gallery (${galleryPhotos.length} Photos &bull; ${galleryVideos.length} Videos)</span>
+                ${Icons.arrowRight}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Expanded Media Gallery Modal Overlay -->
+    <div class="media-gallery-modal-overlay" id="media-gallery-modal" role="dialog" aria-modal="true" aria-label="Media Gallery" aria-hidden="true">
+      <div class="media-gallery-dialog">
+        <div class="gallery-modal-topbar">
+          <div class="gallery-segmented-control" role="tablist">
+            <button type="button" class="gallery-tab-btn active" id="gallery-tab-photos" role="tab" aria-selected="true" aria-controls="gallery-view-photos">
+              ${Icons.image}
+              <span>Photos (${galleryPhotos.length})</span>
+            </button>
+            <button type="button" class="gallery-tab-btn" id="gallery-tab-videos" role="tab" aria-selected="false" aria-controls="gallery-view-videos">
+              ${Icons.video}
+              <span>Videos (${galleryVideos.length})</span>
+            </button>
+          </div>
+          <button type="button" class="modal-close-btn" id="close-gallery-modal-btn" onclick="closeMediaGallery()" aria-label="Close Gallery">
+            ${Icons.x}
+          </button>
+        </div>
+
+        <div class="gallery-modal-viewport">
+          <!-- Photos View (Coverflow Carousel) -->
+          <div class="coverflow-carousel-wrap" id="gallery-view-photos" role="tabpanel" aria-labelledby="gallery-tab-photos">
+            <div class="coverflow-stage" id="coverflow-stage" tabindex="0" aria-label="Photo Coverflow Carousel">
+              ${galleryPhotos.map((photo, i) => `
+                <div class="coverflow-card ${i === 0 ? 'active-card' : ''}" data-index="${i}" data-aspect="${photo.aspectRatio}">
+                  <div class="coverflow-media-frame aspect-${photo.aspectRatio}">
+                    <img src="${getAssetUrl(photo.src)}" alt="${photo.title}" loading="lazy" />
+                  </div>
+                  <div class="coverflow-card-caption">
+                    <span class="coverflow-card-category">${photo.category}</span>
+                    <h4 class="coverflow-card-title">${photo.title}</h4>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="coverflow-controls-bar">
+              <button type="button" class="coverflow-nav-btn" id="coverflow-prev-btn" aria-label="Previous Photo">
+                ${Icons.chevronLeft}
+              </button>
+              <div class="coverflow-dots" id="coverflow-dots">
+                ${galleryPhotos.map((_, i) => `
+                  <button type="button" class="coverflow-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="Go to slide ${i + 1}"></button>
+                `).join('')}
+              </div>
+              <div class="coverflow-counter" id="coverflow-counter">01 / ${String(galleryPhotos.length).padStart(2, '0')}</div>
+              <button type="button" class="coverflow-nav-btn" id="coverflow-next-btn" aria-label="Next Photo">
+                ${Icons.chevronRight}
+              </button>
+            </div>
+          </div>
+
+          <!-- Videos View (Vertical 3D Coverflow) -->
+          <div class="video-coverflow-wrap" id="gallery-view-videos" style="display: none;" role="tabpanel" aria-labelledby="gallery-tab-videos">
+            <div class="video-coverflow-stage" id="video-coverflow-stage" tabindex="0" aria-label="Video Coverflow Carousel">
+              ${galleryVideos.map((video, i) => `
+                <div class="video-coverflow-card ${i === 0 ? 'active-card' : ''}" data-index="${i}">
+                  <div class="video-card-frame">
+                    <video 
+                      class="video-card-media" 
+                      id="gallery-video-${i}" 
+                      src="${getAssetUrl(video.src)}" 
+                      poster="${getAssetUrl(video.poster)}" 
+                      muted 
+                      playsinline 
+                      loop
+                    ></video>
+                    <div class="video-card-overlay-controls">
+                      <div class="video-card-top-info">
+                        <span class="coverflow-card-category" style="color: #fff;">VERTICAL REEL (9:16) &bull; ${video.duration}</span>
+                        <h4 class="coverflow-card-title" style="color: #fff; font-size: 0.95rem;">${video.title}</h4>
+                      </div>
+                      <button type="button" class="video-play-center-btn" id="video-play-toggle-${i}" aria-label="Play Video">
+                        ${Icons.play}
+                      </button>
+                      <div class="video-bottom-toolbar">
+                        <button type="button" class="video-btn" id="video-mute-toggle-${i}" aria-label="Mute or Unmute">
+                          ${Icons.volumeX}
+                        </button>
+                        <div class="video-volume-group">
+                          <input type="range" class="video-volume-slider" id="video-volume-${i}" min="0" max="1" step="0.05" value="0" aria-label="Volume Slider" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="coverflow-card-caption">
+                    <span class="coverflow-card-category">${video.duration} &bull; Verified Local Video</span>
+                    <h4 class="coverflow-card-title">${video.title}</h4>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="coverflow-controls-bar">
+              <button type="button" class="coverflow-nav-btn" id="video-prev-btn" aria-label="Previous Video">
+                ${Icons.chevronLeft}
+              </button>
+              <div class="coverflow-counter" id="video-counter">01 / ${String(galleryVideos.length).padStart(2, '0')}</div>
+              <button type="button" class="coverflow-nav-btn" id="video-next-btn" aria-label="Next Video">
+                ${Icons.chevronRight}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full-Screen Image Lightbox -->
+    <div class="media-lightbox-overlay" id="image-lightbox" role="dialog" aria-modal="true" aria-label="Full-screen Image View" aria-hidden="true">
+      <button type="button" class="lightbox-close-btn" id="close-image-lightbox-btn" onclick="closePhotoLightbox()" aria-label="Close Lightbox">
+        ${Icons.x}
+      </button>
+      <button type="button" class="lightbox-nav-btn lightbox-prev" id="lightbox-prev-btn" aria-label="Previous Image">
+        ${Icons.chevronLeft}
+      </button>
+      <button type="button" class="lightbox-nav-btn lightbox-next" id="lightbox-next-btn" aria-label="Next Image">
+        ${Icons.chevronRight}
+      </button>
+      <div class="lightbox-dialog">
+        <div class="lightbox-image-frame">
+          <img id="lightbox-img" src="" alt="" />
+        </div>
+        <div class="lightbox-caption-bar">
+          <div class="lightbox-caption-title" id="lightbox-title"></div>
+          <div class="lightbox-caption-category" id="lightbox-category"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full-Screen Video Lightbox -->
+    <div class="media-lightbox-overlay" id="video-lightbox" role="dialog" aria-modal="true" aria-label="Full-screen Video View" aria-hidden="true">
+      <button type="button" class="lightbox-close-btn" id="close-video-lightbox-btn" onclick="closeVideoLightbox()" aria-label="Close Video Lightbox">
+        ${Icons.x}
+      </button>
+      <button type="button" class="lightbox-nav-btn lightbox-prev" id="video-lightbox-prev-btn" aria-label="Previous Video">
+        ${Icons.chevronLeft}
+      </button>
+      <button type="button" class="lightbox-nav-btn lightbox-next" id="video-lightbox-next-btn" aria-label="Next Video">
+        ${Icons.chevronRight}
+      </button>
+      <div class="lightbox-dialog">
+        <div class="lightbox-video-frame">
+          <video id="lightbox-video-elem" controls playsinline></video>
+        </div>
+        <div class="lightbox-caption-bar">
+          <div class="lightbox-caption-title" id="video-lightbox-title"></div>
+        </div>
+      </div>
+    </div>
   `;
 }
 
@@ -766,16 +942,10 @@ function renderAchievements() {
   `;
 }
 
-// Testimonials Section (Reference 06 Floating Reviews)
+// Testimonials Section (Reference 06 Floating Reviews & Stepped Marquee)
 function renderTestimonials() {
   const hasData = Array.isArray(testimonials) && testimonials.length > 0;
   if (!hasData) return '';
-
-  // Distribute testimonials across 3 staggered columns for the floating reviews feel
-  const cols = [[], [], []];
-  testimonials.forEach((t, i) => {
-    cols[i % 3].push(t);
-  });
 
   return `
     <section class="section" id="testimonials" style="background: var(--bg-secondary);">
@@ -788,24 +958,112 @@ function renderTestimonials() {
           </p>
         </div>
 
-        <div class="floating-reviews-stage">
-          <div class="floating-reviews-grid">
-            ${cols.map(col => `
-              <div class="floating-review-col">
-                ${col.map(t => {
+        <div class="testimonials-floating-stage" id="testimonials-stage">
+          <div class="testimonials-floating-track" id="testimonials-track">
+            ${[...testimonials, ...testimonials].map((t, idx) => {
+              const initials = t.name
+                ? t.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
+                : 'VK';
+              const roleMeta = [t.role, t.institution].filter(Boolean).join(' &bull; ');
+              const truncatedText = t.testimony.length > 115 
+                ? t.testimony.slice(0, 115).trim() + '...' 
+                : t.testimony;
+
+              return `
+                <div class="floating-pill-card" data-index="${idx}" onclick="openAllTestimonials()" role="button" tabindex="0" aria-label="Testimonial by ${t.name}">
+                  <div class="pill-avatar-monogram">${initials}</div>
+                  <div class="pill-content">
+                    <div class="pill-header-row">
+                      <span class="pill-author-name">${t.name}</span>
+                      <span class="pill-stars">★★★★★</span>
+                    </div>
+                    ${roleMeta ? `<div class="pill-author-meta">${roleMeta}</div>` : ''}
+                    <p class="pill-quote">"${truncatedText}"</p>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <div class="testimonials-cta-wrap">
+          <button type="button" class="shiny-btn" id="view-all-testimonials-btn" onclick="openAllTestimonials()" aria-haspopup="dialog" aria-expanded="false">
+            <span class="shiny-btn-content">
+              <span>View All Testimonials (${testimonials.length})</span>
+              ${Icons.arrowRight}
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dedicated Full Testimonials View Modal (Reference: Website inspo/testimonials-fullscreen-reference.jpg) -->
+    <div class="testimonials-modal-overlay" id="all-testimonials-modal" role="dialog" aria-modal="true" aria-label="All Testimonials" aria-hidden="true" data-lenis-prevent>
+      <div class="testimonials-modal-dialog" data-lenis-prevent>
+        <div class="modal-header">
+          <div>
+            <div class="modal-header-badge-row">
+              <span class="badge">VERIFIED ENDORSEMENTS</span>
+              <span class="modal-count-badge">${testimonials.length} Authentic Reviews</span>
+              <span class="modal-rating-badge">★★★★★ 5.0 Rating</span>
+            </div>
+            <h3 class="modal-title">Testimonials &amp; Mentorship Reflections</h3>
+            <p class="modal-subtitle">Complete, unedited feedback from mentees, graduates, and collegiate faculty guided by Dr. Vishal Kattery.</p>
+          </div>
+          <button type="button" class="modal-close-btn" id="close-testimonials-modal-btn" onclick="closeAllTestimonials()" aria-label="Close Testimonials Dialog">
+            ${Icons.x}
+          </button>
+        </div>
+
+        <div class="testimonials-modal-body" data-lenis-prevent>
+          ${(() => {
+            const featured = testimonials.find(t => t.id === 2) || testimonials[0];
+            const regularReviews = testimonials.filter(t => t.id !== featured.id);
+            const featuredInitials = featured.name
+              ? featured.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
+              : 'VK';
+            const featuredMeta = [featured.role, featured.institution].filter(Boolean).join(' &bull; ');
+
+            return `
+              <!-- Featured Spotlight Review -->
+              <div class="testimonial-featured-card">
+                <div class="featured-card-topbar">
+                  <div class="featured-badge-pill">
+                    <span class="dot"></span>
+                    <span>FEATURED MENTORSHIP SPOTLIGHT</span>
+                  </div>
+                  <div class="pill-stars">★★★★★</div>
+                </div>
+                <blockquote class="featured-quote-text">"${featured.testimony}"</blockquote>
+                <div class="review-author-row featured-author-row">
+                  <div class="pill-avatar-monogram">${featuredInitials}</div>
+                  <div>
+                    <div class="review-author-name">${featured.name}</div>
+                    <div class="review-author-meta">${featuredMeta || 'Student &bull; Placed at Accenture'}</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Editorial Multi-Column Masonry for Remaining Reviews -->
+              <div class="testimonials-editorial-columns">
+                ${regularReviews.map(t => {
                   const initials = t.name
                     ? t.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
                     : 'VK';
                   const roleMeta = [t.role, t.institution].filter(Boolean).join(' &bull; ');
+                  const isShort = t.testimony.length < 150;
 
                   return `
-                    <div class="floating-review-card">
+                    <div class="testimonial-full-card ${isShort ? 'card-compact' : ''}">
                       <div>
-                        <div class="review-stars">★★★★★</div>
-                        <p class="review-quote-text">"${t.testimony}"</p>
+                        <div class="testimonial-full-card-header">
+                          <div class="pill-stars">★★★★★</div>
+                          ${t.institution ? `<span class="institution-tag">${t.institution.length > 28 ? t.institution.slice(0, 28) + '&hellip;' : t.institution}</span>` : ''}
+                        </div>
+                        <p class="testimonial-full-text">"${t.testimony}"</p>
                       </div>
                       <div class="review-author-row">
-                        <div class="review-avatar-monogram">${initials}</div>
+                        <div class="pill-avatar-monogram">${initials}</div>
                         <div>
                           <div class="review-author-name">${t.name}</div>
                           ${roleMeta ? `<div class="review-author-meta">${roleMeta}</div>` : ''}
@@ -815,11 +1073,11 @@ function renderTestimonials() {
                   `;
                 }).join('')}
               </div>
-            `).join('')}
-          </div>
+            `;
+          })()}
         </div>
       </div>
-    </section>
+    </div>
   `;
 }
 
@@ -1053,6 +1311,7 @@ function initApp() {
       ${renderSpeaking()}
       ${renderCongress()}
       ${renderTraining()}
+      ${renderGallery()}
       ${renderOrganizations()}
       ${renderResearch()}
       ${renderAchievements()}
@@ -1077,6 +1336,8 @@ function initApp() {
   // Initialize Motion Engine (Lenis smooth scroll, cursor lerp, parallax)
   const motion = new MotionEngine();
   motion.init();
+  window.motion = motion;
+  window.lenis = motion.lenis;
 
   // Setup Theme Switcher
   setupTheme(sculpture);
@@ -1087,11 +1348,14 @@ function initApp() {
   // Setup Mobile Menu
   setupMobileMenu();
 
+  // Setup Testimonial Stepped Marquee & Full View Modal
+  setupTestimonialMarquee();
+
+  // Setup Media Gallery (Coverflow Carousels & Lightboxes)
+  setupMediaGallery();
+
   // Setup Contact Form Validation & Mailto Action
   setupContactForm();
-
-  // Setup Video Player Controls
-  setupVideoControls();
 
   // Setup Back to top
   document.getElementById('back-to-top-btn')?.addEventListener('click', () => {
@@ -1269,115 +1533,704 @@ function setupContactForm() {
       return;
     }
 
-    // Prevent duplicate clicks while submitting
     submitBtn.disabled = true;
     const originalBtnHtml = submitBtn.innerHTML;
     submitBtn.innerHTML = `
       <span class="shiny-btn-content">
         <span class="btn-spinner"></span>
-        <span>Preparing Email...</span>
+        <span>Preparing Draft...</span>
       </span>
     `;
 
     const recipient = 'k.vishalnair@gmail.com';
     const emailSubject = `[Enquiry via Portfolio] ${subject}`;
-    const emailBody = `Dear Dr. Vishal Kattery,\n\n${message}\n\n---\nFrom: ${name}\nEmail: ${email}\nPurpose: ${subject}\nSent via Portfolio: ${window.location.href}`;
+    const emailBody = `Dear Dr. Vishal Kattery,\n\n${message}\n\n---\nFrom: ${name}\nEmail: ${email}\nPurpose: ${subject}\nWebsite: ${window.location.origin + window.location.pathname}`;
 
     const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}&su=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    // Set location directly to trigger user's default email client safely
+    window.location.href = mailtoUrl;
 
     if (statusAlert) {
       statusAlert.className = 'form-status-alert info';
       statusAlert.style.display = 'block';
       statusAlert.innerHTML = `
         <div class="status-alert-header">
-          <strong>Opening Your Email Application</strong>
+          <strong>Enquiry Prepared for ${recipient}</strong>
         </div>
         <p class="status-alert-text">
-          Your enquiry addressed to <strong>${recipient}</strong> has been prepared. Your email application (e.g. Outlook, Apple Mail, or Gmail) is opening to complete the sending process.
+          Your default email application is opening to review and send this message. If your browser cannot launch a desktop email client, use one of the direct options below:
         </p>
         <div class="status-alert-actions">
-          <a href="${mailtoUrl}" class="status-action-link">Open Email App Again &rarr;</a>
+          <a href="${gmailWebUrl}" target="_blank" rel="noopener noreferrer" class="status-action-link">Open in Gmail (Web) &rarr;</a>
+          <button type="button" class="status-action-btn" id="copy-draft-btn">Copy Full Draft</button>
           <button type="button" class="status-action-btn" id="copy-email-btn">Copy Email Address</button>
         </div>
       `;
 
-      document.getElementById('copy-email-btn')?.addEventListener('click', () => {
-        const btn = document.getElementById('copy-email-btn');
+      function copyText(text, btn, successLabel) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(recipient).then(() => {
-            if (btn) btn.textContent = 'Copied to clipboard!';
-          }).catch(() => {
-            // Fallback for unfocused or permission-blocked documents
-            fallbackCopy(recipient, btn);
-          });
+          navigator.clipboard.writeText(text).then(() => {
+            if (btn) btn.textContent = successLabel;
+            setTimeout(() => { if (btn) btn.textContent = btn.dataset.originalText || 'Copy'; }, 3000);
+          }).catch(() => fallbackCopy(text, btn, successLabel));
         } else {
-          fallbackCopy(recipient, btn);
+          fallbackCopy(text, btn, successLabel);
         }
-      });
-    }
+      }
 
-    function fallbackCopy(text, btn) {
-      try {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-        if (btn) btn.textContent = 'Copied to clipboard!';
-      } catch (err) {
-        if (btn) btn.textContent = recipient;
+      function fallbackCopy(text, btn, successLabel) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+          if (btn) btn.textContent = successLabel;
+        } catch (err) {
+          if (btn) btn.textContent = 'Copy failed';
+        }
+      }
+
+      const emailBtn = document.getElementById('copy-email-btn');
+      if (emailBtn) {
+        emailBtn.dataset.originalText = 'Copy Email Address';
+        emailBtn.addEventListener('click', () => copyText(recipient, emailBtn, 'Email Copied!'));
+      }
+
+      const draftBtn = document.getElementById('copy-draft-btn');
+      if (draftBtn) {
+        draftBtn.dataset.originalText = 'Copy Full Draft';
+        draftBtn.addEventListener('click', () => copyText(`Subject: ${emailSubject}\n\n${emailBody}`, draftBtn, 'Draft Copied!'));
       }
     }
 
-    // Trigger mailto link via safe anchor click
-    const mailLink = document.createElement('a');
-    mailLink.href = mailtoUrl;
-    mailLink.target = '_blank';
-    mailLink.rel = 'noopener noreferrer';
-    document.body.appendChild(mailLink);
-    mailLink.click();
-
     setTimeout(() => {
-      mailLink.remove();
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnHtml;
-    }, 2000);
+    }, 1500);
   });
 }
 
-function setupVideoControls() {
-  const video = document.getElementById('classroom-video');
-  const playBtn = document.getElementById('video-play-btn');
-  const muteBtn = document.getElementById('video-mute-btn');
+function setupTestimonialMarquee() {
+  const stage = document.getElementById('testimonials-stage');
+  const track = document.getElementById('testimonials-track');
+  const openModalBtn = document.getElementById('view-all-testimonials-btn');
+  const modal = document.getElementById('all-testimonials-modal');
+  const closeModalBtn = document.getElementById('close-testimonials-modal-btn');
+  if (!stage || !track) return;
 
-  if (!video || !playBtn || !muteBtn) return;
+  const cards = track.querySelectorAll('.floating-pill-card');
+  const count = cards.length;
+  if (count === 0) return;
 
-  playBtn.addEventListener('click', () => {
-    if (video.paused) {
-      video.play();
-      playBtn.innerHTML = Icons.pause;
+  let currentShift = 0;
+  let isPaused = false;
+  let timer = null;
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function stepMarquee() {
+    if (isPaused || prefersReduced) return;
+    const cardEl = cards[0];
+    const cardWidth = cardEl ? (cardEl.offsetWidth + 24) : 480;
+    const halfWidth = (count / 2) * cardWidth;
+
+    currentShift += cardWidth;
+    if (currentShift >= halfWidth) {
+      // Loop smoothly
+      currentShift = 0;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(0px)`;
+      // Force layout
+      void track.offsetWidth;
+    }
+
+    track.style.transition = 'transform 0.9s cubic-bezier(0.25, 1, 0.5, 1)';
+    track.style.transform = `translateX(-${currentShift}px)`;
+  }
+
+  function startTimer() {
+    if (prefersReduced) return;
+    if (timer) clearInterval(timer);
+    // 5-second pause between movements
+    timer = setInterval(stepMarquee, 5000);
+  }
+
+  stage.addEventListener('mouseenter', () => { isPaused = true; });
+  stage.addEventListener('mouseleave', () => { isPaused = false; });
+  stage.addEventListener('focusin', () => { isPaused = true; });
+  stage.addEventListener('focusout', () => { isPaused = false; });
+  stage.addEventListener('touchstart', () => { isPaused = true; }, { passive: true });
+  stage.addEventListener('touchend', () => { isPaused = false; }, { passive: true });
+
+  startTimer();
+
+  window.openAllTestimonials = function() {
+    const modalEl = document.getElementById('all-testimonials-modal');
+    if (!modalEl) return;
+    modalEl.classList.add('open', 'active');
+    modalEl.setAttribute('aria-hidden', 'false');
+    const btn = document.getElementById('view-all-testimonials-btn');
+    btn?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+
+    // Completely lock Lenis virtual scrolling while modal is open
+    if (window.lenis) {
+      window.lenis.stop();
+    }
+
+    // Reset modal scroll to top upon opening
+    const body = modalEl.querySelector('.testimonials-modal-body');
+    if (body) body.scrollTop = 0;
+
+    isPaused = true;
+  };
+
+  window.closeAllTestimonials = function() {
+    const modalEl = document.getElementById('all-testimonials-modal');
+    if (!modalEl) return;
+    modalEl.classList.remove('open', 'active');
+    modalEl.setAttribute('aria-hidden', 'true');
+    const btn = document.getElementById('view-all-testimonials-btn');
+    btn?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
+    // Resume Lenis smooth scroll
+    if (window.lenis) {
+      window.lenis.start();
+    }
+
+    isPaused = false;
+  };
+
+  openModalBtn?.addEventListener('click', window.openAllTestimonials);
+  closeModalBtn?.addEventListener('click', window.closeAllTestimonials);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) window.closeAllTestimonials();
+  });
+
+  // Wheel forwarding: Any wheel event over the modal overlay or header scrolls the body content
+  modal?.addEventListener('wheel', (e) => {
+    const body = modal.querySelector('.testimonials-modal-body');
+    if (!body) return;
+    if (!body.contains(e.target) || e.target === body) {
+      body.scrollTop += e.deltaY;
+    }
+    // Stop propagation so Lenis or window never receives it
+    e.stopPropagation();
+  }, { passive: true });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('open')) {
+      window.closeAllTestimonials();
+    }
+  });
+}
+
+function setupMediaGallery() {
+  const modal = document.getElementById('media-gallery-modal');
+  const openBtn = document.getElementById('open-media-gallery-btn');
+  const closeBtn = document.getElementById('close-gallery-modal-btn');
+  const tabPhotos = document.getElementById('gallery-tab-photos');
+  const tabVideos = document.getElementById('gallery-tab-videos');
+  const viewPhotos = document.getElementById('gallery-view-photos');
+  const viewVideos = document.getElementById('gallery-view-videos');
+
+  // Photo coverflow elements
+  const photoStage = document.getElementById('coverflow-stage');
+  const photoCards = Array.from(document.querySelectorAll('.coverflow-card'));
+  const photoPrevBtn = document.getElementById('coverflow-prev-btn');
+  const photoNextBtn = document.getElementById('coverflow-next-btn');
+  const photoCounter = document.getElementById('coverflow-counter');
+  const photoDots = Array.from(document.querySelectorAll('.coverflow-dot'));
+
+  // Video coverflow elements
+  const videoStage = document.getElementById('video-coverflow-stage');
+  const videoCards = Array.from(document.querySelectorAll('.video-coverflow-card'));
+  const videoPrevBtn = document.getElementById('video-prev-btn');
+  const videoNextBtn = document.getElementById('video-next-btn');
+  const videoCounter = document.getElementById('video-counter');
+
+  // Photo Lightbox elements
+  const photoLightbox = document.getElementById('image-lightbox');
+  const photoLightboxImg = document.getElementById('lightbox-img');
+  const photoLightboxTitle = document.getElementById('lightbox-title');
+  const photoLightboxCategory = document.getElementById('lightbox-category');
+  const photoLightboxClose = document.getElementById('close-image-lightbox-btn');
+  const photoLightboxPrev = document.getElementById('lightbox-prev-btn');
+  const photoLightboxNext = document.getElementById('lightbox-next-btn');
+
+  // Video Lightbox elements
+  const videoLightbox = document.getElementById('video-lightbox');
+  const videoLightboxElem = document.getElementById('lightbox-video-elem');
+  const videoLightboxTitle = document.getElementById('video-lightbox-title');
+  const videoLightboxClose = document.getElementById('close-video-lightbox-btn');
+  const videoLightboxPrev = document.getElementById('video-lightbox-prev-btn');
+  const videoLightboxNext = document.getElementById('video-lightbox-next-btn');
+
+  let activePhotoIdx = 0;
+  let activeVideoIdx = 0;
+  let isMutedState = true;
+  let currentActiveTab = 'photos';
+
+  // Open Modal function accessible globally
+  window.openMediaGallery = function(index = 0, tab = 'photos') {
+    const modalEl = document.getElementById('media-gallery-modal');
+    if (!modalEl) return;
+    modalEl.classList.add('open', 'active');
+    modalEl.setAttribute('aria-hidden', 'false');
+    const btn = document.getElementById('open-media-gallery-btn');
+    btn?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+
+    if (window.lenis) {
+      window.lenis.stop();
+    }
+
+    if (tab === 'videos') {
+      switchTab('videos');
+      if (typeof index === 'number') updateVideoCoverflow(index);
     } else {
-      video.pause();
-      playBtn.innerHTML = Icons.play;
+      switchTab('photos');
+      if (typeof index === 'number') updatePhotoCoverflow(index);
+    }
+  };
+
+  window.closeMediaGallery = function() {
+    const modalEl = document.getElementById('media-gallery-modal');
+    if (!modalEl) return;
+    modalEl.classList.remove('open', 'active');
+    modalEl.setAttribute('aria-hidden', 'true');
+    const btn = document.getElementById('open-media-gallery-btn');
+    btn?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
+    if (window.lenis) {
+      window.lenis.start();
+    }
+
+    pauseAllVideos();
+  };
+
+  openBtn?.addEventListener('click', () => window.openMediaGallery(0, 'photos'));
+  closeBtn?.addEventListener('click', window.closeMediaGallery);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) window.closeMediaGallery();
+  });
+
+  // Header and Drawer Nav Links to Gallery
+  document.querySelectorAll('a[href="#gallery"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetSec = document.getElementById('gallery');
+      if (targetSec) targetSec.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Tab Switcher
+  function switchTab(tab) {
+    currentActiveTab = tab;
+    if (tab === 'photos') {
+      tabPhotos?.classList.add('active');
+      tabPhotos?.setAttribute('aria-selected', 'true');
+      tabVideos?.classList.remove('active');
+      tabVideos?.setAttribute('aria-selected', 'false');
+      if (viewPhotos) viewPhotos.style.display = 'flex';
+      if (viewVideos) viewVideos.style.display = 'none';
+      pauseAllVideos();
+      updatePhotoCoverflow(activePhotoIdx);
+    } else {
+      tabVideos?.classList.add('active');
+      tabVideos?.setAttribute('aria-selected', 'true');
+      tabPhotos?.classList.remove('active');
+      tabPhotos?.setAttribute('aria-selected', 'false');
+      if (viewVideos) viewVideos.style.display = 'flex';
+      if (viewPhotos) viewPhotos.style.display = 'none';
+      updateVideoCoverflow(activeVideoIdx);
+    }
+  }
+
+  tabPhotos?.addEventListener('click', () => switchTab('photos'));
+  tabVideos?.addEventListener('click', () => switchTab('videos'));
+
+  // ---------------------------------------------------------------------------
+  // PHOTOS COVERFLOW CAROUSEL (Preserves Individual Image Aspect Ratios)
+  // ---------------------------------------------------------------------------
+  function updatePhotoCoverflow(idx) {
+    if (photoCards.length === 0) return;
+    activePhotoIdx = ((idx % photoCards.length) + photoCards.length) % photoCards.length;
+
+    photoCards.forEach((card, i) => {
+      const diff = i - activePhotoIdx;
+      card.classList.remove('active-card');
+
+      if (diff === 0) {
+        card.classList.add('active-card');
+        card.style.transform = `translateX(0px) scale(1) translateZ(0px) rotateY(0deg)`;
+        card.style.opacity = '1';
+        card.style.zIndex = '10';
+        card.style.pointerEvents = 'auto';
+      } else if (Math.abs(diff) <= 3) {
+        const xOffset = diff * 130;
+        const scale = 1 - Math.abs(diff) * 0.12;
+        const zOffset = -Math.abs(diff) * 90;
+        const yRotation = diff < 0 ? 32 : -32;
+        const opacity = Math.max(0.2, 0.8 - Math.abs(diff) * 0.22);
+        const zIndex = 10 - Math.abs(diff);
+
+        card.style.transform = `translateX(${xOffset}px) scale(${scale}) translateZ(${zOffset}px) rotateY(${yRotation}deg)`;
+        card.style.opacity = String(opacity);
+        card.style.zIndex = String(zIndex);
+        card.style.pointerEvents = 'auto';
+      } else {
+        const xOffset = diff > 0 ? 550 : -550;
+        card.style.transform = `translateX(${xOffset}px) scale(0.6) translateZ(-350px) rotateY(0deg)`;
+        card.style.opacity = '0';
+        card.style.zIndex = '0';
+        card.style.pointerEvents = 'none';
+      }
+    });
+
+    if (photoCounter) {
+      photoCounter.textContent = `${String(activePhotoIdx + 1).padStart(2, '0')} / ${String(photoCards.length).padStart(2, '0')}`;
+    }
+
+    photoDots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === activePhotoIdx);
+    });
+  }
+
+  photoCards.forEach((card, i) => {
+    card.addEventListener('click', () => {
+      if (i === activePhotoIdx) {
+        openPhotoLightbox(i);
+      } else {
+        updatePhotoCoverflow(i);
+      }
+    });
+  });
+
+  photoPrevBtn?.addEventListener('click', () => updatePhotoCoverflow(activePhotoIdx - 1));
+  photoNextBtn?.addEventListener('click', () => updatePhotoCoverflow(activePhotoIdx + 1));
+
+  photoDots.forEach((dot, i) => {
+    dot.addEventListener('click', () => updatePhotoCoverflow(i));
+  });
+
+  // Touch & Drag on Photo Stage
+  let pStartX = 0;
+  let pIsDragging = false;
+  photoStage?.addEventListener('mousedown', (e) => {
+    pStartX = e.clientX;
+    pIsDragging = true;
+  });
+  window.addEventListener('mouseup', (e) => {
+    if (!pIsDragging) return;
+    pIsDragging = false;
+    const diff = e.clientX - pStartX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) updatePhotoCoverflow(activePhotoIdx - 1);
+      else updatePhotoCoverflow(activePhotoIdx + 1);
+    }
+  });
+  photoStage?.addEventListener('touchstart', (e) => {
+    if (e.touches[0]) pStartX = e.touches[0].clientX;
+  }, { passive: true });
+  photoStage?.addEventListener('touchend', (e) => {
+    if (e.changedTouches[0]) {
+      const diff = e.changedTouches[0].clientX - pStartX;
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) updatePhotoCoverflow(activePhotoIdx - 1);
+        else updatePhotoCoverflow(activePhotoIdx + 1);
+      }
+    }
+  }, { passive: true });
+
+  // ---------------------------------------------------------------------------
+  // PHOTO LIGHTBOX
+  // ---------------------------------------------------------------------------
+  let lbPhotoIdx = 0;
+  function openPhotoLightbox(index) {
+    if (!photoLightbox || !galleryPhotos[index]) return;
+    if (window.lenis) window.lenis.stop();
+    lbPhotoIdx = index;
+    renderPhotoLightboxContent();
+    photoLightbox.classList.add('open', 'active');
+    photoLightbox.setAttribute('aria-hidden', 'false');
+  }
+
+  function renderPhotoLightboxContent() {
+    const item = galleryPhotos[lbPhotoIdx];
+    if (!item) return;
+    if (photoLightboxImg) {
+      photoLightboxImg.src = getAssetUrl(item.src);
+      photoLightboxImg.alt = item.title;
+    }
+    if (photoLightboxTitle) photoLightboxTitle.textContent = item.title;
+    if (photoLightboxCategory) photoLightboxCategory.textContent = `${item.category} (${item.aspectRatio.toUpperCase()})`;
+  }
+
+  function closePhotoLightbox() {
+    if (!photoLightbox) return;
+    photoLightbox.classList.remove('open', 'active');
+    photoLightbox.setAttribute('aria-hidden', 'true');
+    if (window.lenis) window.lenis.start();
+  }
+  window.closePhotoLightbox = closePhotoLightbox;
+
+  photoLightboxClose?.addEventListener('click', closePhotoLightbox);
+  photoLightbox?.addEventListener('click', (e) => {
+    if (e.target === photoLightbox) closePhotoLightbox();
+  });
+  photoLightboxPrev?.addEventListener('click', () => {
+    lbPhotoIdx = ((lbPhotoIdx - 1) + galleryPhotos.length) % galleryPhotos.length;
+    renderPhotoLightboxContent();
+    updatePhotoCoverflow(lbPhotoIdx);
+  });
+  photoLightboxNext?.addEventListener('click', () => {
+    lbPhotoIdx = (lbPhotoIdx + 1) % galleryPhotos.length;
+    renderPhotoLightboxContent();
+    updatePhotoCoverflow(lbPhotoIdx);
+  });
+
+  // ---------------------------------------------------------------------------
+  // VIDEO 3D COVERFLOW (9:16 Vertical Video Reels)
+  // ---------------------------------------------------------------------------
+  function pauseAllVideos() {
+    videoCards.forEach(card => {
+      const vid = card.querySelector('video');
+      const pBtn = card.querySelector('.video-play-center-btn');
+      if (vid) vid.pause();
+      if (pBtn) pBtn.innerHTML = Icons.play;
+    });
+  }
+
+  function updateVideoCoverflow(idx) {
+    if (videoCards.length === 0) return;
+    activeVideoIdx = ((idx % videoCards.length) + videoCards.length) % videoCards.length;
+
+    videoCards.forEach((card, i) => {
+      const diff = i - activeVideoIdx;
+      const vid = card.querySelector('video');
+      const pBtn = card.querySelector('.video-play-center-btn');
+      const muteBtn = card.querySelector(`#video-mute-toggle-${i}`);
+      const volumeSlider = card.querySelector(`#video-volume-${i}`);
+
+      card.classList.remove('active-card');
+
+      if (diff === 0) {
+        card.classList.add('active-card');
+        card.style.transform = `translateX(0px) scale(1) translateZ(0px) rotateY(0deg)`;
+        card.style.opacity = '1';
+        card.style.zIndex = '10';
+        card.style.pointerEvents = 'auto';
+
+        if (vid) {
+          vid.muted = isMutedState;
+          if (muteBtn) muteBtn.innerHTML = isMutedState ? Icons.volumeX : Icons.volume2;
+          if (volumeSlider) volumeSlider.value = isMutedState ? '0' : String(vid.volume || 0.7);
+
+          const playPromise = vid.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              if (pBtn) pBtn.innerHTML = Icons.pause;
+            }).catch(() => {
+              // Muted autoplay was blocked or needs user gesture
+              if (pBtn) pBtn.innerHTML = Icons.play;
+            });
+          }
+        }
+      } else {
+        const xOffset = diff * 150;
+        const yRotation = diff < 0 ? 30 : -30;
+        card.style.transform = `translateX(${xOffset}px) scale(0.85) translateZ(-130px) rotateY(${yRotation}deg)`;
+        card.style.opacity = '0.55';
+        card.style.zIndex = '5';
+        card.style.pointerEvents = 'auto';
+
+        if (vid) vid.pause();
+        if (pBtn) pBtn.innerHTML = Icons.play;
+      }
+    });
+
+    if (videoCounter) {
+      videoCounter.textContent = `${String(activeVideoIdx + 1).padStart(2, '0')} / ${String(videoCards.length).padStart(2, '0')}`;
+    }
+  }
+
+  videoCards.forEach((card, i) => {
+    const vid = card.querySelector('video');
+    const playBtn = card.querySelector('.video-play-center-btn');
+    const muteBtn = card.querySelector(`#video-mute-toggle-${i}`);
+    const volSlider = card.querySelector(`#video-volume-${i}`);
+
+    card.addEventListener('click', (e) => {
+      // Don't trigger card navigation if clicking toolbar controls
+      if (e.target.closest('.video-bottom-toolbar')) return;
+
+      if (i !== activeVideoIdx) {
+        updateVideoCoverflow(i);
+      } else {
+        // Active card: toggle play/pause on direct click or open lightbox on double click
+        if (vid) {
+          if (vid.paused) {
+            vid.play().then(() => {
+              if (playBtn) playBtn.innerHTML = Icons.pause;
+            });
+          } else {
+            vid.pause();
+            if (playBtn) playBtn.innerHTML = Icons.play;
+          }
+        }
+      }
+    });
+
+    // Center play button click
+    playBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (i !== activeVideoIdx) {
+        updateVideoCoverflow(i);
+        return;
+      }
+      if (vid) {
+        if (vid.paused) {
+          vid.play().then(() => {
+            playBtn.innerHTML = Icons.pause;
+          });
+        } else {
+          vid.pause();
+          playBtn.innerHTML = Icons.play;
+        }
+      }
+    });
+
+    // Mute toggle
+    muteBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isMutedState = !isMutedState;
+      if (vid) {
+        vid.muted = isMutedState;
+        muteBtn.innerHTML = isMutedState ? Icons.volumeX : Icons.volume2;
+        if (volSlider) volSlider.value = isMutedState ? '0' : String(vid.volume || 0.7);
+      }
+    });
+
+    // Volume Slider
+    volSlider?.addEventListener('input', (e) => {
+      e.stopPropagation();
+      const val = parseFloat(volSlider.value);
+      if (vid) {
+        vid.volume = val;
+        vid.muted = (val === 0);
+        isMutedState = (val === 0);
+        if (muteBtn) muteBtn.innerHTML = val === 0 ? Icons.volumeX : Icons.volume2;
+      }
+    });
+
+    // Double click to open full-screen video lightbox
+    card.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      openVideoLightbox(i);
+    });
+  });
+
+  videoPrevBtn?.addEventListener('click', () => updateVideoCoverflow(activeVideoIdx - 1));
+  videoNextBtn?.addEventListener('click', () => updateVideoCoverflow(activeVideoIdx + 1));
+
+  // ---------------------------------------------------------------------------
+  // VIDEO LIGHTBOX
+  // ---------------------------------------------------------------------------
+  let lbVideoIdx = 0;
+  function openVideoLightbox(index) {
+    if (!videoLightbox || !galleryVideos[index]) return;
+    if (window.lenis) window.lenis.stop();
+    pauseAllVideos();
+    lbVideoIdx = index;
+    renderVideoLightboxContent();
+    videoLightbox.classList.add('open', 'active');
+    videoLightbox.setAttribute('aria-hidden', 'false');
+  }
+
+  function renderVideoLightboxContent() {
+    const item = galleryVideos[lbVideoIdx];
+    if (!item) return;
+    if (videoLightboxElem) {
+      videoLightboxElem.src = getAssetUrl(item.src);
+      videoLightboxElem.poster = getAssetUrl(item.poster);
+      videoLightboxElem.muted = isMutedState;
+      videoLightboxElem.play().catch(() => {});
+    }
+    if (videoLightboxTitle) videoLightboxTitle.textContent = `${item.title} (9:16 Vertical Reel)`;
+  }
+
+  function closeVideoLightbox() {
+    if (!videoLightbox) return;
+    if (videoLightboxElem) {
+      videoLightboxElem.pause();
+      videoLightboxElem.removeAttribute('src');
+      videoLightboxElem.load();
+    }
+    videoLightbox.classList.remove('open', 'active');
+    videoLightbox.setAttribute('aria-hidden', 'true');
+    if (window.lenis) window.lenis.start();
+    // Return to coverflow state
+    updateVideoCoverflow(activeVideoIdx);
+  }
+  window.closeVideoLightbox = closeVideoLightbox;
+
+  videoLightboxClose?.addEventListener('click', closeVideoLightbox);
+  videoLightbox?.addEventListener('click', (e) => {
+    if (e.target === videoLightbox) closeVideoLightbox();
+  });
+  videoLightboxPrev?.addEventListener('click', () => {
+    lbVideoIdx = ((lbVideoIdx - 1) + galleryVideos.length) % galleryVideos.length;
+    renderVideoLightboxContent();
+    activeVideoIdx = lbVideoIdx;
+  });
+  videoLightboxNext?.addEventListener('click', () => {
+    lbVideoIdx = (lbVideoIdx + 1) % galleryVideos.length;
+    renderVideoLightboxContent();
+    activeVideoIdx = lbVideoIdx;
+  });
+
+  // Global Keyboard Navigation (Esc to close, Arrows to navigate)
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (photoLightbox?.classList.contains('open')) {
+        closePhotoLightbox();
+      } else if (videoLightbox?.classList.contains('open')) {
+        closeVideoLightbox();
+      } else if (modal?.classList.contains('open')) {
+        window.closeMediaGallery();
+      }
+    } else if (e.key === 'ArrowLeft') {
+      if (photoLightbox?.classList.contains('open')) {
+        photoLightboxPrev?.click();
+      } else if (videoLightbox?.classList.contains('open')) {
+        videoLightboxPrev?.click();
+      } else if (modal?.classList.contains('open')) {
+        if (currentActiveTab === 'photos') updatePhotoCoverflow(activePhotoIdx - 1);
+        else updateVideoCoverflow(activeVideoIdx - 1);
+      }
+    } else if (e.key === 'ArrowRight') {
+      if (photoLightbox?.classList.contains('open')) {
+        photoLightboxNext?.click();
+      } else if (videoLightbox?.classList.contains('open')) {
+        videoLightboxNext?.click();
+      } else if (modal?.classList.contains('open')) {
+        if (currentActiveTab === 'photos') updatePhotoCoverflow(activePhotoIdx + 1);
+        else updateVideoCoverflow(activeVideoIdx + 1);
+      }
     }
   });
 
-  muteBtn.addEventListener('click', () => {
-    video.muted = !video.muted;
-    muteBtn.innerHTML = video.muted ? Icons.volumeX : Icons.volume2;
-  });
-
-  const playPromise = video.play();
-  if (playPromise !== undefined) {
-    playPromise.then(() => {
-      playBtn.innerHTML = Icons.pause;
-    }).catch(() => {
-      playBtn.innerHTML = Icons.play;
-    });
-  }
+  // Initialize first coverflow state
+  updatePhotoCoverflow(0);
 }
 
 // Start Application

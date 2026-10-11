@@ -338,7 +338,7 @@ export const speakingCardsData = [
   },
   {
     id: "spk-5",
-    image: "/assets/images/speaking/speach 6.jpg",
+    image: "/assets/images/speaking/speaking from audience2.jpeg",
     category: "Academic Colloquium",
     title: "Human Resource Development & Management",
     desc: "Interdisciplinary faculty seminars linking modern management research with grounded classroom mentorship practices."
