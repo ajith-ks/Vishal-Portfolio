@@ -671,7 +671,7 @@ function renderGallery() {
               <span>Videos (${galleryVideos.length})</span>
             </button>
           </div>
-          <button type="button" class="modal-close-btn" id="close-gallery-modal-btn" onclick="closeMediaGallery()" aria-label="Close Gallery">
+          <button type="button" class="modal-close-btn" id="close-gallery-modal-btn" onclick="closeMediaGallery(event); event.stopPropagation();" aria-label="Close Gallery">
             ${Icons.x}
           </button>
         </div>
@@ -766,7 +766,7 @@ function renderGallery() {
 
     <!-- Full-Screen Image Lightbox -->
     <div class="media-lightbox-overlay" id="image-lightbox" role="dialog" aria-modal="true" aria-label="Full-screen Image View" aria-hidden="true">
-      <button type="button" class="lightbox-close-btn" id="close-image-lightbox-btn" onclick="closePhotoLightbox()" aria-label="Close Lightbox">
+      <button type="button" class="lightbox-close-btn" id="close-image-lightbox-btn" onclick="closePhotoLightbox(event); event.stopPropagation();" aria-label="Close Lightbox">
         ${Icons.x}
       </button>
       <button type="button" class="lightbox-nav-btn lightbox-prev" id="lightbox-prev-btn" aria-label="Previous Image">
@@ -788,7 +788,7 @@ function renderGallery() {
 
     <!-- Full-Screen Video Lightbox -->
     <div class="media-lightbox-overlay" id="video-lightbox" role="dialog" aria-modal="true" aria-label="Full-screen Video View" aria-hidden="true">
-      <button type="button" class="lightbox-close-btn" id="close-video-lightbox-btn" onclick="closeVideoLightbox()" aria-label="Close Video Lightbox">
+      <button type="button" class="lightbox-close-btn" id="close-video-lightbox-btn" onclick="closeVideoLightbox(event); event.stopPropagation();" aria-label="Close Video Lightbox">
         ${Icons.x}
       </button>
       <button type="button" class="lightbox-nav-btn lightbox-prev" id="video-lightbox-prev-btn" aria-label="Previous Video">
@@ -970,7 +970,7 @@ function renderTestimonials() {
                 : t.testimony;
 
               return `
-                <div class="floating-pill-card" data-index="${idx}" onclick="openAllTestimonials()" role="button" tabindex="0" aria-label="Testimonial by ${t.name}">
+                <div class="floating-pill-card" data-index="${idx}" onclick="openAllTestimonials(event); event.stopPropagation();" role="button" tabindex="0" aria-label="Testimonial by ${t.name}">
                   <div class="pill-avatar-monogram">${initials}</div>
                   <div class="pill-content">
                     <div class="pill-header-row">
@@ -987,7 +987,7 @@ function renderTestimonials() {
         </div>
 
         <div class="testimonials-cta-wrap">
-          <button type="button" class="shiny-btn" id="view-all-testimonials-btn" onclick="openAllTestimonials()" aria-haspopup="dialog" aria-expanded="false">
+          <button type="button" class="shiny-btn" id="view-all-testimonials-btn" onclick="openAllTestimonials(event); event.stopPropagation();" aria-haspopup="dialog" aria-expanded="false">
             <span class="shiny-btn-content">
               <span>View All Testimonials (${testimonials.length})</span>
               ${Icons.arrowRight}
@@ -1010,7 +1010,7 @@ function renderTestimonials() {
             <h3 class="modal-title">Testimonials &amp; Mentorship Reflections</h3>
             <p class="modal-subtitle">Complete, unedited feedback from mentees, graduates, and collegiate faculty guided by Dr. Vishal Kattery.</p>
           </div>
-          <button type="button" class="modal-close-btn" id="close-testimonials-modal-btn" onclick="closeAllTestimonials()" aria-label="Close Testimonials Dialog">
+          <button type="button" class="modal-close-btn" id="close-testimonials-modal-btn" onclick="closeAllTestimonials(event); event.stopPropagation();" aria-label="Close Testimonials Dialog">
             ${Icons.x}
           </button>
         </div>
@@ -1616,6 +1616,22 @@ function setupContactForm() {
   });
 }
 
+// =============================================================================
+// GLOBAL VIEW STATE COORDINATOR
+// Coordinates Top-Level Views (Main, Testimonials, Media Gallery) and Nested Lightboxes
+// =============================================================================
+const VIEW_STATES = {
+  MAIN: 'main',
+  TESTIMONIALS: 'testimonials',
+  GALLERY_PHOTOS: 'gallery_photos',
+  GALLERY_VIDEOS: 'gallery_videos',
+  LIGHTBOX_PHOTO: 'lightbox_photo',
+  LIGHTBOX_VIDEO: 'lightbox_video'
+};
+
+let currentViewState = VIEW_STATES.MAIN;
+let originScrollY = 0;
+
 function setupTestimonialMarquee() {
   const stage = document.getElementById('testimonials-stage');
   const track = document.getElementById('testimonials-track');
@@ -1642,11 +1658,9 @@ function setupTestimonialMarquee() {
 
     currentShift += cardWidth;
     if (currentShift >= halfWidth) {
-      // Loop smoothly
       currentShift = 0;
       track.style.transition = 'none';
       track.style.transform = `translateX(0px)`;
-      // Force layout
       void track.offsetWidth;
     }
 
@@ -1657,7 +1671,6 @@ function setupTestimonialMarquee() {
   function startTimer() {
     if (prefersReduced) return;
     if (timer) clearInterval(timer);
-    // 5-second pause between movements
     timer = setInterval(stepMarquee, 5000);
   }
 
@@ -1670,9 +1683,29 @@ function setupTestimonialMarquee() {
 
   startTimer();
 
-  window.openAllTestimonials = function() {
+  window.openAllTestimonials = function(e) {
+    if (e) {
+      e.stopPropagation?.();
+    }
+    // Prevent opening if another overlay is already active
+    if (currentViewState !== VIEW_STATES.MAIN && currentViewState !== VIEW_STATES.TESTIMONIALS) {
+      return;
+    }
     const modalEl = document.getElementById('all-testimonials-modal');
     if (!modalEl) return;
+
+    originScrollY = window.scrollY || window.pageYOffset || 0;
+    currentViewState = VIEW_STATES.TESTIMONIALS;
+
+    // Safety: ensure media gallery and lightboxes are closed and non-interactive
+    const galleryModal = document.getElementById('media-gallery-modal');
+    galleryModal?.classList.remove('open', 'active');
+    galleryModal?.setAttribute('aria-hidden', 'true');
+    document.getElementById('image-lightbox')?.classList.remove('open', 'active');
+    document.getElementById('image-lightbox')?.setAttribute('aria-hidden', 'true');
+    document.getElementById('video-lightbox')?.classList.remove('open', 'active');
+    document.getElementById('video-lightbox')?.setAttribute('aria-hidden', 'true');
+
     modalEl.classList.add('open', 'active');
     modalEl.setAttribute('aria-hidden', 'false');
     const btn = document.getElementById('view-all-testimonials-btn');
@@ -1691,7 +1724,10 @@ function setupTestimonialMarquee() {
     isPaused = true;
   };
 
-  window.closeAllTestimonials = function() {
+  window.closeAllTestimonials = function(e) {
+    if (e) {
+      e.stopPropagation?.();
+    }
     const modalEl = document.getElementById('all-testimonials-modal');
     if (!modalEl) return;
     modalEl.classList.remove('open', 'active');
@@ -1700,18 +1736,22 @@ function setupTestimonialMarquee() {
     btn?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
 
-    // Resume Lenis smooth scroll
+    currentViewState = VIEW_STATES.MAIN;
+
+    // Resume Lenis smooth scroll and return to originating scroll position
     if (window.lenis) {
       window.lenis.start();
+      window.lenis.scrollTo(originScrollY, { immediate: true });
     }
+    window.scrollTo({ top: originScrollY, behavior: 'instant' });
 
     isPaused = false;
   };
 
-  openModalBtn?.addEventListener('click', window.openAllTestimonials);
-  closeModalBtn?.addEventListener('click', window.closeAllTestimonials);
+  openModalBtn?.addEventListener('click', (e) => window.openAllTestimonials(e));
+  closeModalBtn?.addEventListener('click', (e) => window.closeAllTestimonials(e));
   modal?.addEventListener('click', (e) => {
-    if (e.target === modal) window.closeAllTestimonials();
+    if (e.target === modal) window.closeAllTestimonials(e);
   });
 
   // Wheel forwarding: Any wheel event over the modal overlay or header scrolls the body content
@@ -1721,15 +1761,8 @@ function setupTestimonialMarquee() {
     if (!body.contains(e.target) || e.target === body) {
       body.scrollTop += e.deltaY;
     }
-    // Stop propagation so Lenis or window never receives it
     e.stopPropagation();
   }, { passive: true });
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal?.classList.contains('open')) {
-      window.closeAllTestimonials();
-    }
-  });
 }
 
 function setupMediaGallery() {
@@ -1778,10 +1811,29 @@ function setupMediaGallery() {
   let isMutedState = true;
   let currentActiveTab = 'photos';
 
-  // Open Modal function accessible globally
-  window.openMediaGallery = function(index = 0, tab = 'photos') {
+  // Open Media Gallery Modal
+  window.openMediaGallery = function(index = 0, tab = 'photos', e) {
+    if (e) {
+      e.stopPropagation?.();
+    }
     const modalEl = document.getElementById('media-gallery-modal');
     if (!modalEl) return;
+
+    if (currentViewState === VIEW_STATES.MAIN) {
+      originScrollY = window.scrollY || window.pageYOffset || 0;
+    }
+
+    // Safety: close testimonials modal if open
+    const testModal = document.getElementById('all-testimonials-modal');
+    testModal?.classList.remove('open', 'active');
+    testModal?.setAttribute('aria-hidden', 'true');
+
+    // Close any stale lightboxes
+    photoLightbox?.classList.remove('open', 'active');
+    photoLightbox?.setAttribute('aria-hidden', 'true');
+    videoLightbox?.classList.remove('open', 'active');
+    videoLightbox?.setAttribute('aria-hidden', 'true');
+
     modalEl.classList.add('open', 'active');
     modalEl.setAttribute('aria-hidden', 'false');
     const btn = document.getElementById('open-media-gallery-btn');
@@ -1793,34 +1845,63 @@ function setupMediaGallery() {
     }
 
     if (tab === 'videos') {
+      currentViewState = VIEW_STATES.GALLERY_VIDEOS;
       switchTab('videos');
       if (typeof index === 'number') updateVideoCoverflow(index);
     } else {
+      currentViewState = VIEW_STATES.GALLERY_PHOTOS;
       switchTab('photos');
       if (typeof index === 'number') updatePhotoCoverflow(index);
     }
   };
 
-  window.closeMediaGallery = function() {
+  // Close Media Gallery Modal
+  window.closeMediaGallery = function(e) {
+    if (e) {
+      e.stopPropagation?.();
+    }
     const modalEl = document.getElementById('media-gallery-modal');
     if (!modalEl) return;
+
+    // Close all nested lightboxes safely
+    if (photoLightbox) {
+      photoLightbox.classList.remove('open', 'active');
+      photoLightbox.setAttribute('aria-hidden', 'true');
+    }
+    if (videoLightbox) {
+      videoLightbox.classList.remove('open', 'active');
+      videoLightbox.setAttribute('aria-hidden', 'true');
+      if (videoLightboxElem) {
+        videoLightboxElem.pause();
+        videoLightboxElem.removeAttribute('src');
+        videoLightboxElem.load();
+      }
+    }
+
+    pauseAllVideos();
+
     modalEl.classList.remove('open', 'active');
     modalEl.setAttribute('aria-hidden', 'true');
     const btn = document.getElementById('open-media-gallery-btn');
     btn?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
 
+    currentViewState = VIEW_STATES.MAIN;
+
+    // Resume Lenis and restore originating scroll position
     if (window.lenis) {
       window.lenis.start();
+      window.lenis.scrollTo(originScrollY, { immediate: true });
     }
-
-    pauseAllVideos();
+    window.scrollTo({ top: originScrollY, behavior: 'instant' });
   };
 
-  openBtn?.addEventListener('click', () => window.openMediaGallery(0, 'photos'));
-  closeBtn?.addEventListener('click', window.closeMediaGallery);
+  openBtn?.addEventListener('click', (e) => window.openMediaGallery(0, 'photos', e));
+  closeBtn?.addEventListener('click', (e) => window.closeMediaGallery(e));
   modal?.addEventListener('click', (e) => {
-    if (e.target === modal) window.closeMediaGallery();
+    if (e.target === modal && (currentViewState === VIEW_STATES.GALLERY_PHOTOS || currentViewState === VIEW_STATES.GALLERY_VIDEOS)) {
+      window.closeMediaGallery(e);
+    }
   });
 
   // Header and Drawer Nav Links to Gallery
@@ -1828,7 +1909,28 @@ function setupMediaGallery() {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const targetSec = document.getElementById('gallery');
-      if (targetSec) targetSec.scrollIntoView({ behavior: 'smooth' });
+      if (targetSec) {
+        if (window.lenis) {
+          window.lenis.scrollTo(targetSec, { offset: -70 });
+        } else {
+          targetSec.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+  // Nav Links to Testimonials
+  document.querySelectorAll('a[href="#testimonials"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetSec = document.getElementById('testimonials');
+      if (targetSec) {
+        if (window.lenis) {
+          window.lenis.scrollTo(targetSec, { offset: -70 });
+        } else {
+          targetSec.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
     });
   });
 
@@ -1836,6 +1938,7 @@ function setupMediaGallery() {
   function switchTab(tab) {
     currentActiveTab = tab;
     if (tab === 'photos') {
+      currentViewState = VIEW_STATES.GALLERY_PHOTOS;
       tabPhotos?.classList.add('active');
       tabPhotos?.setAttribute('aria-selected', 'true');
       tabVideos?.classList.remove('active');
@@ -1845,6 +1948,7 @@ function setupMediaGallery() {
       pauseAllVideos();
       updatePhotoCoverflow(activePhotoIdx);
     } else {
+      currentViewState = VIEW_STATES.GALLERY_VIDEOS;
       tabVideos?.classList.add('active');
       tabVideos?.setAttribute('aria-selected', 'true');
       tabPhotos?.classList.remove('active');
@@ -1859,11 +1963,16 @@ function setupMediaGallery() {
   tabVideos?.addEventListener('click', () => switchTab('videos'));
 
   // ---------------------------------------------------------------------------
-  // PHOTOS COVERFLOW CAROUSEL (Preserves Individual Image Aspect Ratios)
+  // PHOTOS COVERFLOW CAROUSEL (3D Perspective + Preserves Aspect Ratios)
   // ---------------------------------------------------------------------------
   function updatePhotoCoverflow(idx) {
     if (photoCards.length === 0) return;
     activePhotoIdx = ((idx % photoCards.length) + photoCards.length) % photoCards.length;
+
+    const isMobile = window.innerWidth <= 768;
+    const xStep = isMobile ? Math.min(138, Math.round(window.innerWidth * 0.36)) : 130;
+    const zStep = isMobile ? 65 : 90;
+    const rot = isMobile ? 24 : 32;
 
     photoCards.forEach((card, i) => {
       const diff = i - activePhotoIdx;
@@ -1876,11 +1985,11 @@ function setupMediaGallery() {
         card.style.zIndex = '10';
         card.style.pointerEvents = 'auto';
       } else if (Math.abs(diff) <= 3) {
-        const xOffset = diff * 130;
-        const scale = 1 - Math.abs(diff) * 0.12;
-        const zOffset = -Math.abs(diff) * 90;
-        const yRotation = diff < 0 ? 32 : -32;
-        const opacity = Math.max(0.2, 0.8 - Math.abs(diff) * 0.22);
+        const xOffset = diff * xStep;
+        const scale = 1 - Math.abs(diff) * (isMobile ? 0.14 : 0.12);
+        const zOffset = -Math.abs(diff) * zStep;
+        const yRotation = diff < 0 ? rot : -rot;
+        const opacity = Math.max(0.25, 0.75 - Math.abs(diff) * 0.2);
         const zIndex = 10 - Math.abs(diff);
 
         card.style.transform = `translateX(${xOffset}px) scale(${scale}) translateZ(${zOffset}px) rotateY(${yRotation}deg)`;
@@ -1888,7 +1997,7 @@ function setupMediaGallery() {
         card.style.zIndex = String(zIndex);
         card.style.pointerEvents = 'auto';
       } else {
-        const xOffset = diff > 0 ? 550 : -550;
+        const xOffset = diff > 0 ? (isMobile ? 320 : 550) : (isMobile ? -320 : -550);
         card.style.transform = `translateX(${xOffset}px) scale(0.6) translateZ(-350px) rotateY(0deg)`;
         card.style.opacity = '0';
         card.style.zIndex = '0';
@@ -1905,61 +2014,100 @@ function setupMediaGallery() {
     });
   }
 
+  let pTouchStartX = 0;
+  let pTouchStartY = 0;
+  let pJustSwiped = false;
+  let pIsSwiping = false;
+
   photoCards.forEach((card, i) => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (pJustSwiped) {
+        e.stopPropagation();
+        e.preventDefault();
+        return;
+      }
       if (i === activePhotoIdx) {
-        openPhotoLightbox(i);
+        openPhotoLightbox(i, e);
       } else {
         updatePhotoCoverflow(i);
       }
     });
   });
 
-  photoPrevBtn?.addEventListener('click', () => updatePhotoCoverflow(activePhotoIdx - 1));
-  photoNextBtn?.addEventListener('click', () => updatePhotoCoverflow(activePhotoIdx + 1));
+  photoPrevBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updatePhotoCoverflow(activePhotoIdx - 1);
+  });
+  photoNextBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updatePhotoCoverflow(activePhotoIdx + 1);
+  });
 
   photoDots.forEach((dot, i) => {
-    dot.addEventListener('click', () => updatePhotoCoverflow(i));
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updatePhotoCoverflow(i);
+    });
   });
 
-  // Touch & Drag on Photo Stage
-  let pStartX = 0;
-  let pIsDragging = false;
+  // Touch & Swipe on Photo Stage
+  photoStage?.addEventListener('touchstart', (e) => {
+    if (!e.touches[0]) return;
+    pTouchStartX = e.touches[0].clientX;
+    pTouchStartY = e.touches[0].clientY;
+    pIsSwiping = false;
+  }, { passive: true });
+
+  photoStage?.addEventListener('touchmove', (e) => {
+    if (!e.touches[0]) return;
+    const diffX = e.touches[0].clientX - pTouchStartX;
+    const diffY = e.touches[0].clientY - pTouchStartY;
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+      pIsSwiping = true;
+    }
+  }, { passive: true });
+
+  photoStage?.addEventListener('touchend', (e) => {
+    if (!e.changedTouches[0]) return;
+    const diffX = e.changedTouches[0].clientX - pTouchStartX;
+    const diffY = e.changedTouches[0].clientY - pTouchStartY;
+    if (pIsSwiping && Math.abs(diffX) >= 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      pJustSwiped = true;
+      setTimeout(() => { pJustSwiped = false; }, 350);
+      if (diffX > 0) updatePhotoCoverflow(activePhotoIdx - 1);
+      else updatePhotoCoverflow(activePhotoIdx + 1);
+    }
+  }, { passive: true });
+
+  // Mouse Drag on Photo Stage
+  let pMouseStartX = 0;
+  let pIsMouseDragging = false;
   photoStage?.addEventListener('mousedown', (e) => {
-    pStartX = e.clientX;
-    pIsDragging = true;
+    pMouseStartX = e.clientX;
+    pIsMouseDragging = true;
   });
   window.addEventListener('mouseup', (e) => {
-    if (!pIsDragging) return;
-    pIsDragging = false;
-    const diff = e.clientX - pStartX;
+    if (!pIsMouseDragging) return;
+    pIsMouseDragging = false;
+    const diff = e.clientX - pMouseStartX;
     if (Math.abs(diff) > 40) {
+      pJustSwiped = true;
+      setTimeout(() => { pJustSwiped = false; }, 350);
       if (diff > 0) updatePhotoCoverflow(activePhotoIdx - 1);
       else updatePhotoCoverflow(activePhotoIdx + 1);
     }
   });
-  photoStage?.addEventListener('touchstart', (e) => {
-    if (e.touches[0]) pStartX = e.touches[0].clientX;
-  }, { passive: true });
-  photoStage?.addEventListener('touchend', (e) => {
-    if (e.changedTouches[0]) {
-      const diff = e.changedTouches[0].clientX - pStartX;
-      if (Math.abs(diff) > 40) {
-        if (diff > 0) updatePhotoCoverflow(activePhotoIdx - 1);
-        else updatePhotoCoverflow(activePhotoIdx + 1);
-      }
-    }
-  }, { passive: true });
 
   // ---------------------------------------------------------------------------
-  // PHOTO LIGHTBOX
+  // PHOTO LIGHTBOX (Child interaction within Media Gallery)
   // ---------------------------------------------------------------------------
   let lbPhotoIdx = 0;
-  function openPhotoLightbox(index) {
+  function openPhotoLightbox(index, e) {
+    if (e) e.stopPropagation?.();
     if (!photoLightbox || !galleryPhotos[index]) return;
-    if (window.lenis) window.lenis.stop();
     lbPhotoIdx = index;
     renderPhotoLightboxContent();
+    currentViewState = VIEW_STATES.LIGHTBOX_PHOTO;
     photoLightbox.classList.add('open', 'active');
     photoLightbox.setAttribute('aria-hidden', 'false');
   }
@@ -1975,26 +2123,36 @@ function setupMediaGallery() {
     if (photoLightboxCategory) photoLightboxCategory.textContent = `${item.category} (${item.aspectRatio.toUpperCase()})`;
   }
 
-  function closePhotoLightbox() {
+  function closePhotoLightbox(e) {
+    if (e) {
+      e.stopPropagation?.();
+      e.preventDefault?.();
+    }
     if (!photoLightbox) return;
     photoLightbox.classList.remove('open', 'active');
     photoLightbox.setAttribute('aria-hidden', 'true');
-    if (window.lenis) window.lenis.start();
+    // Return to parent Photo Coverflow view (keep gallery modal open, maintain image index)
+    currentViewState = VIEW_STATES.GALLERY_PHOTOS;
+    updatePhotoCoverflow(activePhotoIdx);
   }
   window.closePhotoLightbox = closePhotoLightbox;
 
-  photoLightboxClose?.addEventListener('click', closePhotoLightbox);
+  photoLightboxClose?.addEventListener('click', (e) => closePhotoLightbox(e));
   photoLightbox?.addEventListener('click', (e) => {
-    if (e.target === photoLightbox) closePhotoLightbox();
+    if (e.target === photoLightbox) closePhotoLightbox(e);
   });
-  photoLightboxPrev?.addEventListener('click', () => {
+  photoLightboxPrev?.addEventListener('click', (e) => {
+    e.stopPropagation();
     lbPhotoIdx = ((lbPhotoIdx - 1) + galleryPhotos.length) % galleryPhotos.length;
     renderPhotoLightboxContent();
+    activePhotoIdx = lbPhotoIdx;
     updatePhotoCoverflow(lbPhotoIdx);
   });
-  photoLightboxNext?.addEventListener('click', () => {
+  photoLightboxNext?.addEventListener('click', (e) => {
+    e.stopPropagation();
     lbPhotoIdx = (lbPhotoIdx + 1) % galleryPhotos.length;
     renderPhotoLightboxContent();
+    activePhotoIdx = lbPhotoIdx;
     updatePhotoCoverflow(lbPhotoIdx);
   });
 
@@ -2013,6 +2171,11 @@ function setupMediaGallery() {
   function updateVideoCoverflow(idx) {
     if (videoCards.length === 0) return;
     activeVideoIdx = ((idx % videoCards.length) + videoCards.length) % videoCards.length;
+
+    const isMobile = window.innerWidth <= 768;
+    const xStep = isMobile ? Math.min(150, Math.round(window.innerWidth * 0.36)) : 150;
+    const rot = isMobile ? 22 : 30;
+    const zStep = isMobile ? -90 : -130;
 
     videoCards.forEach((card, i) => {
       const diff = i - activeVideoIdx;
@@ -2040,15 +2203,14 @@ function setupMediaGallery() {
             playPromise.then(() => {
               if (pBtn) pBtn.innerHTML = Icons.pause;
             }).catch(() => {
-              // Muted autoplay was blocked or needs user gesture
               if (pBtn) pBtn.innerHTML = Icons.play;
             });
           }
         }
       } else {
-        const xOffset = diff * 150;
-        const yRotation = diff < 0 ? 30 : -30;
-        card.style.transform = `translateX(${xOffset}px) scale(0.85) translateZ(-130px) rotateY(${yRotation}deg)`;
+        const xOffset = diff * xStep;
+        const yRotation = diff < 0 ? rot : -rot;
+        card.style.transform = `translateX(${xOffset}px) scale(0.85) translateZ(${zStep}px) rotateY(${yRotation}deg)`;
         card.style.opacity = '0.55';
         card.style.zIndex = '5';
         card.style.pointerEvents = 'auto';
@@ -2063,6 +2225,11 @@ function setupMediaGallery() {
     }
   }
 
+  let vTouchStartX = 0;
+  let vTouchStartY = 0;
+  let vJustSwiped = false;
+  let vIsSwiping = false;
+
   videoCards.forEach((card, i) => {
     const vid = card.querySelector('video');
     const playBtn = card.querySelector('.video-play-center-btn');
@@ -2070,13 +2237,16 @@ function setupMediaGallery() {
     const volSlider = card.querySelector(`#video-volume-${i}`);
 
     card.addEventListener('click', (e) => {
-      // Don't trigger card navigation if clicking toolbar controls
       if (e.target.closest('.video-bottom-toolbar')) return;
+      if (vJustSwiped) {
+        e.stopPropagation();
+        e.preventDefault();
+        return;
+      }
 
       if (i !== activeVideoIdx) {
         updateVideoCoverflow(i);
       } else {
-        // Active card: toggle play/pause on direct click or open lightbox on double click
         if (vid) {
           if (vid.paused) {
             vid.play().then(() => {
@@ -2090,7 +2260,6 @@ function setupMediaGallery() {
       }
     });
 
-    // Center play button click
     playBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
       if (i !== activeVideoIdx) {
@@ -2109,7 +2278,6 @@ function setupMediaGallery() {
       }
     });
 
-    // Mute toggle
     muteBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
       isMutedState = !isMutedState;
@@ -2120,7 +2288,6 @@ function setupMediaGallery() {
       }
     });
 
-    // Volume Slider
     volSlider?.addEventListener('input', (e) => {
       e.stopPropagation();
       const val = parseFloat(volSlider.value);
@@ -2132,26 +2299,80 @@ function setupMediaGallery() {
       }
     });
 
-    // Double click to open full-screen video lightbox
     card.addEventListener('dblclick', (e) => {
       e.stopPropagation();
-      openVideoLightbox(i);
+      openVideoLightbox(i, e);
     });
   });
 
-  videoPrevBtn?.addEventListener('click', () => updateVideoCoverflow(activeVideoIdx - 1));
-  videoNextBtn?.addEventListener('click', () => updateVideoCoverflow(activeVideoIdx + 1));
+  videoPrevBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateVideoCoverflow(activeVideoIdx - 1);
+  });
+  videoNextBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateVideoCoverflow(activeVideoIdx + 1);
+  });
+
+  // Touch Swipe on Video Stage
+  videoStage?.addEventListener('touchstart', (e) => {
+    if (!e.touches[0]) return;
+    vTouchStartX = e.touches[0].clientX;
+    vTouchStartY = e.touches[0].clientY;
+    vIsSwiping = false;
+  }, { passive: true });
+
+  videoStage?.addEventListener('touchmove', (e) => {
+    if (!e.touches[0]) return;
+    const diffX = e.touches[0].clientX - vTouchStartX;
+    const diffY = e.touches[0].clientY - vTouchStartY;
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+      vIsSwiping = true;
+    }
+  }, { passive: true });
+
+  videoStage?.addEventListener('touchend', (e) => {
+    if (!e.changedTouches[0]) return;
+    const diffX = e.changedTouches[0].clientX - vTouchStartX;
+    const diffY = e.changedTouches[0].clientY - vTouchStartY;
+    if (vIsSwiping && Math.abs(diffX) >= 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      vJustSwiped = true;
+      setTimeout(() => { vJustSwiped = false; }, 350);
+      if (diffX > 0) updateVideoCoverflow(activeVideoIdx - 1);
+      else updateVideoCoverflow(activeVideoIdx + 1);
+    }
+  }, { passive: true });
+
+  // Mouse Drag on Video Stage
+  let vMouseStartX = 0;
+  let vIsMouseDragging = false;
+  videoStage?.addEventListener('mousedown', (e) => {
+    vMouseStartX = e.clientX;
+    vIsMouseDragging = true;
+  });
+  window.addEventListener('mouseup', (e) => {
+    if (!vIsMouseDragging) return;
+    vIsMouseDragging = false;
+    const diff = e.clientX - vMouseStartX;
+    if (Math.abs(diff) > 40) {
+      vJustSwiped = true;
+      setTimeout(() => { vJustSwiped = false; }, 350);
+      if (diff > 0) updateVideoCoverflow(activeVideoIdx - 1);
+      else updateVideoCoverflow(activeVideoIdx + 1);
+    }
+  });
 
   // ---------------------------------------------------------------------------
-  // VIDEO LIGHTBOX
+  // VIDEO LIGHTBOX (Child interaction within Media Gallery)
   // ---------------------------------------------------------------------------
   let lbVideoIdx = 0;
-  function openVideoLightbox(index) {
+  function openVideoLightbox(index, e) {
+    if (e) e.stopPropagation?.();
     if (!videoLightbox || !galleryVideos[index]) return;
-    if (window.lenis) window.lenis.stop();
     pauseAllVideos();
     lbVideoIdx = index;
     renderVideoLightboxContent();
+    currentViewState = VIEW_STATES.LIGHTBOX_VIDEO;
     videoLightbox.classList.add('open', 'active');
     videoLightbox.setAttribute('aria-hidden', 'false');
   }
@@ -2168,7 +2389,11 @@ function setupMediaGallery() {
     if (videoLightboxTitle) videoLightboxTitle.textContent = `${item.title} (9:16 Vertical Reel)`;
   }
 
-  function closeVideoLightbox() {
+  function closeVideoLightbox(e) {
+    if (e) {
+      e.stopPropagation?.();
+      e.preventDefault?.();
+    }
     if (!videoLightbox) return;
     if (videoLightboxElem) {
       videoLightboxElem.pause();
@@ -2177,54 +2402,69 @@ function setupMediaGallery() {
     }
     videoLightbox.classList.remove('open', 'active');
     videoLightbox.setAttribute('aria-hidden', 'true');
-    if (window.lenis) window.lenis.start();
-    // Return to coverflow state
+    // Return to parent Video Coverflow view (keep gallery modal open)
+    currentViewState = VIEW_STATES.GALLERY_VIDEOS;
     updateVideoCoverflow(activeVideoIdx);
   }
   window.closeVideoLightbox = closeVideoLightbox;
 
-  videoLightboxClose?.addEventListener('click', closeVideoLightbox);
+  videoLightboxClose?.addEventListener('click', (e) => closeVideoLightbox(e));
   videoLightbox?.addEventListener('click', (e) => {
-    if (e.target === videoLightbox) closeVideoLightbox();
+    if (e.target === videoLightbox) closeVideoLightbox(e);
   });
-  videoLightboxPrev?.addEventListener('click', () => {
+  videoLightboxPrev?.addEventListener('click', (e) => {
+    e.stopPropagation();
     lbVideoIdx = ((lbVideoIdx - 1) + galleryVideos.length) % galleryVideos.length;
     renderVideoLightboxContent();
     activeVideoIdx = lbVideoIdx;
   });
-  videoLightboxNext?.addEventListener('click', () => {
+  videoLightboxNext?.addEventListener('click', (e) => {
+    e.stopPropagation();
     lbVideoIdx = (lbVideoIdx + 1) % galleryVideos.length;
     renderVideoLightboxContent();
     activeVideoIdx = lbVideoIdx;
   });
 
+  // Resize handler for responsive 3D transforms
+  window.addEventListener('resize', () => {
+    if (currentViewState === VIEW_STATES.GALLERY_PHOTOS) {
+      updatePhotoCoverflow(activePhotoIdx);
+    } else if (currentViewState === VIEW_STATES.GALLERY_VIDEOS) {
+      updateVideoCoverflow(activeVideoIdx);
+    }
+  });
+
   // Global Keyboard Navigation (Esc to close, Arrows to navigate)
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      if (photoLightbox?.classList.contains('open')) {
-        closePhotoLightbox();
-      } else if (videoLightbox?.classList.contains('open')) {
-        closeVideoLightbox();
-      } else if (modal?.classList.contains('open')) {
-        window.closeMediaGallery();
+      if (currentViewState === VIEW_STATES.LIGHTBOX_PHOTO) {
+        closePhotoLightbox(e);
+      } else if (currentViewState === VIEW_STATES.LIGHTBOX_VIDEO) {
+        closeVideoLightbox(e);
+      } else if (currentViewState === VIEW_STATES.GALLERY_PHOTOS || currentViewState === VIEW_STATES.GALLERY_VIDEOS) {
+        window.closeMediaGallery(e);
+      } else if (currentViewState === VIEW_STATES.TESTIMONIALS) {
+        window.closeAllTestimonials(e);
       }
     } else if (e.key === 'ArrowLeft') {
-      if (photoLightbox?.classList.contains('open')) {
+      if (currentViewState === VIEW_STATES.LIGHTBOX_PHOTO) {
         photoLightboxPrev?.click();
-      } else if (videoLightbox?.classList.contains('open')) {
+      } else if (currentViewState === VIEW_STATES.LIGHTBOX_VIDEO) {
         videoLightboxPrev?.click();
-      } else if (modal?.classList.contains('open')) {
-        if (currentActiveTab === 'photos') updatePhotoCoverflow(activePhotoIdx - 1);
-        else updateVideoCoverflow(activeVideoIdx - 1);
+      } else if (currentViewState === VIEW_STATES.GALLERY_PHOTOS) {
+        updatePhotoCoverflow(activePhotoIdx - 1);
+      } else if (currentViewState === VIEW_STATES.GALLERY_VIDEOS) {
+        updateVideoCoverflow(activeVideoIdx - 1);
       }
     } else if (e.key === 'ArrowRight') {
-      if (photoLightbox?.classList.contains('open')) {
+      if (currentViewState === VIEW_STATES.LIGHTBOX_PHOTO) {
         photoLightboxNext?.click();
-      } else if (videoLightbox?.classList.contains('open')) {
+      } else if (currentViewState === VIEW_STATES.LIGHTBOX_VIDEO) {
         videoLightboxNext?.click();
-      } else if (modal?.classList.contains('open')) {
-        if (currentActiveTab === 'photos') updatePhotoCoverflow(activePhotoIdx + 1);
-        else updateVideoCoverflow(activeVideoIdx + 1);
+      } else if (currentViewState === VIEW_STATES.GALLERY_PHOTOS) {
+        updatePhotoCoverflow(activePhotoIdx + 1);
+      } else if (currentViewState === VIEW_STATES.GALLERY_VIDEOS) {
+        updateVideoCoverflow(activeVideoIdx + 1);
       }
     }
   });
