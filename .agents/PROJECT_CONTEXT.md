@@ -417,3 +417,23 @@ The following issues were resolved and verified in the codebase:
      - Distinct event listeners and state transitions for `#view-all-testimonials-btn` (opens `#all-testimonials-modal`) and `#open-media-gallery-btn` (opens `#media-gallery-modal`).
      - Testimonial opening verifies `currentViewState` and closes any stale gallery overlays.
      - Records originating scroll offset (`originScrollY`) before modal open and restores exact page position via `window.scrollTo` and `lenis.scrollTo` upon close.
+
+### Feature G: Automated Media Gallery Asset Discovery (IMPLEMENTED & VERIFIED)
+- **Status**: Implemented in `src/data/galleryData.js`, `src/utils/paths.js`, `src/styles/main.css`, and `src/main.js`.
+- **Implementation & Discovery Mechanism**:
+  1. **Vite Build-Time `import.meta.glob()`**:
+     - Automatically scans `assets/images/**/*.{jpg,jpeg,png,webp,gif,avif,svg,JPG,JPEG,PNG,WEBP,GIF,AVIF,SVG}` recursively across all nested folders.
+     - Automatically scans video assets via `import.meta.glob` across `assets/video/**` and nested video directories (`.mp4`, `.webm`, `.mov`, `.m4v`).
+     - Zero hardcoded asset lists: newly added media files are automatically picked up on server restart or production build without editing gallery code.
+  2. **Deduplication & Deterministic Ordering**:
+     - Normalizes file paths and filters out duplicates via `Set`.
+     - Deterministically sorts photo and video collections by normalized file path (`a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })`).
+  3. **Metadata Formatting & Aspect Ratio Preservation**:
+     - Automatically infers clean titles and categorized tags from parent directory and filename.
+     - Retains rich curated editorial titles for verified featured items.
+     - Preserves native aspect ratios (`aspect-landscape`, `aspect-portrait`, `aspect-square`) with natural dimension classification and dynamic `load` aspect adjustments.
+  4. **Spaces in Filenames & URL Base Resolution**:
+     - Handles filenames containing spaces seamlessly across development and production builds.
+     - `getAssetUrl` guards against redundant base-prefixing if a path already begins with `BASE_URL`.
+  5. **Scalable Navigation Controls**:
+     - Added horizontal scroll protection and smooth centering (`scrollIntoView`) on `#coverflow-dots` to effortlessly accommodate large discovered asset collections.

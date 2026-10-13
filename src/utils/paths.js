@@ -8,6 +8,10 @@ export function getAssetUrl(path) {
     return path;
   }
   const base = import.meta.env.BASE_URL || '/';
+  // Avoid double-prefixing if path already includes the base URL
+  if (base !== '/' && path.startsWith(base)) {
+    return path;
+  }
   const cleanBase = base.endsWith('/') ? base : `${base}/`;
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   return `${cleanBase}${cleanPath}`;

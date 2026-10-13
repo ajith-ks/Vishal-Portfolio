@@ -2066,7 +2066,11 @@ function setupMediaGallery() {
     }
 
     photoDots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === activePhotoIdx);
+      const isActive = i === activePhotoIdx;
+      dot.classList.toggle('active', isActive);
+      if (isActive && dot.scrollIntoView) {
+        dot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     });
   }
 
@@ -2076,6 +2080,24 @@ function setupMediaGallery() {
   let pJustSwiped = false;
 
   photoCards.forEach((card, i) => {
+    const img = card.querySelector('img');
+    if (img) {
+      const updateAspect = () => {
+        if (img.naturalWidth && img.naturalHeight) {
+          const ratio = img.naturalWidth / img.naturalHeight;
+          const frame = card.querySelector('.coverflow-media-frame');
+          if (frame) {
+            frame.classList.remove('aspect-landscape', 'aspect-portrait', 'aspect-square');
+            if (ratio > 1.15) frame.classList.add('aspect-landscape');
+            else if (ratio < 0.85) frame.classList.add('aspect-portrait');
+            else frame.classList.add('aspect-square');
+          }
+        }
+      };
+      if (img.complete) updateAspect();
+      else img.addEventListener('load', updateAspect);
+    }
+
     card.addEventListener('click', (e) => {
       if (pJustSwiped) {
         e.stopPropagation();

@@ -2925,6 +2925,16 @@ img, video {
 .coverflow-dots {
   display: flex;
   gap: 0.4rem;
+  max-width: min(280px, 45vw);
+  overflow-x: auto;
+  scrollbar-width: none;
+  align-items: center;
+  flex-wrap: nowrap;
+  padding: 2px;
+}
+
+.coverflow-dots::-webkit-scrollbar {
+  display: none;
 }
 
 .coverflow-dot {
