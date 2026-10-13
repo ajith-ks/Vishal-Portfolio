@@ -181,13 +181,7 @@ function renderHero() {
         <div class="hero-layout-asymmetric">
           <!-- LEFT: Editorial Identity & Staggered Typography -->
           <div class="hero-identity-col">
-            <!-- 2. Small uppercase professional descriptor -->
-            <div class="hero-eyebrow">
-              <span class="hero-eyebrow-dot"></span>
-              <span>ACADEMIC LEADER &bull; MENTOR &bull; RESEARCHER</span>
-            </div>
-
-            <!-- 3. Large “DR. VISHAL KATTERY” heading -->
+            <!-- Large “DR. VISHAL KATTERY” heading -->
             <h1 class="hero-name-editorial">
               <span class="hero-name-first">DR. VISHAL</span>
               <span class="hero-name-last">KATTERY</span>
@@ -685,10 +679,6 @@ function renderGallery() {
                 <div class="coverflow-card ${i === 0 ? 'active-card' : ''}" data-index="${i}" data-aspect="${photo.aspectRatio}">
                   <div class="coverflow-media-frame aspect-${photo.aspectRatio}">
                     <img src="${getAssetUrl(photo.src)}" alt="${photo.title}" loading="lazy" />
-                  </div>
-                  <div class="coverflow-card-caption">
-                    <span class="coverflow-card-category">${photo.category}</span>
-                    <h4 class="coverflow-card-title">${photo.title}</h4>
                   </div>
                 </div>
               `).join('')}

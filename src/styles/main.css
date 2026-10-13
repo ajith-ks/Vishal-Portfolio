@@ -2848,6 +2848,11 @@ img, video {
   box-shadow: 0 25px 60px rgba(10, 35, 24, 0.25), 0 0 35px rgba(27, 99, 76, 0.2);
 }
 
+/* Hide captions specifically on Photo Gallery carousel cards */
+.coverflow-card .coverflow-card-caption {
+  display: none !important;
+}
+
 .coverflow-card-caption {
   margin-top: 0.85rem;
   text-align: center;
