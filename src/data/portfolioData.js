@@ -368,8 +368,7 @@ export const congressEventData = {
   ],
   images: [
     { src: "/assets/images/events/from meet with modi.jpeg", caption: "At the 17th Co-operative Congress, New Delhi" },
-    { src: "/assets/images/events/with mic on stage.jpg", caption: "Addressing the delegate audience on stage" },
-    { src: "/assets/images/events/facebook post about the function with modi.jpg", caption: "Official delegate documentation & event announcement" }
+    { src: "/assets/images/events/with mic on stage.jpg", caption: "Addressing the delegate audience on stage" }
   ]
 };
 

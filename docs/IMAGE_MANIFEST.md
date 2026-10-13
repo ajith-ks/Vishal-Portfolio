@@ -1,4 +1,4 @@
-﻿# Dr. Vishal Kattery — Image & Video Asset Manifest
+# Dr. Vishal Kattery — Image & Video Asset Manifest
 
 ## IMPORTANT
 
@@ -68,7 +68,6 @@ specific website claims.
 ## EVENTS
 
 - from meet with modi.jpeg
-- facebook post about the function with modi.jpg
 - inaguration as a cief guest for a function.jpg
 - trophy giving.jpg
 - with mic on stage.jpg

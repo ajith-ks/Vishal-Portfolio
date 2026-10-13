@@ -121,7 +121,6 @@ const curatedVideoMetadata = {
 // Pre-measured native aspect ratios for verified image assets
 const knownAspectRatios = {
   "/assets/images/academic/teaching.jpeg": "portrait",
-  "/assets/images/events/facebook post about the function with modi.jpg": "portrait",
   "/assets/images/events/from meet with modi.jpeg": "square",
   "/assets/images/events/inaguration as a cief guest for a function.jpg": "portrait",
   "/assets/images/events/trophy giving.jpg": "landscape",
