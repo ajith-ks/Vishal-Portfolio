@@ -2233,8 +2233,13 @@ img, video {
   overscroll-behavior: contain;
 }
 
+.testimonials-modal-overlay:not(.open):not(.active) {
+  display: none !important;
+}
+
 .testimonials-modal-overlay.open,
 .testimonials-modal-overlay.active {
+  display: flex !important;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -2678,8 +2683,13 @@ img, video {
   transition: opacity var(--transition-normal), visibility var(--transition-normal);
 }
 
+.media-gallery-modal-overlay:not(.open):not(.active) {
+  display: none !important;
+}
+
 .media-gallery-modal-overlay.open,
 .media-gallery-modal-overlay.active {
+  display: flex !important;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -2778,6 +2788,9 @@ img, video {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .coverflow-card {
@@ -2787,6 +2800,7 @@ img, video {
   will-change: transform, opacity;
   cursor: pointer;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Native Aspect Ratio Preserving Containers */
@@ -2951,6 +2965,9 @@ img, video {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .video-coverflow-card {
@@ -2959,6 +2976,8 @@ img, video {
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease;
   will-change: transform, opacity;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .video-card-frame {
@@ -3065,8 +3084,13 @@ img, video {
   transition: opacity var(--transition-normal), visibility var(--transition-normal);
 }
 
+.media-lightbox-overlay:not(.open):not(.active) {
+  display: none !important;
+}
+
 .media-lightbox-overlay.open,
 .media-lightbox-overlay.active {
+  display: flex !important;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -3243,19 +3267,19 @@ img, video {
 
   /* Mobile Photo Coverflow Stage & Native Frames */
   .coverflow-stage {
-    perspective: 750px;
+    perspective: 800px;
     width: 100%;
   }
   .coverflow-media-frame.aspect-landscape {
-    width: min(320px, 68vw);
+    width: min(300px, 64vw);
     max-height: 36vh;
   }
   .coverflow-media-frame.aspect-portrait {
-    width: min(230px, 50vw);
+    width: min(220px, 48vw);
     max-height: 42vh;
   }
   .coverflow-media-frame.aspect-square {
-    width: min(250px, 56vw);
+    width: min(240px, 52vw);
     max-height: 36vh;
   }
   .coverflow-card-caption {
@@ -3279,10 +3303,11 @@ img, video {
 
   /* Mobile Video Coverflow Stage & 9:16 Frames */
   .video-coverflow-stage {
-    perspective: 750px;
+    perspective: 800px;
+    width: 100%;
   }
   .video-card-frame {
-    width: min(220px, 58vw);
+    width: min(210px, 54vw);
     max-height: 48vh;
   }
   .video-play-center-btn {
@@ -3300,16 +3325,27 @@ img, video {
     font-size: 0.75rem;
   }
   .coverflow-media-frame.aspect-landscape {
-    width: min(290px, 66vw);
-    max-height: 34vh;
+    width: min(270px, 64vw);
+    max-height: 32vh;
   }
   .coverflow-media-frame.aspect-portrait {
-    width: min(210px, 48vw);
-    max-height: 38vh;
+    width: min(190px, 46vw);
+    max-height: 36vh;
   }
   .coverflow-media-frame.aspect-square {
-    width: min(230px, 54vw);
-    max-height: 34vh;
+    width: min(210px, 50vw);
+    max-height: 32vh;
+  }
+  .video-card-frame {
+    width: min(190px, 52vw);
+    max-height: 45vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coverflow-card,
+  .video-coverflow-card {
+    transition: none !important;
   }
 }
 

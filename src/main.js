@@ -54,7 +54,8 @@ const Icons = {
   sun: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`,
   moon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`,
   menu: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>`,
-  x: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>`
+  x: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>`,
+  maximize: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`
 };
 
 function getSocialIcon(name) {
@@ -739,6 +740,9 @@ function renderGallery() {
                         <div class="video-volume-group">
                           <input type="range" class="video-volume-slider" id="video-volume-${i}" min="0" max="1" step="0.05" value="0" aria-label="Volume Slider" />
                         </div>
+                        <button type="button" class="video-btn video-expand-btn" id="video-expand-btn-${i}" aria-label="Expand Video Viewer">
+                          ${Icons.maximize}
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -1810,6 +1814,7 @@ function setupMediaGallery() {
   let activeVideoIdx = 0;
   let isMutedState = true;
   let currentActiveTab = 'photos';
+  let lightboxJustClosed = false;
 
   // Open Media Gallery Modal
   window.openMediaGallery = function(index = 0, tab = 'photos', e) {
@@ -1860,6 +1865,9 @@ function setupMediaGallery() {
     if (e) {
       e.stopPropagation?.();
     }
+    // Prevent accidental closure from ghost clicks right after a child lightbox closes
+    if (lightboxJustClosed) return;
+
     const modalEl = document.getElementById('media-gallery-modal');
     if (!modalEl) return;
 
@@ -1888,6 +1896,15 @@ function setupMediaGallery() {
 
     currentViewState = VIEW_STATES.MAIN;
 
+    // Reset temporary tab state to default photos for the next clean gallery entry
+    currentActiveTab = 'photos';
+    tabPhotos?.classList.add('active');
+    tabPhotos?.setAttribute('aria-selected', 'true');
+    tabVideos?.classList.remove('active');
+    tabVideos?.setAttribute('aria-selected', 'false');
+    if (viewPhotos) viewPhotos.style.display = 'flex';
+    if (viewVideos) viewVideos.style.display = 'none';
+
     // Resume Lenis and restore originating scroll position
     if (window.lenis) {
       window.lenis.start();
@@ -1896,9 +1913,16 @@ function setupMediaGallery() {
     window.scrollTo({ top: originScrollY, behavior: 'instant' });
   };
 
-  openBtn?.addEventListener('click', (e) => window.openMediaGallery(0, 'photos', e));
-  closeBtn?.addEventListener('click', (e) => window.closeMediaGallery(e));
+  openBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.openMediaGallery(0, 'photos', e);
+  });
+  closeBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.closeMediaGallery(e);
+  });
   modal?.addEventListener('click', (e) => {
+    if (lightboxJustClosed) return;
     if (e.target === modal && (currentViewState === VIEW_STATES.GALLERY_PHOTOS || currentViewState === VIEW_STATES.GALLERY_VIDEOS)) {
       window.closeMediaGallery(e);
     }
@@ -1959,8 +1983,14 @@ function setupMediaGallery() {
     }
   }
 
-  tabPhotos?.addEventListener('click', () => switchTab('photos'));
-  tabVideos?.addEventListener('click', () => switchTab('videos'));
+  tabPhotos?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    switchTab('photos');
+  });
+  tabVideos?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    switchTab('videos');
+  });
 
   // ---------------------------------------------------------------------------
   // PHOTOS COVERFLOW CAROUSEL (3D Perspective + Preserves Aspect Ratios)
@@ -1969,10 +1999,27 @@ function setupMediaGallery() {
     if (photoCards.length === 0) return;
     activePhotoIdx = ((idx % photoCards.length) + photoCards.length) % photoCards.length;
 
-    const isMobile = window.innerWidth <= 768;
-    const xStep = isMobile ? Math.min(138, Math.round(window.innerWidth * 0.36)) : 130;
-    const zStep = isMobile ? 65 : 90;
-    const rot = isMobile ? 24 : 32;
+    const width = window.innerWidth;
+    const isMobile = width <= 768;
+    const isSmallMobile = width <= 480;
+
+    let xStep, zStep, rot, scaleStep;
+    if (isSmallMobile) {
+      xStep = Math.min(125, Math.max(90, Math.round(width * 0.30)));
+      zStep = 70;
+      rot = 26;
+      scaleStep = 0.16;
+    } else if (isMobile) {
+      xStep = Math.min(140, Math.max(110, Math.round(width * 0.32)));
+      zStep = 75;
+      rot = 28;
+      scaleStep = 0.14;
+    } else {
+      xStep = 135;
+      zStep = 90;
+      rot = 32;
+      scaleStep = 0.12;
+    }
 
     photoCards.forEach((card, i) => {
       const diff = i - activePhotoIdx;
@@ -1984,21 +2031,30 @@ function setupMediaGallery() {
         card.style.opacity = '1';
         card.style.zIndex = '10';
         card.style.pointerEvents = 'auto';
-      } else if (Math.abs(diff) <= 3) {
+      } else if (Math.abs(diff) === 1) {
         const xOffset = diff * xStep;
-        const scale = 1 - Math.abs(diff) * (isMobile ? 0.14 : 0.12);
+        const scale = 1 - scaleStep;
+        const zOffset = -zStep;
+        const yRotation = diff < 0 ? rot : -rot;
+
+        card.style.transform = `translateX(${xOffset}px) scale(${scale}) translateZ(${zOffset}px) rotateY(${yRotation}deg)`;
+        card.style.opacity = '0.75';
+        card.style.zIndex = '8';
+        card.style.pointerEvents = 'auto';
+      } else if (Math.abs(diff) <= 3) {
+        const xOffset = diff * (xStep * (isMobile ? 0.9 : 1));
+        const scale = 1 - Math.abs(diff) * scaleStep;
         const zOffset = -Math.abs(diff) * zStep;
         const yRotation = diff < 0 ? rot : -rot;
-        const opacity = Math.max(0.25, 0.75 - Math.abs(diff) * 0.2);
-        const zIndex = 10 - Math.abs(diff);
+        const opacity = Math.max(0.2, 0.65 - Math.abs(diff) * 0.2);
 
         card.style.transform = `translateX(${xOffset}px) scale(${scale}) translateZ(${zOffset}px) rotateY(${yRotation}deg)`;
         card.style.opacity = String(opacity);
-        card.style.zIndex = String(zIndex);
-        card.style.pointerEvents = 'auto';
+        card.style.zIndex = String(7 - Math.abs(diff));
+        card.style.pointerEvents = isMobile ? 'none' : 'auto';
       } else {
-        const xOffset = diff > 0 ? (isMobile ? 320 : 550) : (isMobile ? -320 : -550);
-        card.style.transform = `translateX(${xOffset}px) scale(0.6) translateZ(-350px) rotateY(0deg)`;
+        const xOffset = diff > 0 ? (isMobile ? 260 : 500) : (isMobile ? -260 : -500);
+        card.style.transform = `translateX(${xOffset}px) scale(0.55) translateZ(-350px) rotateY(0deg)`;
         card.style.opacity = '0';
         card.style.zIndex = '0';
         card.style.pointerEvents = 'none';
@@ -2016,8 +2072,8 @@ function setupMediaGallery() {
 
   let pTouchStartX = 0;
   let pTouchStartY = 0;
+  let pTouchStartTime = 0;
   let pJustSwiped = false;
-  let pIsSwiping = false;
 
   photoCards.forEach((card, i) => {
     card.addEventListener('click', (e) => {
@@ -2050,32 +2106,30 @@ function setupMediaGallery() {
     });
   });
 
-  // Touch & Swipe on Photo Stage
+  // Touch Swipe on Photo Stage
   photoStage?.addEventListener('touchstart', (e) => {
     if (!e.touches[0]) return;
     pTouchStartX = e.touches[0].clientX;
     pTouchStartY = e.touches[0].clientY;
-    pIsSwiping = false;
-  }, { passive: true });
-
-  photoStage?.addEventListener('touchmove', (e) => {
-    if (!e.touches[0]) return;
-    const diffX = e.touches[0].clientX - pTouchStartX;
-    const diffY = e.touches[0].clientY - pTouchStartY;
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
-      pIsSwiping = true;
-    }
+    pTouchStartTime = Date.now();
   }, { passive: true });
 
   photoStage?.addEventListener('touchend', (e) => {
     if (!e.changedTouches[0]) return;
     const diffX = e.changedTouches[0].clientX - pTouchStartX;
     const diffY = e.changedTouches[0].clientY - pTouchStartY;
-    if (pIsSwiping && Math.abs(diffX) >= 40 && Math.abs(diffX) > Math.abs(diffY)) {
+    const absX = Math.abs(diffX);
+    const absY = Math.abs(diffY);
+
+    if (absX >= 35 && absX > absY * 1.2) {
       pJustSwiped = true;
       setTimeout(() => { pJustSwiped = false; }, 350);
-      if (diffX > 0) updatePhotoCoverflow(activePhotoIdx - 1);
-      else updatePhotoCoverflow(activePhotoIdx + 1);
+
+      if (diffX < 0) {
+        updatePhotoCoverflow(activePhotoIdx + 1);
+      } else {
+        updatePhotoCoverflow(activePhotoIdx - 1);
+      }
     }
   }, { passive: true });
 
@@ -2090,11 +2144,11 @@ function setupMediaGallery() {
     if (!pIsMouseDragging) return;
     pIsMouseDragging = false;
     const diff = e.clientX - pMouseStartX;
-    if (Math.abs(diff) > 40) {
+    if (Math.abs(diff) > 35) {
       pJustSwiped = true;
       setTimeout(() => { pJustSwiped = false; }, 350);
-      if (diff > 0) updatePhotoCoverflow(activePhotoIdx - 1);
-      else updatePhotoCoverflow(activePhotoIdx + 1);
+      if (diff < 0) updatePhotoCoverflow(activePhotoIdx + 1);
+      else updatePhotoCoverflow(activePhotoIdx - 1);
     }
   });
 
@@ -2129,6 +2183,11 @@ function setupMediaGallery() {
       e.preventDefault?.();
     }
     if (!photoLightbox) return;
+
+    // Suppress ghost clicks so clicking lightbox X or backdrop does NOT close parent gallery
+    lightboxJustClosed = true;
+    setTimeout(() => { lightboxJustClosed = false; }, 350);
+
     photoLightbox.classList.remove('open', 'active');
     photoLightbox.setAttribute('aria-hidden', 'true');
     // Return to parent Photo Coverflow view (keep gallery modal open, maintain image index)
@@ -2172,10 +2231,18 @@ function setupMediaGallery() {
     if (videoCards.length === 0) return;
     activeVideoIdx = ((idx % videoCards.length) + videoCards.length) % videoCards.length;
 
-    const isMobile = window.innerWidth <= 768;
-    const xStep = isMobile ? Math.min(150, Math.round(window.innerWidth * 0.36)) : 150;
-    const rot = isMobile ? 22 : 30;
-    const zStep = isMobile ? -90 : -130;
+    const width = window.innerWidth;
+    const isSmallMobile = width <= 480;
+    const isMobile = width <= 768;
+
+    // Calibrate 3D coverflow geometry for small mobile, mobile, and desktop
+    const xStep = isSmallMobile 
+      ? Math.min(130, Math.round(width * 0.32)) 
+      : isMobile 
+        ? Math.min(150, Math.round(width * 0.34)) 
+        : 160;
+    const rot = isSmallMobile ? 24 : isMobile ? 26 : 30;
+    const zStep = isSmallMobile ? -70 : isMobile ? -90 : -130;
 
     videoCards.forEach((card, i) => {
       const diff = i - activeVideoIdx;
@@ -2210,9 +2277,11 @@ function setupMediaGallery() {
       } else {
         const xOffset = diff * xStep;
         const yRotation = diff < 0 ? rot : -rot;
-        card.style.transform = `translateX(${xOffset}px) scale(0.85) translateZ(${zStep}px) rotateY(${yRotation}deg)`;
-        card.style.opacity = '0.55';
-        card.style.zIndex = '5';
+        const absDiff = Math.abs(diff);
+        const scaleVal = Math.max(0.72, 1 - absDiff * 0.12);
+        card.style.transform = `translateX(${xOffset}px) scale(${scaleVal}) translateZ(${zStep}px) rotateY(${yRotation}deg)`;
+        card.style.opacity = absDiff === 1 ? '0.75' : '0.4';
+        card.style.zIndex = String(Math.max(1, 10 - absDiff));
         card.style.pointerEvents = 'auto';
 
         if (vid) vid.pause();
@@ -2228,13 +2297,13 @@ function setupMediaGallery() {
   let vTouchStartX = 0;
   let vTouchStartY = 0;
   let vJustSwiped = false;
-  let vIsSwiping = false;
 
   videoCards.forEach((card, i) => {
     const vid = card.querySelector('video');
     const playBtn = card.querySelector('.video-play-center-btn');
     const muteBtn = card.querySelector(`#video-mute-toggle-${i}`);
     const volSlider = card.querySelector(`#video-volume-${i}`);
+    const expandBtn = card.querySelector('.video-expand-btn');
 
     card.addEventListener('click', (e) => {
       if (e.target.closest('.video-bottom-toolbar')) return;
@@ -2251,7 +2320,7 @@ function setupMediaGallery() {
           if (vid.paused) {
             vid.play().then(() => {
               if (playBtn) playBtn.innerHTML = Icons.pause;
-            });
+            }).catch(() => {});
           } else {
             vid.pause();
             if (playBtn) playBtn.innerHTML = Icons.play;
@@ -2270,12 +2339,17 @@ function setupMediaGallery() {
         if (vid.paused) {
           vid.play().then(() => {
             playBtn.innerHTML = Icons.pause;
-          });
+          }).catch(() => {});
         } else {
           vid.pause();
           playBtn.innerHTML = Icons.play;
         }
       }
+    });
+
+    expandBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openVideoLightbox(i, e);
     });
 
     muteBtn?.addEventListener('click', (e) => {
@@ -2319,27 +2393,24 @@ function setupMediaGallery() {
     if (!e.touches[0]) return;
     vTouchStartX = e.touches[0].clientX;
     vTouchStartY = e.touches[0].clientY;
-    vIsSwiping = false;
-  }, { passive: true });
-
-  videoStage?.addEventListener('touchmove', (e) => {
-    if (!e.touches[0]) return;
-    const diffX = e.touches[0].clientX - vTouchStartX;
-    const diffY = e.touches[0].clientY - vTouchStartY;
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
-      vIsSwiping = true;
-    }
   }, { passive: true });
 
   videoStage?.addEventListener('touchend', (e) => {
     if (!e.changedTouches[0]) return;
     const diffX = e.changedTouches[0].clientX - vTouchStartX;
     const diffY = e.changedTouches[0].clientY - vTouchStartY;
-    if (vIsSwiping && Math.abs(diffX) >= 40 && Math.abs(diffX) > Math.abs(diffY)) {
+    const absX = Math.abs(diffX);
+    const absY = Math.abs(diffY);
+
+    // Distinguish horizontal swipe from vertical scroll/tap
+    if (absX >= 35 && absX > absY * 1.2) {
       vJustSwiped = true;
       setTimeout(() => { vJustSwiped = false; }, 350);
-      if (diffX > 0) updateVideoCoverflow(activeVideoIdx - 1);
-      else updateVideoCoverflow(activeVideoIdx + 1);
+      if (diffX > 0) {
+        updateVideoCoverflow(activeVideoIdx - 1);
+      } else {
+        updateVideoCoverflow(activeVideoIdx + 1);
+      }
     }
   }, { passive: true });
 
@@ -2395,6 +2466,9 @@ function setupMediaGallery() {
       e.preventDefault?.();
     }
     if (!videoLightbox) return;
+    lightboxJustClosed = true;
+    setTimeout(() => { lightboxJustClosed = false; }, 350);
+
     if (videoLightboxElem) {
       videoLightboxElem.pause();
       videoLightboxElem.removeAttribute('src');

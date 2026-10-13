@@ -392,24 +392,28 @@ The following issues were resolved and verified in the codebase:
 ### Issue F: Gallery State, Mobile 3D Coverflow, Swipe Navigation & Testimonial Routing (RESOLVED)
 - **Status**: Resolved in `src/main.js` and `src/styles/main.css`.
 - **Implementation & Targeted Architecture**:
-  1. **Global View State Model (`VIEW_STATES`)**:
-     - Introduced an explicit 6-state coordinator (`MAIN`, `TESTIMONIALS`, `GALLERY_PHOTOS`, `GALLERY_VIDEOS`, `LIGHTBOX_PHOTO`, `LIGHTBOX_VIDEO`).
+  1. **Global View State Model (`VIEW_STATES`) & Ghost Click Cooldown**:
+     - Explicit 6-state coordinator (`MAIN`, `TESTIMONIALS`, `GALLERY_PHOTOS`, `GALLERY_VIDEOS`, `LIGHTBOX_PHOTO`, `LIGHTBOX_VIDEO`).
      - Eliminates ambiguous `isOpen` collisions between unrelated overlays.
-     - Closing the image or video lightbox closes only that child viewer, keeps `#media-gallery-modal` open, preserves the active carousel index and 3D position, and does not prematurely restart Lenis or trigger page navigation.
+     - Closing the image or video lightbox (`closePhotoLightbox` / `closeVideoLightbox`) closes only that child viewer, keeps `#media-gallery-modal` open, preserves the active carousel index and 3D position, and transitions state back to `GALLERY_PHOTOS` or `GALLERY_VIDEOS`.
+     - Introduces `lightboxJustClosed = true` with a 350ms cooldown to block ghost clicks from bubbling or penetrating through to the underlying gallery backdrop or close buttons.
      - Closing `#media-gallery-modal` closes all nested lightboxes, pauses videos, resets active tab to 'photos', returns to `MAIN`, and safely restores page scroll and Lenis.
-  2. **Zero Inactive Hit-Testing (`visibility: hidden`)**:
-     - All modal overlays (`.testimonials-modal-overlay`, `.media-gallery-modal-overlay`, `.media-lightbox-overlay`) use `visibility: hidden; pointer-events: none;` when inactive and `visibility: visible; pointer-events: auto;` when `.open, .active`.
-     - Prevents hidden backdrops from intercepting mobile taps.
+  2. **Zero Inactive Hit-Testing (`display: none !important`)**:
+     - All modal overlays (`.testimonials-modal-overlay:not(.open):not(.active)`, `.media-gallery-modal-overlay:not(.open):not(.active)`, `.media-lightbox-overlay:not(.open):not(.active)`) apply `display: none !important;`.
+     - Completely removes inactive overlays from the browser rendering tree and hit-testing pipeline, ensuring taps on mobile controls (such as "View All Testimonials") can never hit an invisible backdrop.
   3. **Mobile 3D Coverflow Adaptation**:
-     - Preserves individual photograph aspect ratios (`aspect-landscape`, `aspect-portrait`, `aspect-square`).
-     - Dynamic 3D transform metrics computed via `window.innerWidth <= 768`:
-       - Central photograph prominent (`scale(1)`, `rotateY(0deg)`).
-       - Neighboring cards peek partially with layered depth (`rotateY(±24deg)`, `translateZ(-65px)`).
+     - Calibrated 3D transform metrics computed via viewport queries (`width <= 480px` for small mobile, `width <= 768px` for mobile):
+       - Central card prominent (`scale(1)`, `rotateY(0deg)`, opacity 1, zIndex 10).
+       - Neighboring flanking cards (`diff === ±1`) clearly visible at `scale(1 - scaleStep)`, `rotateY(±26deg)`, `translateZ(-75px)`, and `opacity: 0.75`.
+       - Native aspect ratios preserved (`aspect-landscape`, `aspect-portrait`, `aspect-square`) without uniform cropping.
      - Responsive topbar keeps **Photos | Videos** segmented control prominently visible and touch-friendly (min 38px touch target) on all mobile viewports.
   4. **Mobile Touch Swipe Gestures & Tap Disambiguation**:
-     - Full touch swipe navigation added to both Photo and Video coverflow stages.
-     - Distinguishes horizontal swipes from vertical page scrolls using vector analysis (`Math.abs(diffX) > Math.abs(diffY)` with 40px threshold).
-     - Enforces a swipe cooldown flag (`justSwiped`) suppressing subsequent synthesized `click` events so swipes never trigger accidental lightbox openings or video playback toggles.
+     - Robust touch swipe navigation on both Photo (`#coverflow-stage`) and Video (`#video-coverflow-stage`) stages.
+     - Horizontal swipe detection threshold (`absX >= 35px && absX > absY * 1.2`) with `touch-action: pan-y;` allowing natural vertical page scrolling while delegating horizontal gestures.
+     - Swipe suppression cooldown (`pJustSwiped`, `vJustSwiped` for 350ms) preventing gestures from triggering card clicks, lightbox openings, or video play/pause.
+     - Dedicated expand button (`.video-expand-btn` with `maximize` icon) added to video toolbar for opening the 9:16 vertical video lightbox.
+     - Respects `prefers-reduced-motion: reduce` by disabling transitions.
   5. **Testimonial Routing & Scroll Position Preservation**:
-     - Isolated click listeners and stopPropagation on `#view-all-testimonials-btn` and `#open-media-gallery-btn`.
+     - Distinct event listeners and state transitions for `#view-all-testimonials-btn` (opens `#all-testimonials-modal`) and `#open-media-gallery-btn` (opens `#media-gallery-modal`).
+     - Testimonial opening verifies `currentViewState` and closes any stale gallery overlays.
      - Records originating scroll offset (`originScrollY`) before modal open and restores exact page position via `window.scrollTo` and `lenis.scrollTo` upon close.
