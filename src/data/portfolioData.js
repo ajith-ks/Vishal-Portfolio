@@ -71,7 +71,7 @@ export const heroData = {
 export const aboutData = {
   title: "Who Is Dr. Vishal?",
   subtitle: "Scholarly Rigor & Grounded Industry Experience",
-  image: "/assets/review/random 9.jpg",
+  image: "/assets/images/review/random 9.jpg",
   lead: "Education is more than credentialing; it is the deliberate cultivation of intellect, confidence, and human resilience.",
   paragraphs: [
     "Dr. Vishal Kattery embodies a multifaceted career traversing higher academia, cooperative banking, human resource consulting, and technological systems. Holding a Ph.D. in Management along with advanced degrees in Commerce, Computer Applications, and Business Administration, he brings rare interdisciplinary dexterity to modern education.",

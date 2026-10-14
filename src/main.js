@@ -14,10 +14,11 @@ import {
   achievementsData,
   humanSideData
 } from './data/portfolioData.js';
-import { galleryPhotos, galleryVideos } from './data/galleryData.js';
+import { galleryPhotos, galleryVideos, allMediaItems } from './data/galleryData.js';
 import testimonials from './data/testimonials.json';
 import { MotionEngine } from './motion/motionEngine.js';
 import { ThreeSculpture } from './components/ThreeSculpture.js';
+import { Floating3DCarousel } from './components/Floating3DCarousel.js';
 import { getAssetUrl } from './utils/paths.js';
 
 // SVG Icons Generator
@@ -90,6 +91,10 @@ function renderHeader() {
     <header class="site-header" id="site-header">
       <div class="container">
         <div class="header-container">
+          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Navigation Menu">
+            ${Icons.menu}
+          </button>
+
           <a href="#hero" class="brand-logo" aria-label="Dr. Vishal Kattery Home">
             <span class="brand-monogram-tiny">VK</span>
             <span class="brand-name-full"><span>Dr. Vishal</span> <span class="brand-accent">Kattery</span></span>
@@ -118,9 +123,6 @@ function renderHeader() {
             </div>
             <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle Dark/Light Theme">
               <span class="theme-icon-container">${Icons.sun}</span>
-            </button>
-            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Navigation Menu">
-              ${Icons.menu}
             </button>
           </div>
         </div>
@@ -292,7 +294,7 @@ function renderAbout() {
           <div class="about-photo-wrapper">
             <div class="about-photo-frame">
               <img 
-                src="${getAssetUrl('/assets/review/random 9.jpg')}" 
+                src="${getAssetUrl('/assets/images/review/random 9.jpg')}" 
                 alt="Dr. Vishal Kattery - Academic &amp; Mentor" 
                 class="about-photo-img" 
                 loading="lazy" 
@@ -304,7 +306,7 @@ function renderAbout() {
             </div>
           </div>
 
-          <div>
+          <div class="about-content-col">
             <span class="section-tag">${aboutData.subtitle}</span>
             <h2 class="section-title">${aboutData.title}</h2>
             <p class="about-lead-statement">${aboutData.lead}</p>
@@ -525,38 +527,38 @@ function renderCongress() {
   return `
     <section class="section" id="congress">
       <div class="container">
-        <div class="bento-card" style="padding: 3rem 2.8rem;">
-          <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center;">
-            <div>
-              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+        <div class="bento-card congress-card">
+          <div class="congress-grid">
+            <div class="congress-content">
+              <div class="congress-badges">
                 <span class="badge">National Engagement</span>
-                <span class="badge" style="background: rgba(255,255,255,0.05); color: var(--text-secondary); border-color: var(--border-subtle);">${congressEventData.location}</span>
+                <span class="badge congress-location-badge">${congressEventData.location}</span>
               </div>
-              <h2 style="font-size: clamp(1.8rem, 2.8vw, 2.4rem); font-weight: 800; color: var(--text-primary); margin-bottom: 0.85rem; letter-spacing: -0.025em;">
+              <h2 class="congress-title">
                 ${congressEventData.title}
               </h2>
-              <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 600; color: var(--accent-highlight); margin-bottom: 1.25rem;">
-                ${Icons.award} ${congressEventData.inauguration}
+              <div class="congress-inauguration">
+                ${Icons.award} <span>${congressEventData.inauguration}</span>
               </div>
-              <p style="font-size: 0.98rem; line-height: 1.68; color: var(--text-secondary); margin-bottom: 1.75rem;">
+              <p class="congress-summary">
                 ${congressEventData.summary}
               </p>
 
-              <div style="display: grid; grid-template-columns: 1fr; gap: 0.75rem;">
+              <div class="congress-themes">
                 ${congressEventData.keyThemes.map(t => `
-                  <div style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.88rem; color: var(--text-primary);">
-                    <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-highlight); box-shadow: 0 0 6px var(--accent-highlight);"></span>
+                  <div class="congress-theme-item">
+                    <span class="congress-theme-dot"></span>
                     <span>${t}</span>
                   </div>
                 `).join('')}
               </div>
             </div>
 
-            <div style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-card); aspect-ratio: 4 / 3;">
+            <div class="congress-media-frame">
               <img 
                 src="${getAssetUrl(congressEventData.images[0].src)}" 
                 alt="${congressEventData.images[0].caption}" 
-                style="width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-slow);" 
+                class="congress-img" 
                 loading="lazy" 
               />
             </div>
@@ -610,7 +612,6 @@ function renderTraining() {
 
 // Dedicated Media Gallery Section (Art-directed preview on main page)
 function renderGallery() {
-  const previewPhotos = galleryPhotos.slice(0, 3);
   return `
     <section class="section gallery-section" id="gallery">
       <div class="container">
@@ -623,30 +624,8 @@ function renderGallery() {
         </div>
 
         <div class="gallery-preview-stage">
-          <div class="gallery-preview-cards-stack">
-            ${previewPhotos.map((p, idx) => `
-              <div class="gallery-preview-card" onclick="openMediaGallery(${idx})" tabindex="0" role="button" aria-label="Open gallery image: ${p.title}">
-                <img 
-                  src="${getAssetUrl(p.src)}" 
-                  alt="${p.title}" 
-                  loading="lazy" 
-                  onerror="this.onerror=null; this.src='${getAssetUrl('/assets/images/academic/teaching.jpeg')}';"
-                />
-                <div class="gallery-preview-badge">
-                  <span>${p.category}</span>
-                  <span>${p.title.length > 28 ? p.title.slice(0, 28) + '...' : p.title}</span>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-
-          <div class="gallery-preview-cta">
-            <button type="button" class="shiny-btn" id="open-media-gallery-btn" onclick="openMediaGallery(0, 'photos')" aria-haspopup="dialog" aria-expanded="false">
-              <span class="shiny-btn-content">
-                <span>View Photo Gallery (${galleryPhotos.length} Photos &bull; ${galleryVideos.length} Videos)</span>
-                ${Icons.arrowRight}
-              </span>
-            </button>
+          <div class="gallery-carousel-mount" id="main-gallery-carousel-mount">
+            <!-- Fluid 3D Floating Media Carousel (Photos & Videos) mounts here -->
           </div>
         </div>
       </div>
@@ -964,12 +943,11 @@ function renderTestimonials() {
                 : t.testimony;
 
               return `
-                <div class="floating-pill-card" data-index="${idx}" onclick="openAllTestimonials(event); event.stopPropagation();" role="button" tabindex="0" aria-label="Testimonial by ${t.name}">
+                <div class="floating-pill-card" data-id="${t.id}" data-index="${idx}" onclick="window.openTestimonialModal(${t.id}, event);" role="button" tabindex="0" aria-label="Testimonial by ${t.name}">
                   <div class="pill-avatar-monogram">${initials}</div>
                   <div class="pill-content">
                     <div class="pill-header-row">
                       <span class="pill-author-name">${t.name}</span>
-                      <span class="pill-stars">★★★★★</span>
                     </div>
                     ${roleMeta ? `<div class="pill-author-meta">${roleMeta}</div>` : ''}
                     <p class="pill-quote">"${truncatedText}"</p>
@@ -979,96 +957,23 @@ function renderTestimonials() {
             }).join('')}
           </div>
         </div>
-
-        <div class="testimonials-cta-wrap">
-          <button type="button" class="shiny-btn" id="view-all-testimonials-btn" onclick="openAllTestimonials(event); event.stopPropagation();" aria-haspopup="dialog" aria-expanded="false">
-            <span class="shiny-btn-content">
-              <span>View All Testimonials (${testimonials.length})</span>
-              ${Icons.arrowRight}
-            </span>
-          </button>
-        </div>
       </div>
     </section>
 
-    <!-- Dedicated Full Testimonials View Modal (Reference: Website inspo/testimonials-fullscreen-reference.jpg) -->
-    <div class="testimonials-modal-overlay" id="all-testimonials-modal" role="dialog" aria-modal="true" aria-label="All Testimonials" aria-hidden="true" data-lenis-prevent>
-      <div class="testimonials-modal-dialog" data-lenis-prevent>
-        <div class="modal-header">
-          <div>
-            <div class="modal-header-badge-row">
-              <span class="badge">VERIFIED ENDORSEMENTS</span>
-              <span class="modal-count-badge">${testimonials.length} Authentic Reviews</span>
-              <span class="modal-rating-badge">★★★★★ 5.0 Rating</span>
-            </div>
-            <h3 class="modal-title">Testimonials &amp; Mentorship Reflections</h3>
-            <p class="modal-subtitle">Complete, unedited feedback from mentees, graduates, and collegiate faculty guided by Dr. Vishal Kattery.</p>
+    <!-- Dedicated Single Full Testimonial Modal Dialog (Floating Reviews Click-to-Open) -->
+    <div class="testimonials-modal-overlay" id="testimonial-single-modal" role="dialog" aria-modal="true" aria-label="Testimonial Reflection" aria-hidden="true" data-lenis-prevent>
+      <div class="testimonial-single-dialog" data-lenis-prevent>
+        <div class="testimonial-single-header">
+          <div class="testimonial-single-header-title">
+            <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); letter-spacing: 0.04em;">Testimonial Feedback</span>
           </div>
-          <button type="button" class="modal-close-btn" id="close-testimonials-modal-btn" onclick="closeAllTestimonials(event); event.stopPropagation();" aria-label="Close Testimonials Dialog">
+          <button type="button" class="modal-close-btn" id="close-testimonial-single-btn" onclick="window.closeTestimonialModal(event);" aria-label="Close Testimonial">
             ${Icons.x}
           </button>
         </div>
 
-        <div class="testimonials-modal-body" data-lenis-prevent>
-          ${(() => {
-            const featured = testimonials.find(t => t.id === 2) || testimonials[0];
-            const regularReviews = testimonials.filter(t => t.id !== featured.id);
-            const featuredInitials = featured.name
-              ? featured.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
-              : 'VK';
-            const featuredMeta = [featured.role, featured.institution].filter(Boolean).join(' &bull; ');
-
-            return `
-              <!-- Featured Spotlight Review -->
-              <div class="testimonial-featured-card">
-                <div class="featured-card-topbar">
-                  <div class="featured-badge-pill">
-                    <span class="dot"></span>
-                    <span>FEATURED MENTORSHIP SPOTLIGHT</span>
-                  </div>
-                  <div class="pill-stars">★★★★★</div>
-                </div>
-                <blockquote class="featured-quote-text">"${featured.testimony}"</blockquote>
-                <div class="review-author-row featured-author-row">
-                  <div class="pill-avatar-monogram">${featuredInitials}</div>
-                  <div>
-                    <div class="review-author-name">${featured.name}</div>
-                    <div class="review-author-meta">${featuredMeta || 'Student &bull; Placed at Accenture'}</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Editorial Multi-Column Masonry for Remaining Reviews -->
-              <div class="testimonials-editorial-columns">
-                ${regularReviews.map(t => {
-                  const initials = t.name
-                    ? t.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
-                    : 'VK';
-                  const roleMeta = [t.role, t.institution].filter(Boolean).join(' &bull; ');
-                  const isShort = t.testimony.length < 150;
-
-                  return `
-                    <div class="testimonial-full-card ${isShort ? 'card-compact' : ''}">
-                      <div>
-                        <div class="testimonial-full-card-header">
-                          <div class="pill-stars">★★★★★</div>
-                          ${t.institution ? `<span class="institution-tag">${t.institution.length > 28 ? t.institution.slice(0, 28) + '&hellip;' : t.institution}</span>` : ''}
-                        </div>
-                        <p class="testimonial-full-text">"${t.testimony}"</p>
-                      </div>
-                      <div class="review-author-row">
-                        <div class="pill-avatar-monogram">${initials}</div>
-                        <div>
-                          <div class="review-author-name">${t.name}</div>
-                          ${roleMeta ? `<div class="review-author-meta">${roleMeta}</div>` : ''}
-                        </div>
-                      </div>
-                    </div>
-                  `;
-                }).join('')}
-              </div>
-            `;
-          })()}
+        <div class="testimonial-single-body" id="testimonial-single-body" data-lenis-prevent>
+          <!-- Dynamically populated by window.openTestimonialModal(id) -->
         </div>
       </div>
     </div>
@@ -1625,13 +1530,13 @@ const VIEW_STATES = {
 
 let currentViewState = VIEW_STATES.MAIN;
 let originScrollY = 0;
+let isHandlingPopstate = false;
 
 function setupTestimonialMarquee() {
   const stage = document.getElementById('testimonials-stage');
   const track = document.getElementById('testimonials-track');
-  const openModalBtn = document.getElementById('view-all-testimonials-btn');
-  const modal = document.getElementById('all-testimonials-modal');
-  const closeModalBtn = document.getElementById('close-testimonials-modal-btn');
+  const modal = document.getElementById('testimonial-single-modal');
+  const closeModalBtn = document.getElementById('close-testimonial-single-btn');
   if (!stage || !track) return;
 
   const cards = track.querySelectorAll('.floating-pill-card');
@@ -1677,7 +1582,18 @@ function setupTestimonialMarquee() {
 
   startTimer();
 
-  window.openAllTestimonials = function(e) {
+  // Keyboard Enter / Space support on cards
+  cards.forEach(card => {
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const id = card.getAttribute('data-id');
+        if (id) window.openTestimonialModal(Number(id), e);
+      }
+    });
+  });
+
+  window.openTestimonialModal = function(id, e) {
     if (e) {
       e.stopPropagation?.();
     }
@@ -1685,11 +1601,20 @@ function setupTestimonialMarquee() {
     if (currentViewState !== VIEW_STATES.MAIN && currentViewState !== VIEW_STATES.TESTIMONIALS) {
       return;
     }
-    const modalEl = document.getElementById('all-testimonials-modal');
-    if (!modalEl) return;
+
+    const t = testimonials.find(item => item.id === Number(id)) || testimonials[0];
+    if (!t) return;
+
+    const modalEl = document.getElementById('testimonial-single-modal');
+    const bodyEl = document.getElementById('testimonial-single-body');
+    if (!modalEl || !bodyEl) return;
 
     originScrollY = window.scrollY || window.pageYOffset || 0;
     currentViewState = VIEW_STATES.TESTIMONIALS;
+
+    if (!window.history.state || window.history.state.modal !== 'testimonial-single') {
+      window.history.pushState({ modal: 'testimonial-single', testimonialId: t.id }, '');
+    }
 
     // Safety: ensure media gallery and lightboxes are closed and non-interactive
     const galleryModal = document.getElementById('media-gallery-modal');
@@ -1700,34 +1625,63 @@ function setupTestimonialMarquee() {
     document.getElementById('video-lightbox')?.classList.remove('open', 'active');
     document.getElementById('video-lightbox')?.setAttribute('aria-hidden', 'true');
 
+    const initials = t.name
+      ? t.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
+      : 'VK';
+    const roleMeta = [t.role, t.institution].filter(Boolean).join(' &bull; ');
+
+    const paragraphs = t.testimony
+      .split(/\r?\n\r?\n/)
+      .map(p => p.trim())
+      .filter(Boolean)
+      .map(p => `<p class="testimonial-single-paragraph">${p.replace(/\r?\n/g, '<br/>')}</p>`)
+      .join('');
+
+    bodyEl.innerHTML = `
+      <div class="testimonial-single-quote-wrap">
+        <div class="testimonial-single-quote-icon" aria-hidden="true">&ldquo;</div>
+        <div class="testimonial-single-text-content">
+          ${paragraphs}
+        </div>
+      </div>
+
+      <div class="testimonial-single-author-card">
+        <div class="pill-avatar-monogram testimonial-author-avatar">${initials}</div>
+        <div class="testimonial-author-details">
+          <h4 class="testimonial-author-name">${t.name}</h4>
+          ${roleMeta ? `<div class="testimonial-author-meta">${roleMeta}</div>` : ''}
+          ${t.institution ? `<div class="testimonial-institution-badge">${t.institution}</div>` : ''}
+        </div>
+      </div>
+    `;
+
     modalEl.classList.add('open', 'active');
     modalEl.setAttribute('aria-hidden', 'false');
-    const btn = document.getElementById('view-all-testimonials-btn');
-    btn?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
 
-    // Completely lock Lenis virtual scrolling while modal is open
+    // Lock Lenis virtual scrolling while modal is open
     if (window.lenis) {
       window.lenis.stop();
     }
 
-    // Reset modal scroll to top upon opening
-    const body = modalEl.querySelector('.testimonials-modal-body');
-    if (body) body.scrollTop = 0;
-
+    bodyEl.scrollTop = 0;
     isPaused = true;
   };
 
-  window.closeAllTestimonials = function(e) {
+  window.closeTestimonialModal = function(e) {
     if (e) {
       e.stopPropagation?.();
     }
-    const modalEl = document.getElementById('all-testimonials-modal');
+    const modalEl = document.getElementById('testimonial-single-modal');
     if (!modalEl) return;
+
+    // Directly close popup without navigating backward
+    if (!isHandlingPopstate && window.history.state?.modal === 'testimonial-single') {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+
     modalEl.classList.remove('open', 'active');
     modalEl.setAttribute('aria-hidden', 'true');
-    const btn = document.getElementById('view-all-testimonials-btn');
-    btn?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
 
     currentViewState = VIEW_STATES.MAIN;
@@ -1742,15 +1696,26 @@ function setupTestimonialMarquee() {
     isPaused = false;
   };
 
-  openModalBtn?.addEventListener('click', (e) => window.openAllTestimonials(e));
-  closeModalBtn?.addEventListener('click', (e) => window.closeAllTestimonials(e));
+  // Backwards compatibility aliases
+  window.openAllTestimonials = (e) => window.openTestimonialModal(1, e);
+  window.closeAllTestimonials = window.closeTestimonialModal;
+
+  closeModalBtn?.addEventListener('click', (e) => window.closeTestimonialModal(e));
+
   modal?.addEventListener('click', (e) => {
-    if (e.target === modal) window.closeAllTestimonials(e);
+    const dialog = modal.querySelector('.testimonial-single-dialog');
+    if (e.target === modal || (dialog && !dialog.contains(e.target))) {
+      window.closeTestimonialModal(e);
+    }
+  });
+
+  modal?.querySelector('.testimonial-single-dialog')?.addEventListener('click', (e) => {
+    e.stopPropagation();
   });
 
   // Wheel forwarding: Any wheel event over the modal overlay or header scrolls the body content
   modal?.addEventListener('wheel', (e) => {
-    const body = modal.querySelector('.testimonials-modal-body');
+    const body = modal.querySelector('.testimonial-single-body');
     if (!body) return;
     if (!body.contains(e.target) || e.target === body) {
       body.scrollTop += e.deltaY;
@@ -1818,16 +1783,30 @@ function setupMediaGallery() {
       originScrollY = window.scrollY || window.pageYOffset || 0;
     }
 
+    // Push history state for mobile/browser Back button support
+    if (!window.history.state || window.history.state.modal !== 'media-gallery') {
+      window.history.pushState({ modal: 'media-gallery' }, '');
+    }
+
     // Safety: close testimonials modal if open
     const testModal = document.getElementById('all-testimonials-modal');
     testModal?.classList.remove('open', 'active');
     testModal?.setAttribute('aria-hidden', 'true');
 
-    // Close any stale lightboxes
-    photoLightbox?.classList.remove('open', 'active');
-    photoLightbox?.setAttribute('aria-hidden', 'true');
-    videoLightbox?.classList.remove('open', 'active');
-    videoLightbox?.setAttribute('aria-hidden', 'true');
+    // Close any stale lightboxes and ensure clean state
+    if (photoLightbox) {
+      photoLightbox.classList.remove('open', 'active');
+      photoLightbox.setAttribute('aria-hidden', 'true');
+    }
+    if (videoLightbox) {
+      videoLightbox.classList.remove('open', 'active');
+      videoLightbox.setAttribute('aria-hidden', 'true');
+      if (videoLightboxElem) {
+        videoLightboxElem.pause();
+        videoLightboxElem.removeAttribute('src');
+        videoLightboxElem.load();
+      }
+    }
 
     modalEl.classList.add('open', 'active');
     modalEl.setAttribute('aria-hidden', 'false');
@@ -1860,6 +1839,11 @@ function setupMediaGallery() {
 
     const modalEl = document.getElementById('media-gallery-modal');
     if (!modalEl) return;
+
+    // Directly close popup without navigating backward
+    if (!isHandlingPopstate && window.history.state?.modal === 'media-gallery') {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
 
     // Close all nested lightboxes safely
     if (photoLightbox) {
@@ -1913,9 +1897,13 @@ function setupMediaGallery() {
   });
   modal?.addEventListener('click', (e) => {
     if (lightboxJustClosed) return;
-    if (e.target === modal && (currentViewState === VIEW_STATES.GALLERY_PHOTOS || currentViewState === VIEW_STATES.GALLERY_VIDEOS)) {
+    const dialog = modal.querySelector('.media-gallery-dialog');
+    if (e.target === modal || (dialog && !dialog.contains(e.target))) {
       window.closeMediaGallery(e);
     }
+  });
+  modal?.querySelector('.media-gallery-dialog')?.addEventListener('click', (e) => {
+    e.stopPropagation();
   });
 
   // Header and Drawer Nav Links to Gallery
@@ -2011,8 +1999,10 @@ function setupMediaGallery() {
       scaleStep = 0.12;
     }
 
+    const N = photoCards.length;
     photoCards.forEach((card, i) => {
-      const diff = i - activePhotoIdx;
+      let diff = ((i - activePhotoIdx) % N + N) % N;
+      if (diff > N / 2) diff -= N;
       card.classList.remove('active-card');
 
       if (diff === 0) {
@@ -2067,6 +2057,7 @@ function setupMediaGallery() {
   let pTouchStartX = 0;
   let pTouchStartY = 0;
   let pTouchStartTime = 0;
+  let pTouchHistory = [];
   let pJustSwiped = false;
 
   photoCards.forEach((card, i) => {
@@ -2118,49 +2109,104 @@ function setupMediaGallery() {
     });
   });
 
-  // Touch Swipe on Photo Stage
+  // Momentum-based Touch & Drag for Photo Stage
   photoStage?.addEventListener('touchstart', (e) => {
     if (!e.touches[0]) return;
     pTouchStartX = e.touches[0].clientX;
     pTouchStartY = e.touches[0].clientY;
-    pTouchStartTime = Date.now();
+    pTouchStartTime = performance.now();
+    pTouchHistory = [{ x: pTouchStartX, time: pTouchStartTime }];
+  }, { passive: true });
+
+  photoStage?.addEventListener('touchmove', (e) => {
+    if (!e.touches[0]) return;
+    pTouchHistory.push({ x: e.touches[0].clientX, time: performance.now() });
+    if (pTouchHistory.length > 8) pTouchHistory.shift();
   }, { passive: true });
 
   photoStage?.addEventListener('touchend', (e) => {
     if (!e.changedTouches[0]) return;
-    const diffX = e.changedTouches[0].clientX - pTouchStartX;
-    const diffY = e.changedTouches[0].clientY - pTouchStartY;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    const diffX = endX - pTouchStartX;
+    const diffY = endY - pTouchStartY;
     const absX = Math.abs(diffX);
     const absY = Math.abs(diffY);
 
-    if (absX >= 35 && absX > absY * 1.2) {
+    if (absX >= 25 && absX > absY * 1.1) {
       pJustSwiped = true;
       setTimeout(() => { pJustSwiped = false; }, 350);
 
+      const now = performance.now();
+      let recentV = 0;
+      if (pTouchHistory.length >= 2) {
+        const oldest = pTouchHistory[0];
+        const dt = now - oldest.time;
+        if (dt > 10) recentV = Math.abs(endX - oldest.x) / dt;
+      }
+      const totalDt = Math.max(now - pTouchStartTime, 16);
+      const avgV = absX / totalDt;
+      const velocity = Math.max(recentV, avgV);
+      const momentum = absX + velocity * 300;
+
+      let steps = 1;
+      if (momentum >= 850) steps = 4;
+      else if (momentum >= 550) steps = 3;
+      else if (momentum >= 300) steps = 2;
+
       if (diffX < 0) {
-        updatePhotoCoverflow(activePhotoIdx + 1);
+        updatePhotoCoverflow(activePhotoIdx + steps);
       } else {
-        updatePhotoCoverflow(activePhotoIdx - 1);
+        updatePhotoCoverflow(activePhotoIdx - steps);
       }
     }
   }, { passive: true });
 
-  // Mouse Drag on Photo Stage
+  // Mouse Drag on Photo Stage with Velocity Momentum
   let pMouseStartX = 0;
+  let pMouseStartTime = 0;
+  let pMouseHistory = [];
   let pIsMouseDragging = false;
   photoStage?.addEventListener('mousedown', (e) => {
+    if (e.target.closest('button')) return;
     pMouseStartX = e.clientX;
+    pMouseStartTime = performance.now();
+    pMouseHistory = [{ x: e.clientX, time: pMouseStartTime }];
     pIsMouseDragging = true;
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!pIsMouseDragging) return;
+    pMouseHistory.push({ x: e.clientX, time: performance.now() });
+    if (pMouseHistory.length > 8) pMouseHistory.shift();
   });
   window.addEventListener('mouseup', (e) => {
     if (!pIsMouseDragging) return;
     pIsMouseDragging = false;
     const diff = e.clientX - pMouseStartX;
-    if (Math.abs(diff) > 35) {
+    const absDiff = Math.abs(diff);
+    if (absDiff >= 25) {
       pJustSwiped = true;
       setTimeout(() => { pJustSwiped = false; }, 350);
-      if (diff < 0) updatePhotoCoverflow(activePhotoIdx + 1);
-      else updatePhotoCoverflow(activePhotoIdx - 1);
+
+      const now = performance.now();
+      let recentV = 0;
+      if (pMouseHistory.length >= 2) {
+        const oldest = pMouseHistory[0];
+        const dt = now - oldest.time;
+        if (dt > 10) recentV = Math.abs(e.clientX - oldest.x) / dt;
+      }
+      const totalDt = Math.max(now - pMouseStartTime, 16);
+      const avgV = absDiff / totalDt;
+      const velocity = Math.max(recentV, avgV);
+      const momentum = absDiff + velocity * 300;
+
+      let steps = 1;
+      if (momentum >= 850) steps = 4;
+      else if (momentum >= 550) steps = 3;
+      else if (momentum >= 300) steps = 2;
+
+      if (diff < 0) updatePhotoCoverflow(activePhotoIdx + steps);
+      else updatePhotoCoverflow(activePhotoIdx - steps);
     }
   });
 
@@ -2171,6 +2217,9 @@ function setupMediaGallery() {
   function openPhotoLightbox(index, e) {
     if (e) e.stopPropagation?.();
     if (!photoLightbox || !galleryPhotos[index]) return;
+    if (!window.history.state || window.history.state.modal !== 'photo-lightbox') {
+      window.history.pushState({ modal: 'photo-lightbox' }, '');
+    }
     lbPhotoIdx = index;
     renderPhotoLightboxContent();
     currentViewState = VIEW_STATES.LIGHTBOX_PHOTO;
@@ -2196,6 +2245,10 @@ function setupMediaGallery() {
     }
     if (!photoLightbox) return;
 
+    if (!isHandlingPopstate && window.history.state?.modal === 'photo-lightbox') {
+      window.history.replaceState({ modal: 'media-gallery' }, '', window.location.pathname + window.location.search);
+    }
+
     // Suppress ghost clicks so clicking lightbox X or backdrop does NOT close parent gallery
     lightboxJustClosed = true;
     setTimeout(() => { lightboxJustClosed = false; }, 350);
@@ -2210,7 +2263,13 @@ function setupMediaGallery() {
 
   photoLightboxClose?.addEventListener('click', (e) => closePhotoLightbox(e));
   photoLightbox?.addEventListener('click', (e) => {
-    if (e.target === photoLightbox) closePhotoLightbox(e);
+    const dialog = photoLightbox.querySelector('.lightbox-dialog');
+    if (e.target === photoLightbox || (dialog && !dialog.contains(e.target))) {
+      closePhotoLightbox(e);
+    }
+  });
+  photoLightbox?.querySelector('.lightbox-dialog')?.addEventListener('click', (e) => {
+    e.stopPropagation();
   });
   photoLightboxPrev?.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -2256,8 +2315,14 @@ function setupMediaGallery() {
     const rot = isSmallMobile ? 24 : isMobile ? 26 : 30;
     const zStep = isSmallMobile ? -70 : isMobile ? -90 : -130;
 
+    const N = videoCards.length;
     videoCards.forEach((card, i) => {
-      const diff = i - activeVideoIdx;
+      let diff = ((i - activeVideoIdx) % N + N) % N;
+      if (N > 2 && diff > N / 2) {
+        diff -= N;
+      } else if (N === 2 && activeVideoIdx === 1 && i === 0) {
+        diff = -1;
+      }
       const vid = card.querySelector('video');
       const pBtn = card.querySelector('.video-play-center-btn');
       const muteBtn = card.querySelector(`#video-mute-toggle-${i}`);
@@ -2308,6 +2373,8 @@ function setupMediaGallery() {
 
   let vTouchStartX = 0;
   let vTouchStartY = 0;
+  let vTouchStartTime = 0;
+  let vTouchHistory = [];
   let vJustSwiped = false;
 
   videoCards.forEach((card, i) => {
@@ -2400,48 +2467,104 @@ function setupMediaGallery() {
     updateVideoCoverflow(activeVideoIdx + 1);
   });
 
-  // Touch Swipe on Video Stage
+  // Momentum-based Touch Swipe on Video Stage
   videoStage?.addEventListener('touchstart', (e) => {
     if (!e.touches[0]) return;
     vTouchStartX = e.touches[0].clientX;
     vTouchStartY = e.touches[0].clientY;
+    vTouchStartTime = performance.now();
+    vTouchHistory = [{ x: vTouchStartX, time: vTouchStartTime }];
+  }, { passive: true });
+
+  videoStage?.addEventListener('touchmove', (e) => {
+    if (!e.touches[0]) return;
+    vTouchHistory.push({ x: e.touches[0].clientX, time: performance.now() });
+    if (vTouchHistory.length > 8) vTouchHistory.shift();
   }, { passive: true });
 
   videoStage?.addEventListener('touchend', (e) => {
     if (!e.changedTouches[0]) return;
-    const diffX = e.changedTouches[0].clientX - vTouchStartX;
-    const diffY = e.changedTouches[0].clientY - vTouchStartY;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    const diffX = endX - vTouchStartX;
+    const diffY = endY - vTouchStartY;
     const absX = Math.abs(diffX);
     const absY = Math.abs(diffY);
 
-    // Distinguish horizontal swipe from vertical scroll/tap
-    if (absX >= 35 && absX > absY * 1.2) {
+    if (absX >= 25 && absX > absY * 1.1) {
       vJustSwiped = true;
       setTimeout(() => { vJustSwiped = false; }, 350);
-      if (diffX > 0) {
-        updateVideoCoverflow(activeVideoIdx - 1);
+
+      const now = performance.now();
+      let recentV = 0;
+      if (vTouchHistory.length >= 2) {
+        const oldest = vTouchHistory[0];
+        const dt = now - oldest.time;
+        if (dt > 10) recentV = Math.abs(endX - oldest.x) / dt;
+      }
+      const totalDt = Math.max(now - vTouchStartTime, 16);
+      const avgV = absX / totalDt;
+      const velocity = Math.max(recentV, avgV);
+      const momentum = absX + velocity * 300;
+
+      let steps = 1;
+      if (momentum >= 850) steps = 4;
+      else if (momentum >= 550) steps = 3;
+      else if (momentum >= 300) steps = 2;
+
+      if (diffX < 0) {
+        updateVideoCoverflow(activeVideoIdx + steps);
       } else {
-        updateVideoCoverflow(activeVideoIdx + 1);
+        updateVideoCoverflow(activeVideoIdx - steps);
       }
     }
   }, { passive: true });
 
-  // Mouse Drag on Video Stage
+  // Mouse Drag on Video Stage with Velocity Momentum
   let vMouseStartX = 0;
+  let vMouseStartTime = 0;
+  let vMouseHistory = [];
   let vIsMouseDragging = false;
   videoStage?.addEventListener('mousedown', (e) => {
+    if (e.target.closest('button, input, .video-bottom-toolbar')) return;
     vMouseStartX = e.clientX;
+    vMouseStartTime = performance.now();
+    vMouseHistory = [{ x: e.clientX, time: vMouseStartTime }];
     vIsMouseDragging = true;
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!vIsMouseDragging) return;
+    vMouseHistory.push({ x: e.clientX, time: performance.now() });
+    if (vMouseHistory.length > 8) vMouseHistory.shift();
   });
   window.addEventListener('mouseup', (e) => {
     if (!vIsMouseDragging) return;
     vIsMouseDragging = false;
     const diff = e.clientX - vMouseStartX;
-    if (Math.abs(diff) > 40) {
+    const absDiff = Math.abs(diff);
+    if (absDiff >= 25) {
       vJustSwiped = true;
       setTimeout(() => { vJustSwiped = false; }, 350);
-      if (diff > 0) updateVideoCoverflow(activeVideoIdx - 1);
-      else updateVideoCoverflow(activeVideoIdx + 1);
+
+      const now = performance.now();
+      let recentV = 0;
+      if (vMouseHistory.length >= 2) {
+        const oldest = vMouseHistory[0];
+        const dt = now - oldest.time;
+        if (dt > 10) recentV = Math.abs(e.clientX - oldest.x) / dt;
+      }
+      const totalDt = Math.max(now - vMouseStartTime, 16);
+      const avgV = absDiff / totalDt;
+      const velocity = Math.max(recentV, avgV);
+      const momentum = absDiff + velocity * 300;
+
+      let steps = 1;
+      if (momentum >= 850) steps = 4;
+      else if (momentum >= 550) steps = 3;
+      else if (momentum >= 300) steps = 2;
+
+      if (diff < 0) updateVideoCoverflow(activeVideoIdx + steps);
+      else updateVideoCoverflow(activeVideoIdx - steps);
     }
   });
 
@@ -2452,6 +2575,9 @@ function setupMediaGallery() {
   function openVideoLightbox(index, e) {
     if (e) e.stopPropagation?.();
     if (!videoLightbox || !galleryVideos[index]) return;
+    if (!window.history.state || window.history.state.modal !== 'video-lightbox') {
+      window.history.pushState({ modal: 'video-lightbox' }, '');
+    }
     pauseAllVideos();
     lbVideoIdx = index;
     renderVideoLightboxContent();
@@ -2478,6 +2604,11 @@ function setupMediaGallery() {
       e.preventDefault?.();
     }
     if (!videoLightbox) return;
+
+    if (!isHandlingPopstate && window.history.state?.modal === 'video-lightbox') {
+      window.history.replaceState({ modal: 'media-gallery' }, '', window.location.pathname + window.location.search);
+    }
+
     lightboxJustClosed = true;
     setTimeout(() => { lightboxJustClosed = false; }, 350);
 
@@ -2496,7 +2627,13 @@ function setupMediaGallery() {
 
   videoLightboxClose?.addEventListener('click', (e) => closeVideoLightbox(e));
   videoLightbox?.addEventListener('click', (e) => {
-    if (e.target === videoLightbox) closeVideoLightbox(e);
+    const dialog = videoLightbox.querySelector('.lightbox-dialog');
+    if (e.target === videoLightbox || (dialog && !dialog.contains(e.target))) {
+      closeVideoLightbox(e);
+    }
+  });
+  videoLightbox?.querySelector('.lightbox-dialog')?.addEventListener('click', (e) => {
+    e.stopPropagation();
   });
   videoLightboxPrev?.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -2530,7 +2667,7 @@ function setupMediaGallery() {
       } else if (currentViewState === VIEW_STATES.GALLERY_PHOTOS || currentViewState === VIEW_STATES.GALLERY_VIDEOS) {
         window.closeMediaGallery(e);
       } else if (currentViewState === VIEW_STATES.TESTIMONIALS) {
-        window.closeAllTestimonials(e);
+        window.closeTestimonialModal(e);
       }
     } else if (e.key === 'ArrowLeft') {
       if (currentViewState === VIEW_STATES.LIGHTBOX_PHOTO) {
@@ -2555,9 +2692,48 @@ function setupMediaGallery() {
     }
   });
 
+  // Mobile / Browser Back action navigation
+  window.addEventListener('popstate', () => {
+    isHandlingPopstate = true;
+    if (currentViewState === VIEW_STATES.LIGHTBOX_PHOTO) {
+      closePhotoLightbox();
+    } else if (currentViewState === VIEW_STATES.LIGHTBOX_VIDEO) {
+      closeVideoLightbox();
+    } else if (currentViewState === VIEW_STATES.GALLERY_PHOTOS || currentViewState === VIEW_STATES.GALLERY_VIDEOS) {
+      window.closeMediaGallery();
+    } else if (currentViewState === VIEW_STATES.TESTIMONIALS) {
+      window.closeTestimonialModal();
+    }
+    setTimeout(() => {
+      isHandlingPopstate = false;
+    }, 60);
+  });
+
   // Initialize first coverflow state
   updatePhotoCoverflow(0);
+
+  // Initialize Main Page Floating 3D Carousel with All Discovered Images & Videos
+  const carouselMount = document.getElementById('main-gallery-carousel-mount');
+  if (carouselMount) {
+    new Floating3DCarousel(carouselMount, {
+      items: allMediaItems,
+      initialIndex: 0,
+      ariaLabel: 'Curated 3D Media Carousel',
+      onCardClick: (index, item) => {
+        if (item.type === 'video') {
+          const vIdx = galleryVideos.findIndex(v => v.src === item.src);
+          window.openMediaGallery(vIdx >= 0 ? vIdx : 0, 'videos');
+        } else {
+          const pIdx = galleryPhotos.findIndex(p => p.src === item.src);
+          window.openMediaGallery(pIdx >= 0 ? pIdx : 0, 'photos');
+        }
+      }
+    });
+  }
 }
 
 // Start Application
 document.addEventListener('DOMContentLoaded', initApp);
+
+export { Floating3DCarousel };
+

@@ -127,7 +127,6 @@ const knownAspectRatios = {
   "/assets/images/events/with mic on stage.jpg": "portrait",
   "/assets/images/family/with family on phd award ceremony .jpg": "portrait",
   "/assets/images/family/with family on phd award ceremony1.jpg": "portrait",
-  "/assets/images/hero/hero.png": "square",
   "/assets/images/phd/phd certificate receving.jpg": "landscape",
   "/assets/images/phd/with family on phd award ceremony .jpg": "portrait",
   "/assets/images/phd/with family on phd award ceremony1.jpg": "portrait",
@@ -227,6 +226,8 @@ const seenImagePaths = new Set();
 const sortedImageEntries = Object.entries(rawImageModules)
   .filter(([rawPath]) => {
     const normalized = rawPath.replace(/\\/g, '/');
+    // Exclude hero.png from the gallery, regardless of filename casing
+    if (/(^|\/)hero\.png$/i.test(normalized)) return false;
     if (seenImagePaths.has(normalized)) return false;
     seenImagePaths.add(normalized);
     return true;
@@ -274,3 +275,51 @@ export const galleryVideos = sortedVideoEntries.map(([rawPath, resolvedUrl], idx
     aspectRatio: curated.aspectRatio || '9:16'
   };
 });
+
+// ---------------------------------------------------------------------------
+// 6. Curated Combined Media Collection for 3D Floating Carousel
+// Automatically populated from all discovered photos and videos
+// ---------------------------------------------------------------------------
+export const allMediaItems = (() => {
+  const combined = [];
+  const photos = [...galleryPhotos];
+  const videos = [...galleryVideos];
+
+  let pIdx = 0;
+  let vIdx = 0;
+
+  // Interleave videos into the sequence so visitors encounter both media types
+  while (pIdx < photos.length || vIdx < videos.length) {
+    // Push up to 2-3 photos
+    for (let i = 0; i < 3 && pIdx < photos.length; i++) {
+      const p = photos[pIdx++];
+      combined.push({
+        id: p.id,
+        type: 'image',
+        src: p.src,
+        resolvedUrl: p.resolvedUrl,
+        poster: p.src,
+        title: p.title,
+        alt: p.title,
+        aspectRatio: p.aspectRatio
+      });
+    }
+    // Push 1 video if available
+    if (vIdx < videos.length) {
+      const v = videos[vIdx++];
+      combined.push({
+        id: v.id,
+        type: 'video',
+        src: v.src,
+        resolvedUrl: v.resolvedUrl,
+        poster: v.poster,
+        title: v.title,
+        alt: v.title,
+        aspectRatio: v.aspectRatio
+      });
+    }
+  }
+
+  return combined;
+})();
+

@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import fs from 'fs';
 
+import { execSync } from 'child_process';
+
 // Helper to copy directory recursively
 function copyDir(src, dest) {
   if (!fs.existsSync(src)) return;
@@ -15,6 +17,15 @@ function copyDir(src, dest) {
     } else {
       fs.copyFileSync(srcPath, destPath);
     }
+  }
+}
+
+function regenerateTestimonials() {
+  try {
+    const scriptPath = path.resolve(import.meta.dirname, 'scripts/convert-testimonials.js');
+    execSync(`node "${scriptPath}"`, { stdio: 'inherit' });
+  } catch (err) {
+    console.error('[Testimonials Plugin] Error converting testimonials:', err.message);
   }
 }
 
@@ -32,6 +43,27 @@ export default defineConfig({
     chunkSizeWarningLimit: 1200
   },
   plugins: [
+    {
+      name: 'testimonials-excel-watcher',
+      buildStart() {
+        console.log('[Testimonials Plugin] Ensuring testimonials are up to date on build...');
+        regenerateTestimonials();
+      },
+      configureServer(server) {
+        const excelPath = path.resolve(import.meta.dirname, 'content/testimonials/testimonials.xlsx');
+        server.watcher.add(excelPath);
+        server.watcher.on('all', (event, changedPath) => {
+          if (changedPath && path.resolve(changedPath) === excelPath) {
+            console.log(`[Testimonials Plugin] Detected ${event} on testimonials.xlsx. Regenerating...`);
+            regenerateTestimonials();
+            const jsonPath = path.resolve(import.meta.dirname, 'src/data/testimonials.json');
+            const mod = server.moduleGraph.getModuleById(jsonPath);
+            if (mod) server.moduleGraph.invalidateModule(mod);
+            server.ws.send({ type: 'full-reload' });
+          }
+        });
+      }
+    },
     {
       name: 'serve-and-copy-assets',
       configureServer(server) {
