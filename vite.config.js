@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import fs from 'fs';
 
-import { execSync } from 'child_process';
+import { convertTestimonials } from './scripts/convert-testimonials.js';
 
 // Helper to copy directory recursively
 function copyDir(src, dest) {
@@ -17,15 +17,6 @@ function copyDir(src, dest) {
     } else {
       fs.copyFileSync(srcPath, destPath);
     }
-  }
-}
-
-function regenerateTestimonials() {
-  try {
-    const scriptPath = path.resolve(import.meta.dirname, 'scripts/convert-testimonials.js');
-    execSync(`node "${scriptPath}"`, { stdio: 'inherit' });
-  } catch (err) {
-    console.error('[Testimonials Plugin] Error converting testimonials:', err.message);
   }
 }
 
@@ -46,20 +37,36 @@ export default defineConfig({
     {
       name: 'testimonials-excel-watcher',
       buildStart() {
-        console.log('[Testimonials Plugin] Ensuring testimonials are up to date on build...');
-        regenerateTestimonials();
+        console.log('[Testimonials Plugin] Ensuring testimonials are synchronized for build...');
+        convertTestimonials();
       },
       configureServer(server) {
         const excelPath = path.resolve(import.meta.dirname, 'content/testimonials/testimonials.xlsx');
         server.watcher.add(excelPath);
-        server.watcher.on('all', (event, changedPath) => {
+
+        let debounceTimer = null;
+        const triggerSync = (event) => {
+          if (debounceTimer) clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+            console.log(`[Testimonials Plugin] Workbook saved (${event}). Regenerating testimonials...`);
+            const result = convertTestimonials();
+            if (result && result.success) {
+              const jsonPath = path.resolve(import.meta.dirname, 'src/data/testimonials.json');
+              const mod = server.moduleGraph.getModuleById(jsonPath);
+              if (mod) server.moduleGraph.invalidateModule(mod);
+              server.ws.send({ type: 'full-reload' });
+            }
+          }, 250);
+        };
+
+        server.watcher.on('change', (changedPath) => {
           if (changedPath && path.resolve(changedPath) === excelPath) {
-            console.log(`[Testimonials Plugin] Detected ${event} on testimonials.xlsx. Regenerating...`);
-            regenerateTestimonials();
-            const jsonPath = path.resolve(import.meta.dirname, 'src/data/testimonials.json');
-            const mod = server.moduleGraph.getModuleById(jsonPath);
-            if (mod) server.moduleGraph.invalidateModule(mod);
-            server.ws.send({ type: 'full-reload' });
+            triggerSync('change');
+          }
+        });
+        server.watcher.on('add', (changedPath) => {
+          if (changedPath && path.resolve(changedPath) === excelPath) {
+            triggerSync('add');
           }
         });
       }

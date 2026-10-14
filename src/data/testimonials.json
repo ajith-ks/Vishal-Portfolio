@@ -51,5 +51,53 @@
     "role": "Student",
     "institution": "HITS,padur, Chennai, Tamil Nadu",
     "testimony": "The classes were really good and enjoyable. The faculty were very friendly and approachable, so we felt comfortable asking doubts and clearing them whenever we needed. They explained the topics clearly and made sure we understood them properly. Overall, it was a good learning experience."
+  },
+  {
+    "id": 9,
+    "name": "Navaneeth M Unni",
+    "role": "Student",
+    "institution": "AJK COLLEGE OF ARTS AND SCIENCE",
+    "testimony": "The session was amazing."
+  },
+  {
+    "id": 10,
+    "name": "Niranjan A",
+    "role": "Student",
+    "institution": "Dhanalakshmi Srinivasan College Of Engineering",
+    "testimony": "The session is so interactive for everyone , teaching with the real world examples makes more easier to understand"
+  },
+  {
+    "id": 11,
+    "name": "VISHNU P",
+    "role": "Student",
+    "institution": "Gallagher",
+    "testimony": "It was really good and very helpful for my interview preparation and in helping me get a job."
+  },
+  {
+    "id": 12,
+    "name": "Sooraj M",
+    "role": "Faculty",
+    "institution": "Ksoft Technologies",
+    "testimony": "The session was motivating and which helps me to figure out where I need to focus and correct my kills."
+  },
+  {
+    "id": 13,
+    "name": "Ramees T S",
+    "role": "Faculty",
+    "testimony": "Good session"
+  },
+  {
+    "id": 14,
+    "name": "Pranav Adith S",
+    "role": "Student",
+    "institution": "Zeal Academy",
+    "testimony": "Honestly, I don’t think calling you just “sir” is enough. For me, you’ve always been more like an elder brother and a friend than a teacher.\r\n\r\nWhen I think about my placement journey, you are definitely one of the main reasons I reached where I am today. When I started, I had very little confidence, especially when it came to English, communication and facing interviews. You literally helped me build everything from zero.\r\n\r\nWhat I liked the most was that your classes never felt like normal classes. It always felt like we were sitting with friends, talking, having fun, making mistakes, and learning at the same time. That comfort made it so much easier for me to improve.\r\n\r\nFrom helping me with English and communication to guiding me through placement preparation and interviews, you were always there. I genuinely feel that the person I was when I started and the person I am now are completely different.\r\n\r\nAnd honestly, getting placed at Accenture is a big achievement for me, but I know that a big part of that journey was possible because of you. You didn’t just prepare me for a placement — you helped me gain confidence in myself.\r\n\r\nYou literally took me from zero to hero. 😂❤️\r\n\r\nI’ll always be grateful for that. No matter where I go in my career, I’ll always remember you as the person who helped me take that first big step.\r\n\r\nThank you for everything, Vishal ettaa ❤️"
+  },
+  {
+    "id": 15,
+    "name": "Adithya Satish",
+    "role": "Student",
+    "institution": "AJK College of arts and sciences",
+    "testimony": "He is one of the Teachers what we can point out and say how a teacher should teach and be the reason is simple he never told us to adapt to the treditional way he gives attention to everyone in the room and takes action for the student so he/she could understand the concept more easily"
   }
 ]
