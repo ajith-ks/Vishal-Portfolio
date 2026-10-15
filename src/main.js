@@ -104,9 +104,9 @@ function renderHeader() {
             <a href="#about" class="nav-link">About</a>
             <a href="#expertise" class="nav-link">Expertise</a>
             <a href="#journey" class="nav-link">Experience</a>
+            <a href="#speaking" class="nav-link">Speaking</a>
             <a href="#training" class="nav-link">Training</a>
             <a href="#gallery" class="nav-link">Gallery</a>
-            <a href="#speaking" class="nav-link">Speaking</a>
             <a href="#research" class="nav-link">Publications</a>
             <a href="#testimonials" class="nav-link">Testimonials</a>
             <a href="#contact" class="nav-link">Contact</a>
@@ -131,22 +131,22 @@ function renderHeader() {
 
     <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation Menu">
       <div class="mobile-drawer-header">
+        <button class="mobile-drawer-close" id="mobile-drawer-close" aria-label="Close Navigation Menu">
+          ${Icons.x}
+        </button>
         <a href="#hero" class="brand-logo" aria-label="Dr. Vishal Kattery Home">
           <span class="brand-monogram-tiny">VK</span>
           <span>Dr. Vishal <span class="brand-accent">Kattery</span></span>
         </a>
-        <button class="mobile-drawer-close" id="mobile-drawer-close" aria-label="Close Navigation Menu">
-          ${Icons.x}
-        </button>
       </div>
       <nav class="mobile-nav-links">
         <a href="#hero" class="mobile-nav-link active">Home</a>
         <a href="#about" class="mobile-nav-link">About</a>
         <a href="#expertise" class="mobile-nav-link">Expertise</a>
         <a href="#journey" class="mobile-nav-link">Experience</a>
+        <a href="#speaking" class="mobile-nav-link">Speaking</a>
         <a href="#training" class="mobile-nav-link">Training &amp; Impact</a>
         <a href="#gallery" class="mobile-nav-link">Media Gallery</a>
-        <a href="#speaking" class="mobile-nav-link">Speaking</a>
         <a href="#research" class="mobile-nav-link">Publications</a>
         <a href="#testimonials" class="mobile-nav-link">Testimonials</a>
         <a href="#contact" class="mobile-nav-link">Contact</a>
@@ -288,7 +288,7 @@ function renderHero() {
 // About Section — Editorial Overlapping Photographic Depth
 function renderAbout() {
   return `
-    <section class="section" id="about">
+    <section class="section section-alt" id="about">
       <div class="container">
         <div class="about-editorial-grid">
           <div class="about-photo-wrapper">
@@ -308,7 +308,7 @@ function renderAbout() {
 
           <div class="about-content-col">
             <span class="section-tag">${aboutData.subtitle}</span>
-            <h2 class="section-title">${aboutData.title}</h2>
+            <h2 class="section-title">Who Is Dr. <span class="heading-highlight">Vishal</span>?</h2>
             <p class="about-lead-statement">${aboutData.lead}</p>
             ${aboutData.paragraphs.map(p => `<p class="about-body-text">${p}</p>`).join('')}
 
@@ -331,11 +331,11 @@ function renderAbout() {
 // Expertise Section (Reference 05 Premium Feature Bento Cards)
 function renderExpertise() {
   return `
-    <section class="section" id="expertise" style="background: var(--bg-secondary);">
+    <section class="section" id="expertise">
       <div class="container">
         <div class="section-header">
           <span class="section-tag">AREAS OF MASTERY</span>
-          <h2 class="section-title">Domains of Expertise</h2>
+          <h2 class="section-title">Domains of <span class="heading-highlight">Expertise</span></h2>
           <p class="section-subtitle">
             An interdisciplinary portfolio bridging management theory, cooperative banking administration, enterprise computing, and transformative student mentorship.
           </p>
@@ -441,11 +441,11 @@ function renderExpertise() {
 // 5 Authoritative Records Strictly Preserved
 function renderJourney() {
   return `
-    <section class="section" id="journey">
+    <section class="section section-alt" id="journey">
       <div class="container">
         <div class="section-header centered">
           <span class="section-tag">PROGRESSIVE TIMELINE</span>
-          <h2 class="section-title">From Experience to Purpose</h2>
+          <h2 class="section-title">From Experience to <span class="heading-highlight">Purpose</span></h2>
           <p class="section-subtitle">
             A continuous career trajectory progressing fluidly across enterprise software, cooperative banking administration, higher academia, and corporate directorship.
           </p>
@@ -470,9 +470,9 @@ function renderJourney() {
               ${idx < journeyData.length - 1 ? `
                 <div class="flow-connector-line">
                   <svg class="flow-connector-svg" viewBox="0 0 100 48" preserveAspectRatio="none">
-                    <path d="${idx % 2 === 0 ? 'M 20 0 L 20 24 L 80 24 L 80 48' : 'M 80 0 L 80 24 L 20 24 L 20 48'}" fill="none" stroke="rgba(142, 182, 155, 0.45)" stroke-width="2" stroke-dasharray="4 4" />
-                    <circle cx="${idx % 2 === 0 ? '20' : '80'}" cy="4" r="3" fill="#daf1de" />
-                    <circle cx="${idx % 2 === 0 ? '80' : '20'}" cy="44" r="3" fill="#daf1de" />
+                    <path d="${idx % 2 === 0 ? 'M 20 0 L 20 24 L 80 24 L 80 48' : 'M 80 0 L 80 24 L 20 24 L 20 48'}" fill="none" stroke="var(--border-prominent)" stroke-width="2" stroke-dasharray="4 4" />
+                    <circle cx="${idx % 2 === 0 ? '20' : '80'}" cy="4" r="3" fill="var(--accent)" />
+                    <circle cx="${idx % 2 === 0 ? '80' : '20'}" cy="44" r="3" fill="var(--accent)" />
                   </svg>
                 </div>
               ` : ''}
@@ -488,11 +488,11 @@ function renderJourney() {
 // First card image MUST be assets/images/speaking/seminar 7.jpg
 function renderSpeaking() {
   return `
-    <section class="section" id="speaking" style="background: var(--bg-secondary);">
+    <section class="section" id="speaking">
       <div class="container">
         <div class="section-header">
           <span class="section-tag">PUBLIC ENGAGEMENT</span>
-          <h2 class="section-title">Speaking &amp; Public Engagement</h2>
+          <h2 class="section-title">Speaking &amp; Public <span class="heading-highlight">Engagement</span></h2>
           <p class="section-subtitle">
             Engaging large audiences at academic symposiums, cooperative conventions, institutional seminars, and student empowerment forums across South India.
           </p>
@@ -525,7 +525,7 @@ function renderSpeaking() {
 // 17th Indian Co-operative Congress Feature Section
 function renderCongress() {
   return `
-    <section class="section" id="congress">
+    <section class="section section-alt" id="congress">
       <div class="container">
         <div class="bento-card congress-card">
           <div class="congress-grid">
@@ -535,7 +535,7 @@ function renderCongress() {
                 <span class="badge congress-location-badge">${congressEventData.location}</span>
               </div>
               <h2 class="congress-title">
-                ${congressEventData.title}
+                ${congressEventData.title.replace('Co-operative', '<span class="heading-highlight">Co-operative</span>')}
               </h2>
               <div class="congress-inauguration">
                 ${Icons.award} <span>${congressEventData.inauguration}</span>
@@ -572,11 +572,11 @@ function renderCongress() {
 // Training & Mentoring Section — Curated Themes & Video Player
 function renderTraining() {
   return `
-    <section class="section" id="training" style="background: var(--bg-secondary);">
+    <section class="section" id="training">
       <div class="container">
         <div class="section-header">
           <span class="section-tag">PEDAGOGY &amp; MENTORSHIP</span>
-          <h2 class="section-title">Training &amp; Student Impact</h2>
+          <h2 class="section-title">Training &amp; Student <span class="heading-highlight">Impact</span></h2>
           <p class="section-subtitle">
             Bridging collegiate curricula and corporate workplace expectations through rigorous placement training, real-time interview preparedness, and life-skills cultivation.
           </p>
@@ -591,7 +591,7 @@ function renderTraining() {
           ${trainingCategories.map(cat => `
             <div class="training-catalogue-card">
               <div class="training-catalogue-header">
-                <span style="color: var(--accent-highlight);">${Icons.badgeCheck}</span>
+                <span style="color: var(--accent);">${Icons.badgeCheck}</span>
                 <h4 class="training-catalogue-title">${cat.category}</h4>
               </div>
               <div class="training-topics-stack">
@@ -613,11 +613,11 @@ function renderTraining() {
 // Dedicated Media Gallery Section (Art-directed preview on main page)
 function renderGallery() {
   return `
-    <section class="section gallery-section" id="gallery">
+    <section class="section gallery-section section-alt" id="gallery">
       <div class="container">
         <div class="section-header centered">
           <span class="section-tag">ARCHIVAL MEDIA</span>
-          <h2 class="section-title">Curated Media Gallery</h2>
+          <h2 class="section-title">Curated Media <span class="heading-highlight">Gallery</span></h2>
           <p class="section-subtitle">
             A verified photographic and videographic record spanning classroom lectures, student bootcamps, doctoral milestones, and collegiate keynotes.
           </p>
@@ -789,7 +789,7 @@ function renderOrganizations() {
       <div class="container">
         <div class="section-header">
           <span class="section-tag">INSTITUTIONS &amp; CIVIC SERVICE</span>
-          <h2 class="section-title">Organizations &amp; Community</h2>
+          <h2 class="section-title">Organizations &amp; <span class="heading-highlight">Community</span></h2>
           <p class="section-subtitle">
             Long-standing associations with academic learning centres and frontline emergency relief teams across Kerala.
           </p>
@@ -850,11 +850,11 @@ function renderOrganizations() {
 // Research & Publications Section (Academic Archive)
 function renderResearch() {
   return `
-    <section class="section" id="research" style="background: var(--bg-secondary);">
+    <section class="section section-alt" id="research">
       <div class="container">
         <div class="section-header">
           <span class="section-tag">SCHOLARLY INQUIRY</span>
-          <h2 class="section-title">Research &amp; Publications</h2>
+          <h2 class="section-title">Research &amp; <span class="heading-highlight">Publications</span></h2>
           <p class="section-subtitle">
             Peer-reviewed research and SCOPUS-indexed papers investigating banking sector stress dynamics, organizational commitment, sustainability in manufacturing, and artificial intelligence in commerce.
           </p>
@@ -892,7 +892,7 @@ function renderAchievements() {
       <div class="container">
         <div class="section-header centered">
           <span class="section-tag">VERIFIED MILESTONES</span>
-          <h2 class="section-title">Recognition &amp; Standing</h2>
+          <h2 class="section-title">Recognition &amp; <span class="heading-highlight">Standing</span></h2>
           <p class="section-subtitle">
             Academic honors and credentials documented by registered regulatory institutions and international indices.
           </p>
@@ -921,11 +921,11 @@ function renderTestimonials() {
   if (!hasData) return '';
 
   return `
-    <section class="section" id="testimonials" style="background: var(--bg-secondary);">
+    <section class="section section-alt" id="testimonials">
       <div class="container">
         <div class="section-header centered">
           <span class="section-tag">ENDORSEMENTS</span>
-          <h2 class="section-title">Testimonials &amp; Feedback</h2>
+          <h2 class="section-title">Testimonials &amp; <span class="heading-highlight">Feedback</span></h2>
           <p class="section-subtitle">
             Authentic reflections from students, graduates, and collegiate faculty guided by Dr. Vishal.
           </p>
@@ -987,7 +987,7 @@ function renderHumanSide() {
       <div class="container">
         <div class="section-header">
           <span class="section-tag">PERSONAL PERSPECTIVE</span>
-          <h2 class="section-title">The Human Dimension</h2>
+          <h2 class="section-title">The Human <span class="heading-highlight">Dimension</span></h2>
           <p class="section-subtitle">
             Behind the research papers, lecture halls, and boardroom meetings lies a grounded devotion to student welfare, lifelong growth, and family milestones.
           </p>
@@ -1020,13 +1020,13 @@ function renderHumanSide() {
 // Contact Section — Bold Editorial Closing ("LET'S CONNECT.")
 function renderContact() {
   return `
-    <section class="section" id="contact" style="background: var(--bg-secondary);">
+    <section class="section section-alt" id="contact">
       <div class="container">
         <div class="contact-editorial-layout">
           <div>
             <span class="section-tag">INITIATE COLLABORATION</span>
             <h2 class="contact-hero-statement">
-              LET'S<br /><span>CONNECT.</span>
+              LET'S<br /><span class="heading-highlight">CONNECT.</span>
             </h2>
             <p class="contact-sub-statement">
               Open to academic guest lectures, placement bootcamps, faculty development programs, corporate workshops, and research collaborations.
@@ -1138,8 +1138,8 @@ function renderFooter() {
               <li><a href="#about">About Dr. Vishal</a></li>
               <li><a href="#expertise">Domains of Expertise</a></li>
               <li><a href="#journey">Career Experience</a></li>
-              <li><a href="#training">Teaching &amp; Impact</a></li>
               <li><a href="#speaking">Speaking &amp; Engagement</a></li>
+              <li><a href="#training">Teaching &amp; Impact</a></li>
               <li><a href="#research">Research &amp; Publications</a></li>
             </ul>
           </div>
@@ -1334,9 +1334,18 @@ function setupMobileMenu() {
     document.body.style.overflow = '';
   };
 
-  openBtn?.addEventListener('click', openMenu);
+  const toggleMenu = () => {
+    if (drawer?.classList.contains('open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  };
+
+  openBtn?.addEventListener('click', toggleMenu);
   closeBtn?.addEventListener('click', closeMenu);
   backdrop?.addEventListener('click', closeMenu);
+  drawer?.querySelector('.brand-logo')?.addEventListener('click', closeMenu);
 
   document.querySelectorAll('.mobile-nav-link').forEach(link => {
     link.addEventListener('click', closeMenu);

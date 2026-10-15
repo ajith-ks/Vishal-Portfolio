@@ -1,65 +1,64 @@
 :root {
   /* ============================================================
-     COLOR SYSTEM — REFERENCE 02 (GREEN 3D EDITORIAL PALETTE)
-     Near Black #050706 / Deep Forest #0B2B26 / Pine #163832 /
-     Emerald #235347 / Muted Mint #8EB69B / Soft Frosted Mint #DAF1DE
+     COLOR SYSTEM — PROMPT BLUE (#0B132B) & AI GREEN (#39FF88)
+     Stratified Navy Layers with Electric Cyber Green Accents
      ============================================================ */
-  --bg-primary: #050807;
-  --bg-secondary: #08140f;
-  --bg-tertiary: #0c1c16;
-  --bg-surface: rgba(11, 26, 20, 0.78);
-  --bg-surface-elevated: #11261d;
-  --bg-card: rgba(12, 28, 22, 0.68);
-  --bg-card-hover: rgba(18, 42, 33, 0.88);
-  --bg-glass: rgba(14, 33, 26, 0.45);
+  --bg-primary: #0B132B;            /* Main page background (Prompt Blue) */
+  --bg-secondary: #111D42;          /* Alternate section background (distinct lighter/richer navy) */
+  --bg-tertiary: #14224C;           /* Deep nested panel tone */
+  --bg-surface: rgba(19, 32, 70, 0.88); /* Nav pill, modals, dialog body */
+  --bg-surface-elevated: #1D2E60;   /* Elevated cards, popups, drawer header */
+  --bg-card: #182854;               /* Cards & panels distinct blue surface */
+  --bg-card-hover: #1F3369;         /* Card hover surface */
+  --bg-glass: rgba(22, 37, 78, 0.70);
+  --footer-bg: #070D1E;             /* Grounding ultra-deep midnight navy */
   
-  --text-primary: #f5f9f6;
-  --text-secondary: #b8cfc1;
-  --text-muted: #728f7d;
+  --text-primary: #FFFFFF;          /* Pure crisp white heading/body */
+  --text-secondary: #9DB2D4;        /* Muted blue-grey with high contrast (WCAG AAA) */
+  --text-muted: #6C82A6;            /* Subdued blue-grey for timestamps/labels */
   
-  --border-subtle: rgba(142, 182, 155, 0.12);
-  --border-prominent: rgba(142, 182, 155, 0.24);
-  --border-accent: rgba(142, 182, 155, 0.45);
-  --border-card: rgba(142, 182, 155, 0.14);
-  --border-card-hover: rgba(218, 241, 222, 0.42);
+  --border-subtle: rgba(75, 110, 185, 0.18);
+  --border-prominent: rgba(85, 125, 205, 0.35);
+  --border-accent: rgba(57, 255, 136, 0.50);
+  --border-card: rgba(85, 125, 205, 0.25);       /* Subtle blue card border */
+  --border-card-hover: rgba(57, 255, 136, 0.65); /* AI Green hover border */
 
-  /* Emerald & Soft Frosted Mint Accents */
-  --accent: #1f6b52;
-  --accent-light: #8eb69b;
-  --accent-highlight: #daf1de;
-  --accent-dark: #0b2b26;
-  --accent-pine: #163832;
-  --accent-emerald: #235347;
-  --accent-rgb: 142, 182, 155;
-  --accent-gradient: linear-gradient(135deg, #0b2b26 0%, #1f6b52 50%, #8eb69b 100%);
-  --accent-mint-gradient: linear-gradient(135deg, #8eb69b 0%, #daf1de 100%);
-  --accent-glow: rgba(142, 182, 155, 0.26);
-  --accent-glow-strong: rgba(218, 241, 222, 0.35);
-  --accent-subtle: rgba(142, 182, 155, 0.08);
+  /* AI Green (#39FF88) Accent System */
+  --accent: #39FF88;
+  --accent-light: #6AFFAB;
+  --accent-highlight: #C2FFE0;
+  --accent-dark: #12D660;
+  --accent-rgb: 57, 255, 136;
+  --accent-gradient: linear-gradient(135deg, #0B132B 0%, #152E58 45%, #39FF88 100%);
+  --accent-mint-gradient: linear-gradient(135deg, #39FF88 0%, #6AFFAB 100%);
+  --accent-glow: rgba(57, 255, 136, 0.32);
+  --accent-glow-strong: rgba(57, 255, 136, 0.55);
+  --accent-subtle: rgba(57, 255, 136, 0.10);
 
   /* Semantic status & badges */
-  --badge-bg: rgba(142, 182, 155, 0.1);
-  --badge-text: #daf1de;
-  --badge-border: rgba(142, 182, 155, 0.25);
+  --badge-bg: rgba(57, 255, 136, 0.12);
+  --badge-text: #39FF88;
+  --badge-border: rgba(57, 255, 136, 0.35);
 
-  /* ShinyButton tokens (Reference 02) */
-  --shiny-btn-bg: #0b1a14;
-  --shiny-btn-text: #f5f9f6;
-  --shiny-btn-glow: rgba(142, 182, 155, 0.3);
-  --shiny-btn-shimmer: rgba(218, 241, 222, 0.22);
-  --shiny-btn-border: rgba(142, 182, 155, 0.35);
+  /* ShinyButton tokens: AI Green pill with bold Navy text (Prompt Spec) */
+  --shiny-btn-bg: #39FF88;
+  --shiny-btn-text: #0B132B;
+  --shiny-btn-glow: rgba(57, 255, 136, 0.45);
+  --shiny-btn-shimmer: rgba(255, 255, 255, 0.45);
+  --shiny-btn-border: #39FF88;
 
   /* Secondary & Control Button tokens */
-  --btn-secondary-bg: rgba(255, 255, 255, 0.06);
-  --btn-secondary-text: #f5f9f6;
-  --btn-secondary-border: rgba(142, 182, 155, 0.22);
-  --btn-secondary-hover-bg: rgba(142, 182, 155, 0.16);
+  --btn-secondary-bg: rgba(27, 43, 90, 0.65);
+  --btn-secondary-text: #FFFFFF;
+  --btn-secondary-border: rgba(85, 125, 205, 0.32);
+  --btn-secondary-hover-bg: rgba(57, 255, 136, 0.15);
+  --btn-secondary-hover-border: #39FF88;
 
   /* Form & Header tokens */
-  --input-bg: rgba(5, 8, 7, 0.75);
-  --input-focus-bg: rgba(5, 8, 7, 0.95);
-  --header-scrolled-bg: rgba(8, 20, 15, 0.92);
-  --hero-glow-color: radial-gradient(ellipse, rgba(142, 182, 155, 0.16) 0%, rgba(22, 56, 44, 0.12) 45%, transparent 70%);
+  --input-bg: rgba(11, 19, 43, 0.85);
+  --input-focus-bg: #152349;
+  --header-scrolled-bg: rgba(11, 19, 43, 0.92);
+  --hero-glow-color: radial-gradient(ellipse, rgba(57, 255, 136, 0.15) 0%, rgba(19, 38, 90, 0.25) 45%, transparent 70%);
 
   /* Typography */
   --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -67,12 +66,12 @@
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Shadows (soft diffuse depth as seen in Reference 02) */
-  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.55);
-  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
-  --shadow-card-hover: 0 24px 50px -12px rgba(0, 0, 0, 0.8), 0 0 32px rgba(142, 182, 155, 0.14);
-  --shadow-glow: 0 0 40px rgba(142, 182, 155, 0.22);
+  /* Shadows — Deep rich shadows with restrained green glow */
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.65);
+  --shadow-card-hover: 0 24px 50px -10px rgba(0, 0, 0, 0.75), 0 0 28px rgba(57, 255, 136, 0.20);
+  --shadow-glow: 0 0 40px rgba(57, 255, 136, 0.25);
 
   /* Layout */
   --container-max: 1360px;
@@ -91,68 +90,68 @@
 }
 
 [data-theme="light"] {
-  /* Warm off-white & pale sage background */
-  --bg-primary: #f6f9f7;
-  --bg-secondary: #edf4ef;
-  --bg-tertiary: #dfebdf;
+  /* Warm crisp off-white & soft cool-blue background */
+  --bg-primary: #F8FAFC;
+  --bg-secondary: #EDF2F7;
+  --bg-tertiary: #E2E8F0;
   --bg-surface: rgba(255, 255, 255, 0.95);
-  --bg-surface-elevated: #ffffff;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f4faf6;
+  --bg-surface-elevated: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F1F5F9;
   --bg-glass: rgba(255, 255, 255, 0.88);
+  --footer-bg: #EDF2F7;
 
-  /* Deep forest-green typography for strong contrast and legibility */
-  --text-primary: #0a2318;
-  --text-secondary: #1e3f2f;
-  --text-muted: #3f6350;
+  /* Deep navy typography for strong contrast and legibility */
+  --text-primary: #0B132B;
+  --text-secondary: #2C3E66;
+  --text-muted: #5A6E94;
 
-  --border-subtle: rgba(14, 50, 34, 0.16);
-  --border-prominent: rgba(14, 50, 34, 0.28);
-  --border-accent: rgba(27, 99, 76, 0.55);
-  --border-card: rgba(14, 50, 34, 0.16);
-  --border-card-hover: rgba(27, 99, 76, 0.6);
+  --border-subtle: rgba(11, 19, 43, 0.12);
+  --border-prominent: rgba(11, 19, 43, 0.22);
+  --border-accent: rgba(10, 153, 82, 0.55);
+  --border-card: rgba(11, 19, 43, 0.12);
+  --border-card-hover: rgba(10, 153, 82, 0.55);
 
-  --accent: #1b634c;
-  --accent-light: #205c46;
-  --accent-highlight: #0d2b20;
-  --accent-dark: #081d14;
-  --accent-pine: #143e2e;
-  --accent-emerald: #1e634a;
-  --accent-forest: #0d2b20;
-  --accent-rgb: 27, 99, 76;
-  --accent-gradient: linear-gradient(135deg, #143e2e 0%, #1b634c 50%, #297c5e 100%);
-  --accent-mint-gradient: linear-gradient(135deg, #0d2b20 0%, #1b634c 100%);
-  --accent-glow: rgba(27, 99, 76, 0.18);
-  --accent-glow-strong: rgba(27, 99, 76, 0.3);
-  --accent-subtle: rgba(27, 99, 76, 0.1);
+  /* Vibrant Emerald Green variant for light mode */
+  --accent: #0A9952;
+  --accent-light: #10B981;
+  --accent-highlight: #0B132B;
+  --accent-dark: #065F38;
+  --accent-rgb: 10, 153, 82;
+  --accent-gradient: linear-gradient(135deg, #0B132B 0%, #163660 60%, #0A9952 100%);
+  --accent-mint-gradient: linear-gradient(135deg, #0A9952 0%, #10B981 100%);
+  --accent-glow: rgba(10, 153, 82, 0.18);
+  --accent-glow-strong: rgba(10, 153, 82, 0.30);
+  --accent-subtle: rgba(10, 153, 82, 0.10);
 
-  --badge-bg: rgba(27, 99, 76, 0.1);
-  --badge-text: #0d2b20;
-  --badge-border: rgba(27, 99, 76, 0.3);
+  --badge-bg: rgba(10, 153, 82, 0.12);
+  --badge-text: #065F38;
+  --badge-border: rgba(10, 153, 82, 0.35);
 
-  /* ShinyButton: Deep forest-green pill with crisp white text & shimmering emerald border */
-  --shiny-btn-bg: #0d2b20;
-  --shiny-btn-text: #ffffff;
-  --shiny-btn-glow: rgba(13, 43, 32, 0.22);
+  /* ShinyButton in Light Mode: Navy pill with AI Green text */
+  --shiny-btn-bg: #0B132B;
+  --shiny-btn-text: #39FF88;
+  --shiny-btn-glow: rgba(11, 19, 43, 0.25);
   --shiny-btn-shimmer: rgba(255, 255, 255, 0.25);
-  --shiny-btn-border: #1b634c;
+  --shiny-btn-border: #0B132B;
 
   /* Secondary & Control Button tokens */
-  --btn-secondary-bg: rgba(13, 43, 32, 0.08);
-  --btn-secondary-text: #0a2318;
-  --btn-secondary-border: rgba(14, 50, 34, 0.24);
-  --btn-secondary-hover-bg: rgba(13, 43, 32, 0.15);
+  --btn-secondary-bg: rgba(11, 19, 43, 0.08);
+  --btn-secondary-text: #0B132B;
+  --btn-secondary-border: rgba(11, 19, 43, 0.24);
+  --btn-secondary-hover-bg: rgba(11, 19, 43, 0.15);
+  --btn-secondary-hover-border: #0A9952;
 
   /* Form & Header tokens */
-  --input-bg: #ffffff;
-  --input-focus-bg: #ffffff;
+  --input-bg: #FFFFFF;
+  --input-focus-bg: #FFFFFF;
   --header-scrolled-bg: rgba(255, 255, 255, 0.96);
-  --hero-glow-color: radial-gradient(ellipse, rgba(27, 99, 76, 0.1) 0%, rgba(142, 182, 155, 0.06) 45%, transparent 70%);
+  --hero-glow-color: radial-gradient(ellipse, rgba(10, 153, 82, 0.10) 0%, rgba(11, 19, 43, 0.06) 45%, transparent 70%);
 
   /* Soft, intentional shadows */
-  --shadow-sm: 0 4px 14px rgba(10, 35, 24, 0.07);
-  --shadow-md: 0 10px 28px rgba(10, 35, 24, 0.1);
-  --shadow-lg: 0 20px 45px rgba(10, 35, 24, 0.13);
-  --shadow-card-hover: 0 20px 42px -10px rgba(10, 35, 24, 0.16), 0 0 24px rgba(27, 99, 76, 0.1);
-  --shadow-glow: 0 0 35px rgba(27, 99, 76, 0.15);
+  --shadow-sm: 0 4px 14px rgba(11, 19, 43, 0.07);
+  --shadow-md: 0 10px 28px rgba(11, 19, 43, 0.10);
+  --shadow-lg: 0 20px 45px rgba(11, 19, 43, 0.13);
+  --shadow-card-hover: 0 20px 42px -10px rgba(11, 19, 43, 0.16), 0 0 24px rgba(10, 153, 82, 0.10);
+  --shadow-glow: 0 0 35px rgba(10, 153, 82, 0.15);
 }

@@ -64,19 +64,19 @@ export class ThreeSculpture {
       this.renderer.domElement.className = 'hero-3d-canvas';
       this.container.appendChild(this.renderer.domElement);
 
-      // 4. Lighting — Initial Dark Theme defaults
-      this.ambientLight = new THREE.AmbientLight(0x0b2b26, 2.5);
+      // 4. Lighting — Initial Dark Theme defaults (Prompt Blue #0B132B & AI Green #39FF88)
+      this.ambientLight = new THREE.AmbientLight(0x0b132b, 2.5);
       this.scene.add(this.ambientLight);
 
-      this.keyLight = new THREE.DirectionalLight(0xdaf1de, 3.2);
+      this.keyLight = new THREE.DirectionalLight(0x39ff88, 3.2);
       this.keyLight.position.set(5, 7, 6);
       this.scene.add(this.keyLight);
 
-      this.rimLight = new THREE.DirectionalLight(0x1f6b52, 4.0);
+      this.rimLight = new THREE.DirectionalLight(0x3b82f6, 4.0);
       this.rimLight.position.set(-6, -4, -4);
       this.scene.add(this.rimLight);
 
-      this.coreLight = new THREE.PointLight(0x8eb69b, 3.5, 8);
+      this.coreLight = new THREE.PointLight(0x39ff88, 3.5, 8);
       this.coreLight.position.set(0, 0, 0);
       this.scene.add(this.coreLight);
 
@@ -89,21 +89,21 @@ export class ThreeSculpture {
 
       // Orbital Rings
       this.ringMaterial1 = new THREE.MeshStandardMaterial({
-        color: 0x8eb69b,
+        color: 0x39ff88,
         metalness: 0.85,
         roughness: 0.22,
         wireframe: false
       });
 
       this.ringMaterial2 = new THREE.MeshStandardMaterial({
-        color: 0x163832,
+        color: 0x1d2e60,
         metalness: 0.9,
         roughness: 0.18,
         wireframe: false
       });
 
       this.ringMaterial3 = new THREE.MeshStandardMaterial({
-        color: 0xdaf1de,
+        color: 0x6affab,
         metalness: 0.6,
         roughness: 0.35,
         wireframe: true
@@ -130,8 +130,8 @@ export class ThreeSculpture {
       // Inner Faceted Core
       const coreGeo = new THREE.IcosahedronGeometry(0.85, 1);
       this.coreMat = new THREE.MeshPhysicalMaterial({
-        color: 0x163832,
-        emissive: 0x0b2b26,
+        color: 0x182854,
+        emissive: 0x0b132b,
         roughness: 0.15,
         metalness: 0.65,
         clearcoat: 1.0,
@@ -145,7 +145,7 @@ export class ThreeSculpture {
       // Inner Wireframe Aura
       const auraGeo = new THREE.IcosahedronGeometry(1.05, 1);
       this.auraMat = new THREE.MeshBasicMaterial({
-        color: 0x8eb69b,
+        color: 0x39ff88,
         wireframe: true,
         transparent: true,
         opacity: 0.35
@@ -172,7 +172,7 @@ export class ThreeSculpture {
       particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
       this.particleMat = new THREE.PointsMaterial({
         size: 0.055,
-        color: 0xdaf1de,
+        color: 0x39ff88,
         transparent: true,
         opacity: 0.85
       });
@@ -218,81 +218,81 @@ export class ThreeSculpture {
     if (isLight) {
       // Light Mode: Soft sage ambient, deep emerald accents, visible crisp lines
       if (this.ambientLight) {
-        this.ambientLight.color.setHex(0xd5e5d8);
+        this.ambientLight.color.setHex(0xedf2f7);
         this.ambientLight.intensity = 2.4;
       }
       if (this.keyLight) {
-        this.keyLight.color.setHex(0x1b634c);
+        this.keyLight.color.setHex(0x0a9952);
         this.keyLight.intensity = 2.8;
       }
       if (this.rimLight) {
-        this.rimLight.color.setHex(0x0b2b26);
+        this.rimLight.color.setHex(0x0b132b);
         this.rimLight.intensity = 3.2;
       }
       if (this.coreLight) {
-        this.coreLight.color.setHex(0x1f6b52);
+        this.coreLight.color.setHex(0x10b981);
         this.coreLight.intensity = 3.0;
       }
       if (this.ringMaterial1) {
-        this.ringMaterial1.color.setHex(0x1f6b52);
+        this.ringMaterial1.color.setHex(0x0a9952);
         this.ringMaterial1.roughness = 0.3;
       }
       if (this.ringMaterial2) {
-        this.ringMaterial2.color.setHex(0x0e3325);
+        this.ringMaterial2.color.setHex(0x0b132b);
       }
       if (this.ringMaterial3) {
-        this.ringMaterial3.color.setHex(0x16503c);
+        this.ringMaterial3.color.setHex(0x10b981);
       }
       if (this.coreMat) {
-        this.coreMat.color.setHex(0x143e2e);
-        this.coreMat.emissive.setHex(0x0b2b26);
+        this.coreMat.color.setHex(0x1e3a8a);
+        this.coreMat.emissive.setHex(0x0b132b);
       }
       if (this.auraMat) {
-        this.auraMat.color.setHex(0x1b634c);
+        this.auraMat.color.setHex(0x0a9952);
         this.auraMat.opacity = 0.45;
       }
       if (this.particleMat) {
-        this.particleMat.color.setHex(0x164a38);
+        this.particleMat.color.setHex(0x0b132b);
         this.particleMat.opacity = 0.75;
       }
     } else {
-      // Dark Mode: Deep forest, glowing mint & emerald
+      // Dark Mode: Prompt Blue (#0B132B) & AI Green (#39FF88)
       if (this.ambientLight) {
-        this.ambientLight.color.setHex(0x0b2b26);
+        this.ambientLight.color.setHex(0x0b132b);
         this.ambientLight.intensity = 2.5;
       }
       if (this.keyLight) {
-        this.keyLight.color.setHex(0xdaf1de);
+        this.keyLight.color.setHex(0x39ff88);
         this.keyLight.intensity = 3.2;
       }
       if (this.rimLight) {
-        this.rimLight.color.setHex(0x1f6b52);
+        this.rimLight.color.setHex(0x3b82f6);
         this.rimLight.intensity = 4.0;
       }
       if (this.coreLight) {
-        this.coreLight.color.setHex(0x8eb69b);
+        this.coreLight.color.setHex(0x39ff88);
         this.coreLight.intensity = 3.5;
       }
       if (this.ringMaterial1) {
-        this.ringMaterial1.color.setHex(0x8eb69b);
+        this.ringMaterial1.color.setHex(0x39ff88);
         this.ringMaterial1.roughness = 0.22;
       }
       if (this.ringMaterial2) {
-        this.ringMaterial2.color.setHex(0x163832);
+        this.ringMaterial2.color.setHex(0x1d2e60);
       }
       if (this.ringMaterial3) {
-        this.ringMaterial3.color.setHex(0xdaf1de);
+        this.ringMaterial3.color.setHex(0x6affab);
       }
       if (this.coreMat) {
-        this.coreMat.color.setHex(0x163832);
-        this.coreMat.emissive.setHex(0x0b2b26);
+        this.coreMat.color.setHex(0x182854);
+        this.coreMat.emissive.setHex(0x0b132b);
       }
       if (this.auraMat) {
-        this.auraMat.color.setHex(0x8eb69b);
+        this.auraMat.color.setHex(0x39ff88);
         this.auraMat.opacity = 0.35;
       }
       if (this.particleMat) {
-        this.particleMat.color.setHex(0xdaf1de);
+        this.particleMat.color.setHex(0x39ff88);
         this.particleMat.opacity = 0.85;
       }
     }

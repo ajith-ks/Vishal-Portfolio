@@ -131,23 +131,27 @@ All section markup is rendered via modular functions in [`src/main.js`](file:///
 - **DOM Application**: `document.documentElement.setAttribute('data-theme', theme)` in `src/main.js`.
 - **Toggle Handler**: `#theme-toggle-btn` toggles between `'dark'` and `'light'`, updates the icon (`sun` vs `moon`), and dispatches theme updates to `ThreeSculpture.updateTheme(newTheme)`.
 
-### Core Color Palette (Green 3D Editorial Palette)
+### Core Color Palette (Prompt Blue #0B132B & AI Green #39FF88 Stratified System)
 Defined in [`src/styles/variables.css`](file:///d:/vishal%20portfolio/vishal-portfolio/src/styles/variables.css):
 
 | Variable Token | Dark Theme Value (Default) | Light Theme Value | Usage |
 | :--- | :--- | :--- | :--- |
-| `--bg-primary` | `#050807` (Near-black) | `#f6f9f7` (Warm off-white) | Page background |
-| `--bg-secondary` | `#08140f` (Deep forest) | `#edf4ef` (Pale sage) | Alternate section backgrounds |
-| `--bg-surface` | `rgba(11, 26, 20, 0.78)` | `rgba(255, 255, 255, 0.9)` | Nav pill, card backgrounds |
-| `--text-primary` | `#f5f9f6` (Crisp off-white) | `#0a2318` (Deep forest-green) | Main headings, body text |
-| `--text-secondary` | `#b8cfc1` (Soft sage) | `#224232` (Subdued forest) | Paragraphs, descriptions |
-| `--text-muted` | `#728f7d` (Muted mint) | `#4e705e` (Muted foliage) | Labels, timestamps, footnotes |
-| `--accent` | `#1f6b52` | `#1b634c` | Primary brand accent |
-| `--accent-light` | `#8eb69b` (Muted mint) | `#205c46` | Highlights, borders |
-| `--accent-highlight`| `#daf1de` (Frosted mint) | `#0d2b20` | Monograms, glows, pills |
-| `--shiny-btn-bg` | `#0b1a14` | `#0d2b20` | ShinyButton fill |
-| `--shiny-btn-text` | `#f5f9f6` | `#ffffff` | ShinyButton text |
-| `--shiny-btn-border`| `rgba(142, 182, 155, 0.35)` | `rgba(27, 99, 76, 0.5)` | ShinyButton animated perimeter |
+| `--bg-primary` | `#0B132B` (Prompt Blue navy) | `#F8FAFC` (Clean off-white) | Page background & primary sections |
+| `--bg-secondary` | `#111D42` (Lighter/richer navy) | `#EDF2F7` (Soft cool grey-blue) | Alternate section backgrounds |
+| `--bg-surface` | `rgba(19, 32, 70, 0.88)` | `rgba(255, 255, 255, 0.95)` | Nav pill, modals, dialog body |
+| `--bg-surface-elevated`| `#1D2E60` | `#FFFFFF` | Elevated cards, popups, drawer header |
+| `--bg-card` | `#182854` (Luminous blue surface)| `#FFFFFF` | Bento cards, timeline, archives, stats |
+| `--bg-card-hover` | `#1F3369` | `#F1F5F9` | Card hover state |
+| `--footer-bg` | `#070D1E` (Ultra-deep navy) | `#EDF2F7` | Site footer grounding |
+| `--text-primary` | `#FFFFFF` (Crisp pure white) | `#0B132B` (Deep Prompt Navy) | Main headings, body text (18.4:1 contrast) |
+| `--text-secondary` | `#9DB2D4` (Muted blue-grey) | `#2C3E66` (Subdued navy-slate) | Paragraphs, descriptions (8.5:1 contrast) |
+| `--text-muted` | `#6C82A6` | `#5A6E94` | Labels, timestamps, footnotes |
+| `--accent` | `#39FF88` (Vibrant AI Green) | `#0A9952` (High-contrast emerald)| Primary brand accent |
+| `--accent-light` | `#6AFFAB` (Luminous mint) | `#10B981` | Highlights, badges |
+| `--accent-highlight`| `#C2FFE0` | `#0B132B` | Heading gradients, monograms |
+| `--shiny-btn-bg` | `#39FF88` (AI Green CTA) | `#0B132B` (Deep Navy) | ShinyButton fill |
+| `--shiny-btn-text` | `#0B132B` (Prompt Navy text) | `#39FF88` (AI Green text) | ShinyButton text (13.9:1 contrast) |
+| `--shiny-btn-border`| `#39FF88` | `#0B132B` | ShinyButton animated perimeter |
 
 ### Typography Stack
 - **Headings / Serif Accent**: `'Cinzel', Georgia, serif` (Google Fonts: 500, 600, 700)
