@@ -21,7 +21,7 @@ function copyDir(src, dest) {
 }
 
 export default defineConfig({
-  base: '/Vishal-Portfolio/',
+  base: '/',
   publicDir: 'public',
   server: {
     port: 3000,
